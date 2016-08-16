@@ -17,6 +17,11 @@
     // Add NSUserDefaults to save their info
     // Tapping anywhere on the settings page brings back up the normal email sending view...
 
+// TO COMMIT CHANGES:
+    // Terminal -- CD to ./Desktop/Teddy/tinker/MailgunServer
+    // git init
+    // git commit -am 'description'
+
 #import "ViewController.h"
 #define INIT_HEIGHT_LAB 68
 #define INIT_HEIGHT_BOX 110
