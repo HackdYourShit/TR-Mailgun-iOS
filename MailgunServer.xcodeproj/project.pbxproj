@@ -1,0 +1,427 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2FB45F591D628C11003B67C8 /* settings35.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB45F581D628C11003B67C8 /* settings35.png */; };
+		2FB45F5B1D628EF8003B67C8 /* back35.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB45F5A1D628EF8003B67C8 /* back35.png */; };
+		2FEFFB1E1D61833D008D6106 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FEFFB1D1D61833D008D6106 /* main.m */; };
+		2FEFFB211D61833D008D6106 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FEFFB201D61833D008D6106 /* AppDelegate.m */; };
+		2FEFFB241D61833D008D6106 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FEFFB231D61833D008D6106 /* ViewController.m */; };
+		2FEFFB271D61833D008D6106 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FEFFB251D61833D008D6106 /* Main.storyboard */; };
+		2FEFFB291D61833D008D6106 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FEFFB281D61833D008D6106 /* Assets.xcassets */; };
+		2FEFFB2C1D61833D008D6106 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FEFFB2A1D61833D008D6106 /* LaunchScreen.storyboard */; };
+		2FEFFB351D618C9F008D6106 /* BorderedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FEFFB341D618C9F008D6106 /* BorderedTextField.m */; };
+		2FEFFB381D61B689008D6106 /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FEFFB361D61B689008D6106 /* lock.png */; };
+		2FEFFB391D61B689008D6106 /* unlock.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FEFFB371D61B689008D6106 /* unlock.png */; };
+		2FEFFB441D61C1FB008D6106 /* lock35.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FEFFB421D61C1FB008D6106 /* lock35.png */; };
+		2FEFFB451D61C1FB008D6106 /* unlock35.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FEFFB431D61C1FB008D6106 /* unlock35.png */; };
+		3FA0830EDE3306E70A02E560 /* Pods_MailgunServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC09371ECA939B0C011DFF03 /* Pods_MailgunServer.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2FB45F581D628C11003B67C8 /* settings35.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings35.png; sourceTree = "<group>"; };
+		2FB45F5A1D628EF8003B67C8 /* back35.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back35.png; sourceTree = "<group>"; };
+		2FEFFB191D61833D008D6106 /* MailgunServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailgunServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FEFFB1D1D61833D008D6106 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2FEFFB1F1D61833D008D6106 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		2FEFFB201D61833D008D6106 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		2FEFFB221D61833D008D6106 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		2FEFFB231D61833D008D6106 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		2FEFFB261D61833D008D6106 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2FEFFB281D61833D008D6106 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2FEFFB2B1D61833D008D6106 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2FEFFB2D1D61833D008D6106 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2FEFFB331D618C9F008D6106 /* BorderedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BorderedTextField.h; sourceTree = "<group>"; };
+		2FEFFB341D618C9F008D6106 /* BorderedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BorderedTextField.m; sourceTree = "<group>"; };
+		2FEFFB361D61B689008D6106 /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock.png; sourceTree = "<group>"; };
+		2FEFFB371D61B689008D6106 /* unlock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlock.png; sourceTree = "<group>"; };
+		2FEFFB421D61C1FB008D6106 /* lock35.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock35.png; sourceTree = "<group>"; };
+		2FEFFB431D61C1FB008D6106 /* unlock35.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlock35.png; sourceTree = "<group>"; };
+		89B1B5FD2D462402F60F2522 /* Pods-MailgunServer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MailgunServer.release.xcconfig"; path = "Pods/Target Support Files/Pods-MailgunServer/Pods-MailgunServer.release.xcconfig"; sourceTree = "<group>"; };
+		AC09371ECA939B0C011DFF03 /* Pods_MailgunServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MailgunServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE76989C29235050FEA25FCB /* Pods-MailgunServer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MailgunServer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MailgunServer/Pods-MailgunServer.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2FEFFB161D61833C008D6106 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3FA0830EDE3306E70A02E560 /* Pods_MailgunServer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		12996920C88F2182F1A8DC3C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AC09371ECA939B0C011DFF03 /* Pods_MailgunServer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2FEFFB101D61833B008D6106 = {
+			isa = PBXGroup;
+			children = (
+				2FEFFB1B1D61833D008D6106 /* MailgunServer */,
+				2FEFFB1A1D61833D008D6106 /* Products */,
+				91AC17D1CD18BD65BDCBFC4A /* Pods */,
+				12996920C88F2182F1A8DC3C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		2FEFFB1A1D61833D008D6106 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2FEFFB191D61833D008D6106 /* MailgunServer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2FEFFB1B1D61833D008D6106 /* MailgunServer */ = {
+			isa = PBXGroup;
+			children = (
+				2FEFFB1F1D61833D008D6106 /* AppDelegate.h */,
+				2FEFFB201D61833D008D6106 /* AppDelegate.m */,
+				2FEFFB331D618C9F008D6106 /* BorderedTextField.h */,
+				2FEFFB341D618C9F008D6106 /* BorderedTextField.m */,
+				2FEFFB221D61833D008D6106 /* ViewController.h */,
+				2FEFFB231D61833D008D6106 /* ViewController.m */,
+				2FB45F5A1D628EF8003B67C8 /* back35.png */,
+				2FEFFB421D61C1FB008D6106 /* lock35.png */,
+				2FEFFB431D61C1FB008D6106 /* unlock35.png */,
+				2FB45F581D628C11003B67C8 /* settings35.png */,
+				2FEFFB361D61B689008D6106 /* lock.png */,
+				2FEFFB371D61B689008D6106 /* unlock.png */,
+				2FEFFB251D61833D008D6106 /* Main.storyboard */,
+				2FEFFB281D61833D008D6106 /* Assets.xcassets */,
+				2FEFFB2A1D61833D008D6106 /* LaunchScreen.storyboard */,
+				2FEFFB2D1D61833D008D6106 /* Info.plist */,
+				2FEFFB1C1D61833D008D6106 /* Supporting Files */,
+			);
+			path = MailgunServer;
+			sourceTree = "<group>";
+		};
+		2FEFFB1C1D61833D008D6106 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2FEFFB1D1D61833D008D6106 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		91AC17D1CD18BD65BDCBFC4A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CE76989C29235050FEA25FCB /* Pods-MailgunServer.debug.xcconfig */,
+				89B1B5FD2D462402F60F2522 /* Pods-MailgunServer.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2FEFFB181D61833C008D6106 /* MailgunServer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2FEFFB301D61833D008D6106 /* Build configuration list for PBXNativeTarget "MailgunServer" */;
+			buildPhases = (
+				37A19E93B6149158751D9EFD /* [CP] Check Pods Manifest.lock */,
+				2FEFFB151D61833C008D6106 /* Sources */,
+				2FEFFB161D61833C008D6106 /* Frameworks */,
+				2FEFFB171D61833C008D6106 /* Resources */,
+				9B6321EFED9AA561FA8F1580 /* [CP] Embed Pods Frameworks */,
+				BA2A9F612FB65C0E3FF6DDD1 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MailgunServer;
+			productName = MailgunServer;
+			productReference = 2FEFFB191D61833D008D6106 /* MailgunServer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2FEFFB111D61833B008D6106 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "Teddy Rowan";
+				TargetAttributes = {
+					2FEFFB181D61833C008D6106 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = GUDA8WH7PF;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 2FEFFB141D61833B008D6106 /* Build configuration list for PBXProject "MailgunServer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2FEFFB101D61833B008D6106;
+			productRefGroup = 2FEFFB1A1D61833D008D6106 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2FEFFB181D61833C008D6106 /* MailgunServer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2FEFFB171D61833C008D6106 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FEFFB381D61B689008D6106 /* lock.png in Resources */,
+				2FEFFB391D61B689008D6106 /* unlock.png in Resources */,
+				2FB45F591D628C11003B67C8 /* settings35.png in Resources */,
+				2FEFFB2C1D61833D008D6106 /* LaunchScreen.storyboard in Resources */,
+				2FEFFB291D61833D008D6106 /* Assets.xcassets in Resources */,
+				2FB45F5B1D628EF8003B67C8 /* back35.png in Resources */,
+				2FEFFB271D61833D008D6106 /* Main.storyboard in Resources */,
+				2FEFFB451D61C1FB008D6106 /* unlock35.png in Resources */,
+				2FEFFB441D61C1FB008D6106 /* lock35.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		37A19E93B6149158751D9EFD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9B6321EFED9AA561FA8F1580 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MailgunServer/Pods-MailgunServer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BA2A9F612FB65C0E3FF6DDD1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MailgunServer/Pods-MailgunServer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2FEFFB151D61833C008D6106 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2FEFFB241D61833D008D6106 /* ViewController.m in Sources */,
+				2FEFFB211D61833D008D6106 /* AppDelegate.m in Sources */,
+				2FEFFB351D618C9F008D6106 /* BorderedTextField.m in Sources */,
+				2FEFFB1E1D61833D008D6106 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2FEFFB251D61833D008D6106 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2FEFFB261D61833D008D6106 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		2FEFFB2A1D61833D008D6106 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2FEFFB2B1D61833D008D6106 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2FEFFB2E1D61833D008D6106 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		2FEFFB2F1D61833D008D6106 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2FEFFB311D61833D008D6106 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE76989C29235050FEA25FCB /* Pods-MailgunServer.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GUDA8WH7PF;
+				INFOPLIST_FILE = MailgunServer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = edwardrowan.MailgunServer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2FEFFB321D61833D008D6106 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 89B1B5FD2D462402F60F2522 /* Pods-MailgunServer.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = GUDA8WH7PF;
+				INFOPLIST_FILE = MailgunServer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = edwardrowan.MailgunServer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2FEFFB141D61833B008D6106 /* Build configuration list for PBXProject "MailgunServer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2FEFFB2E1D61833D008D6106 /* Debug */,
+				2FEFFB2F1D61833D008D6106 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2FEFFB301D61833D008D6106 /* Build configuration list for PBXNativeTarget "MailgunServer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2FEFFB311D61833D008D6106 /* Debug */,
+				2FEFFB321D61833D008D6106 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2FEFFB111D61833B008D6106 /* Project object */;
+}

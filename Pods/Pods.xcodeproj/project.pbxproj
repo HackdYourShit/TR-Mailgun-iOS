@@ -1,0 +1,788 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		018207D3E5F764E9FEAA0DF98135B37E /* AFJSONRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = C021F56C671790CCF961480F0AEA9ACE /* AFJSONRequestOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		05F09E4A4B5CD756640EBDF3A9271B3F /* mailgun-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D97E049321E13679D57852BF58A74A90 /* mailgun-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07041EA01535657E5CFFAEDBD340E7AF /* Mailgun.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B17AA2C9BF342DDB6190559C17404EC /* Mailgun.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		29E56A10C861D1210842AD6E2AE6CA0E /* AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 45492C3C4D59383C84C74D3D95BC58D1 /* AFNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		329D8518C875070B8098B468FA91FC9E /* mailgun-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 668DBCAF95EE70EC69A68C13E53F02CE /* mailgun-dummy.m */; };
+		3F0F73FF06564551C4B6DD30B5FA468D /* MGMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B0BE784EDB6F53D9CC38854640738B56 /* MGMessage.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		476B4907CB72603B0BF103C6B25DBCB9 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F43103A169ADEAD69D12BF9A0217032 /* AFURLConnectionOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		48824BC15748829C432C6B24952DEB20 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ECD8E792816F226E888DF77486DBBE6 /* AFNetworking.framework */; };
+		4BFBE95FE5EEE9A929D7196A16A89401 /* AFXMLRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DC71421D8BCFC192D5003AA536249FC /* AFXMLRequestOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4D7A7BE2F2F671CCE64538AB77E284FF /* Pods-MailgunServer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 12F4BC5F8187AB9A7E61557B4C0065B1 /* Pods-MailgunServer-dummy.m */; };
+		4F763AA3A55496F403620C53816153A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34F55C68C90CB1A7C727C2E1D87710D6 /* Foundation.framework */; };
+		50988A496750E4EA2007C24855785201 /* AFPropertyListRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C14C9748152CC9D3829C21C3C777FD98 /* AFPropertyListRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		65EE95D72E6FB98464E534BAE09AD302 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C37795D1B958A7FEFD2AC351124F8F0 /* AFXMLRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		67FDD85D16569423DC4B310A459A18FF /* AFNetworking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F6CE2675D2B0D0C72E8AE954DC6AAB /* AFNetworking-dummy.m */; };
+		6B908E93CA4B15DFF9113DDE79861EF6 /* UIImageView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A7646552CEAA4367A4B2F183AEABBCA /* UIImageView+AFNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F275DC3B2945B08E2767A09D4278E28 /* AFImageRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = F0D5E5308C8758A0AC596F8B2344A3FD /* AFImageRequestOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		72384D1A62004318666E9F7EF35F1EFE /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 712F16B7CE0B124861E32119627D8C2A /* AFImageRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		89B5D502D9F9C15A48F6558C070D69AE /* AFURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = A3262400AA2DC161F65212355BC9EC8B /* AFURLConnectionOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B2FDAC47D06857D36B95CE2CED6F9DC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7671F6238B65048F148B4DA659652CF4 /* SystemConfiguration.framework */; };
+		93198CE3F313C4A1CDF1D1EAEF9BF9E3 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E67B787E88EAE40B10645D4190FDC48F /* AFHTTPClient.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		A23967580D8ACD714216A4D3B1CC7455 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CFE670A76DB6890FB9376BE52E61899C /* AFNetworkActivityIndicatorManager.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		A2D14CB6DA6DA12577BA26475125E77D /* AFHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D7C380B697725AC2037D765A098DDD /* AFHTTPClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A7229788431B6A207EDDD2A62C9120F3 /* AFNetworking-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C8891EE7BBF426EA515B347103D5B278 /* AFNetworking-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A9FB704713E52ED463A9880BE34CBF36 /* Mailgun.m in Sources */ = {isa = PBXBuildFile; fileRef = B18C35F464AFA054272B8DD5D54AFD6A /* Mailgun.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		ACC34F8A79BB89683479C0AC7BC16721 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD83713CE07DA54187DEE05AD50199E /* MobileCoreServices.framework */; };
+		B64C1CAEB8D7BCCF3F9435EAEF76CD65 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34F55C68C90CB1A7C727C2E1D87710D6 /* Foundation.framework */; };
+		B6C460A7FF0233E3A4E6661D0FC28B55 /* AFNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E1FAC41C4AC4EB1E5442A59B1C3CE6 /* AFNetworkActivityIndicatorManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBDF101F6C03D4469CDBF0FED13D58DD /* AFHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 293786A8816BD7B3E8E360EE9AAB2060 /* AFHTTPRequestOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC1ECF695319DF5EF8EBDB8549C6B42F /* MGMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D956F906AE337DAFDAA20DC96EC215B /* MGMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3161F9B60701DE3A19483AC75A67214 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34F55C68C90CB1A7C727C2E1D87710D6 /* Foundation.framework */; };
+		D5EDCA74633B499202D4B61DB84C705D /* Pods-MailgunServer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0153B2515780F90546E4DB7E4DCA18AB /* Pods-MailgunServer-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D9E05DEB2D942DD8F629105863CB7C37 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = D89703A1A797EA0F10E11F8E15FDF292 /* UIImageView+AFNetworking.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		E9086D9B80C33846AD7E82463A2DD2A9 /* AFPropertyListRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 27FFFBC5D634BEB79D92DEC0926F39AB /* AFPropertyListRequestOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EFE33BD4AAEEA77DCC3F75517E999A8A /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CF85F5937822A96C2DC9E88715BA3BB7 /* AFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		F0A493BEE18D8F9AE6697CDE22C49680 /* AFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 607F3C19C8D1BBF9A4040586DD7A1FED /* AFJSONRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0F566F6392D7F5035B3D353087E05AE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C979F43EE3FBCBC3101D1F1FB65520BB;
+			remoteInfo = mailgun;
+		};
+		670AF1BEE7EC6A58D596B71556697153 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8A5620AA760B2EC1436A34E583563241;
+			remoteInfo = AFNetworking;
+		};
+		C64259F8688211FEE103093ACE95EE5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8A5620AA760B2EC1436A34E583563241;
+			remoteInfo = AFNetworking;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0153B2515780F90546E4DB7E4DCA18AB /* Pods-MailgunServer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MailgunServer-umbrella.h"; sourceTree = "<group>"; };
+		07D7C380B697725AC2037D765A098DDD /* AFHTTPClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPClient.h; path = AFNetworking/AFHTTPClient.h; sourceTree = "<group>"; };
+		09F33A8AA778ECC1C1FD5C7B15D99BB8 /* Pods-MailgunServer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MailgunServer.release.xcconfig"; sourceTree = "<group>"; };
+		12F4BC5F8187AB9A7E61557B4C0065B1 /* Pods-MailgunServer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MailgunServer-dummy.m"; sourceTree = "<group>"; };
+		1463305B4F46B1D3DD5CDB17B8F948E7 /* Pods_MailgunServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MailgunServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D78D4890424716F4056D9C3649597FD /* AFNetworking.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AFNetworking.xcconfig; sourceTree = "<group>"; };
+		1DC71421D8BCFC192D5003AA536249FC /* AFXMLRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFXMLRequestOperation.h; path = AFNetworking/AFXMLRequestOperation.h; sourceTree = "<group>"; };
+		1F34F58090810D6955AFD21A7F83F1A0 /* Pods-MailgunServer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MailgunServer-acknowledgements.plist"; sourceTree = "<group>"; };
+		25F6CE2675D2B0D0C72E8AE954DC6AAB /* AFNetworking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AFNetworking-dummy.m"; sourceTree = "<group>"; };
+		27FFFBC5D634BEB79D92DEC0926F39AB /* AFPropertyListRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFPropertyListRequestOperation.h; path = AFNetworking/AFPropertyListRequestOperation.h; sourceTree = "<group>"; };
+		28E1FAC41C4AC4EB1E5442A59B1C3CE6 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworkActivityIndicatorManager.h; path = AFNetworking/AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
+		293786A8816BD7B3E8E360EE9AAB2060 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperation.h; path = AFNetworking/AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		2A7646552CEAA4367A4B2F183AEABBCA /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+AFNetworking.h"; path = "AFNetworking/UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
+		34F55C68C90CB1A7C727C2E1D87710D6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		3C334FBC15A6FD96AABDF6A7192B0992 /* mailgun-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "mailgun-prefix.pch"; sourceTree = "<group>"; };
+		3ECD8E792816F226E888DF77486DBBE6 /* AFNetworking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AFNetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F43103A169ADEAD69D12BF9A0217032 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLConnectionOperation.m; path = AFNetworking/AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		45492C3C4D59383C84C74D3D95BC58D1 /* AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworking.h; path = AFNetworking/AFNetworking.h; sourceTree = "<group>"; };
+		4D07EF318BE4556469FC9A657D4E5189 /* AFNetworking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AFNetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C37795D1B958A7FEFD2AC351124F8F0 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFXMLRequestOperation.m; path = AFNetworking/AFXMLRequestOperation.m; sourceTree = "<group>"; };
+		607F3C19C8D1BBF9A4040586DD7A1FED /* AFJSONRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFJSONRequestOperation.m; path = AFNetworking/AFJSONRequestOperation.m; sourceTree = "<group>"; };
+		668DBCAF95EE70EC69A68C13E53F02CE /* mailgun-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "mailgun-dummy.m"; sourceTree = "<group>"; };
+		6AD596DE09B18DC61CE3387076DB2222 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6D956F906AE337DAFDAA20DC96EC215B /* MGMessage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MGMessage.h; path = Classes/MGMessage.h; sourceTree = "<group>"; };
+		6F1133059FCC581E9D9180B5171289C7 /* Pods-MailgunServer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-MailgunServer.modulemap"; sourceTree = "<group>"; };
+		712F16B7CE0B124861E32119627D8C2A /* AFImageRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFImageRequestOperation.m; path = AFNetworking/AFImageRequestOperation.m; sourceTree = "<group>"; };
+		7671F6238B65048F148B4DA659652CF4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		7C71F4269617738186F31E2F1075A148 /* mailgun.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = mailgun.xcconfig; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		965398E82B60C070059A39C83405B990 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9B17AA2C9BF342DDB6190559C17404EC /* Mailgun.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Mailgun.h; path = Classes/Mailgun.h; sourceTree = "<group>"; };
+		A3262400AA2DC161F65212355BC9EC8B /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLConnectionOperation.h; path = AFNetworking/AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		AF9F9FFA9977297A775EA88176FC20BC /* mailgun.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = mailgun.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B001ADF933BC1DC2CBFC3E2658BEE26A /* mailgun.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = mailgun.modulemap; sourceTree = "<group>"; };
+		B0BE784EDB6F53D9CC38854640738B56 /* MGMessage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MGMessage.m; path = Classes/MGMessage.m; sourceTree = "<group>"; };
+		B18C35F464AFA054272B8DD5D54AFD6A /* Mailgun.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Mailgun.m; path = Classes/Mailgun.m; sourceTree = "<group>"; };
+		B3B65537100A05C7CB495C483C93B135 /* Pods-MailgunServer-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MailgunServer-frameworks.sh"; sourceTree = "<group>"; };
+		BAD83713CE07DA54187DEE05AD50199E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = DEVELOPER_DIR; };
+		C021F56C671790CCF961480F0AEA9ACE /* AFJSONRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFJSONRequestOperation.h; path = AFNetworking/AFJSONRequestOperation.h; sourceTree = "<group>"; };
+		C14C9748152CC9D3829C21C3C777FD98 /* AFPropertyListRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFPropertyListRequestOperation.m; path = AFNetworking/AFPropertyListRequestOperation.m; sourceTree = "<group>"; };
+		C8891EE7BBF426EA515B347103D5B278 /* AFNetworking-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AFNetworking-umbrella.h"; sourceTree = "<group>"; };
+		CD286F45E0D67F3594C992A07913AA84 /* Pods-MailgunServer-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MailgunServer-resources.sh"; sourceTree = "<group>"; };
+		CF85F5937822A96C2DC9E88715BA3BB7 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperation.m; path = AFNetworking/AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		CFC519497B5F700B6114ABD3A88293B6 /* Pods-MailgunServer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-MailgunServer-acknowledgements.markdown"; sourceTree = "<group>"; };
+		CFE670A76DB6890FB9376BE52E61899C /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFNetworkActivityIndicatorManager.m; path = AFNetworking/AFNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
+		D89703A1A797EA0F10E11F8E15FDF292 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		D97E049321E13679D57852BF58A74A90 /* mailgun-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "mailgun-umbrella.h"; sourceTree = "<group>"; };
+		E1FA5F46AD9C848D0DE9FA774CDC349E /* Pods-MailgunServer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MailgunServer.debug.xcconfig"; sourceTree = "<group>"; };
+		E5C41B422490D0BF647532B34DECB01C /* AFNetworking.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = AFNetworking.modulemap; sourceTree = "<group>"; };
+		E67B787E88EAE40B10645D4190FDC48F /* AFHTTPClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPClient.m; path = AFNetworking/AFHTTPClient.m; sourceTree = "<group>"; };
+		EF3D3A25C1C70A7138AF49B728412BAE /* AFNetworking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AFNetworking-prefix.pch"; sourceTree = "<group>"; };
+		F0D5E5308C8758A0AC596F8B2344A3FD /* AFImageRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFImageRequestOperation.h; path = AFNetworking/AFImageRequestOperation.h; sourceTree = "<group>"; };
+		FB9A892AAC1A0ECA63BC1DD75FBB3370 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		077A11280F8189E70C98B140FEEF0081 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3161F9B60701DE3A19483AC75A67214 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		178EDCCF0F36885BDE658FA367C0A416 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48824BC15748829C432C6B24952DEB20 /* AFNetworking.framework in Frameworks */,
+				B64C1CAEB8D7BCCF3F9435EAEF76CD65 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FB0266467A4034A702C57DE08615DF65 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F763AA3A55496F403620C53816153A2 /* Foundation.framework in Frameworks */,
+				ACC34F8A79BB89683479C0AC7BC16721 /* MobileCoreServices.framework in Frameworks */,
+				8B2FDAC47D06857D36B95CE2CED6F9DC /* SystemConfiguration.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0819886D8E6E1023E4A4E2408C722AB2 /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				07D7C380B697725AC2037D765A098DDD /* AFHTTPClient.h */,
+				E67B787E88EAE40B10645D4190FDC48F /* AFHTTPClient.m */,
+				293786A8816BD7B3E8E360EE9AAB2060 /* AFHTTPRequestOperation.h */,
+				CF85F5937822A96C2DC9E88715BA3BB7 /* AFHTTPRequestOperation.m */,
+				F0D5E5308C8758A0AC596F8B2344A3FD /* AFImageRequestOperation.h */,
+				712F16B7CE0B124861E32119627D8C2A /* AFImageRequestOperation.m */,
+				C021F56C671790CCF961480F0AEA9ACE /* AFJSONRequestOperation.h */,
+				607F3C19C8D1BBF9A4040586DD7A1FED /* AFJSONRequestOperation.m */,
+				28E1FAC41C4AC4EB1E5442A59B1C3CE6 /* AFNetworkActivityIndicatorManager.h */,
+				CFE670A76DB6890FB9376BE52E61899C /* AFNetworkActivityIndicatorManager.m */,
+				45492C3C4D59383C84C74D3D95BC58D1 /* AFNetworking.h */,
+				27FFFBC5D634BEB79D92DEC0926F39AB /* AFPropertyListRequestOperation.h */,
+				C14C9748152CC9D3829C21C3C777FD98 /* AFPropertyListRequestOperation.m */,
+				A3262400AA2DC161F65212355BC9EC8B /* AFURLConnectionOperation.h */,
+				3F43103A169ADEAD69D12BF9A0217032 /* AFURLConnectionOperation.m */,
+				1DC71421D8BCFC192D5003AA536249FC /* AFXMLRequestOperation.h */,
+				5C37795D1B958A7FEFD2AC351124F8F0 /* AFXMLRequestOperation.m */,
+				2A7646552CEAA4367A4B2F183AEABBCA /* UIImageView+AFNetworking.h */,
+				D89703A1A797EA0F10E11F8E15FDF292 /* UIImageView+AFNetworking.m */,
+				73E8B75C8765F23FEA8316A6A70F89F3 /* Support Files */,
+			);
+			path = AFNetworking;
+			sourceTree = "<group>";
+		};
+		172115ECF8B8D42F99453ACCCD1D0A26 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				34F55C68C90CB1A7C727C2E1D87710D6 /* Foundation.framework */,
+				BAD83713CE07DA54187DEE05AD50199E /* MobileCoreServices.framework */,
+				7671F6238B65048F148B4DA659652CF4 /* SystemConfiguration.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		275DB36A131A4155F9529981F22AAF0E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4D07EF318BE4556469FC9A657D4E5189 /* AFNetworking.framework */,
+				AF9F9FFA9977297A775EA88176FC20BC /* mailgun.framework */,
+				1463305B4F46B1D3DD5CDB17B8F948E7 /* Pods_MailgunServer.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		30D3F98175E75C9AD74748490E527328 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0819886D8E6E1023E4A4E2408C722AB2 /* AFNetworking */,
+				BD1C3381A7478AFF47AD6895A8EE0B3C /* mailgun */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		60D832F14FA9B63335962BA13835B038 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3ECD8E792816F226E888DF77486DBBE6 /* AFNetworking.framework */,
+				172115ECF8B8D42F99453ACCCD1D0A26 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		73E8B75C8765F23FEA8316A6A70F89F3 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				E5C41B422490D0BF647532B34DECB01C /* AFNetworking.modulemap */,
+				1D78D4890424716F4056D9C3649597FD /* AFNetworking.xcconfig */,
+				25F6CE2675D2B0D0C72E8AE954DC6AAB /* AFNetworking-dummy.m */,
+				EF3D3A25C1C70A7138AF49B728412BAE /* AFNetworking-prefix.pch */,
+				C8891EE7BBF426EA515B347103D5B278 /* AFNetworking-umbrella.h */,
+				965398E82B60C070059A39C83405B990 /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/AFNetworking";
+			sourceTree = "<group>";
+		};
+		7D61E4B55608414F0674AE3C36E377EA /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				6AD596DE09B18DC61CE3387076DB2222 /* Info.plist */,
+				B001ADF933BC1DC2CBFC3E2658BEE26A /* mailgun.modulemap */,
+				7C71F4269617738186F31E2F1075A148 /* mailgun.xcconfig */,
+				668DBCAF95EE70EC69A68C13E53F02CE /* mailgun-dummy.m */,
+				3C334FBC15A6FD96AABDF6A7192B0992 /* mailgun-prefix.pch */,
+				D97E049321E13679D57852BF58A74A90 /* mailgun-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/mailgun";
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				60D832F14FA9B63335962BA13835B038 /* Frameworks */,
+				30D3F98175E75C9AD74748490E527328 /* Pods */,
+				275DB36A131A4155F9529981F22AAF0E /* Products */,
+				9BBB1B4C42313E78DC9A1CCD0B2FD868 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		9BBB1B4C42313E78DC9A1CCD0B2FD868 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C11EA8328C34C8281EEA63D32A22EBBF /* Pods-MailgunServer */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		BD1C3381A7478AFF47AD6895A8EE0B3C /* mailgun */ = {
+			isa = PBXGroup;
+			children = (
+				9B17AA2C9BF342DDB6190559C17404EC /* Mailgun.h */,
+				B18C35F464AFA054272B8DD5D54AFD6A /* Mailgun.m */,
+				6D956F906AE337DAFDAA20DC96EC215B /* MGMessage.h */,
+				B0BE784EDB6F53D9CC38854640738B56 /* MGMessage.m */,
+				7D61E4B55608414F0674AE3C36E377EA /* Support Files */,
+			);
+			path = mailgun;
+			sourceTree = "<group>";
+		};
+		C11EA8328C34C8281EEA63D32A22EBBF /* Pods-MailgunServer */ = {
+			isa = PBXGroup;
+			children = (
+				FB9A892AAC1A0ECA63BC1DD75FBB3370 /* Info.plist */,
+				6F1133059FCC581E9D9180B5171289C7 /* Pods-MailgunServer.modulemap */,
+				CFC519497B5F700B6114ABD3A88293B6 /* Pods-MailgunServer-acknowledgements.markdown */,
+				1F34F58090810D6955AFD21A7F83F1A0 /* Pods-MailgunServer-acknowledgements.plist */,
+				12F4BC5F8187AB9A7E61557B4C0065B1 /* Pods-MailgunServer-dummy.m */,
+				B3B65537100A05C7CB495C483C93B135 /* Pods-MailgunServer-frameworks.sh */,
+				CD286F45E0D67F3594C992A07913AA84 /* Pods-MailgunServer-resources.sh */,
+				0153B2515780F90546E4DB7E4DCA18AB /* Pods-MailgunServer-umbrella.h */,
+				E1FA5F46AD9C848D0DE9FA774CDC349E /* Pods-MailgunServer.debug.xcconfig */,
+				09F33A8AA778ECC1C1FD5C7B15D99BB8 /* Pods-MailgunServer.release.xcconfig */,
+			);
+			name = "Pods-MailgunServer";
+			path = "Target Support Files/Pods-MailgunServer";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		624293C625AAFD20696395B2F7C0B5F7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5EDCA74633B499202D4B61DB84C705D /* Pods-MailgunServer-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AC35BF5FD9797BC02E789445CB2EC4C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A2D14CB6DA6DA12577BA26475125E77D /* AFHTTPClient.h in Headers */,
+				CBDF101F6C03D4469CDBF0FED13D58DD /* AFHTTPRequestOperation.h in Headers */,
+				6F275DC3B2945B08E2767A09D4278E28 /* AFImageRequestOperation.h in Headers */,
+				018207D3E5F764E9FEAA0DF98135B37E /* AFJSONRequestOperation.h in Headers */,
+				B6C460A7FF0233E3A4E6661D0FC28B55 /* AFNetworkActivityIndicatorManager.h in Headers */,
+				A7229788431B6A207EDDD2A62C9120F3 /* AFNetworking-umbrella.h in Headers */,
+				29E56A10C861D1210842AD6E2AE6CA0E /* AFNetworking.h in Headers */,
+				E9086D9B80C33846AD7E82463A2DD2A9 /* AFPropertyListRequestOperation.h in Headers */,
+				89B5D502D9F9C15A48F6558C070D69AE /* AFURLConnectionOperation.h in Headers */,
+				4BFBE95FE5EEE9A929D7196A16A89401 /* AFXMLRequestOperation.h in Headers */,
+				6B908E93CA4B15DFF9113DDE79861EF6 /* UIImageView+AFNetworking.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6701C73545C296B61BFDD6273FDD1C0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				05F09E4A4B5CD756640EBDF3A9271B3F /* mailgun-umbrella.h in Headers */,
+				07041EA01535657E5CFFAEDBD340E7AF /* Mailgun.h in Headers */,
+				CC1ECF695319DF5EF8EBDB8549C6B42F /* MGMessage.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		6FB22D8556544F47F8A3CA0AEA4ABC6A /* Pods-MailgunServer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E25AB7FA21ABB401E034BF743FCB261B /* Build configuration list for PBXNativeTarget "Pods-MailgunServer" */;
+			buildPhases = (
+				7F8CAEEFAFB9C9A9BB2E52BB2FBEE8DF /* Sources */,
+				077A11280F8189E70C98B140FEEF0081 /* Frameworks */,
+				624293C625AAFD20696395B2F7C0B5F7 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				86D1287DBAD997549B71F370FBB4444C /* PBXTargetDependency */,
+				898AE824D71A462DE806DB4026B7B92F /* PBXTargetDependency */,
+			);
+			name = "Pods-MailgunServer";
+			productName = "Pods-MailgunServer";
+			productReference = 1463305B4F46B1D3DD5CDB17B8F948E7 /* Pods_MailgunServer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		8A5620AA760B2EC1436A34E583563241 /* AFNetworking */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC605D48549132E6D59AEBFB7ED9C97A /* Build configuration list for PBXNativeTarget "AFNetworking" */;
+			buildPhases = (
+				8766D72B3DAB26659FCE0F9757F2510B /* Sources */,
+				FB0266467A4034A702C57DE08615DF65 /* Frameworks */,
+				6AC35BF5FD9797BC02E789445CB2EC4C /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AFNetworking;
+			productName = AFNetworking;
+			productReference = 4D07EF318BE4556469FC9A657D4E5189 /* AFNetworking.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C979F43EE3FBCBC3101D1F1FB65520BB /* mailgun */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8F317E7AB6A50AC6B48AE4BC9BC40A5D /* Build configuration list for PBXNativeTarget "mailgun" */;
+			buildPhases = (
+				BD46FFCA6B24F95739F2C23D704C1FCB /* Sources */,
+				178EDCCF0F36885BDE658FA367C0A416 /* Frameworks */,
+				D6701C73545C296B61BFDD6273FDD1C0 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2BB9005FA54B2AB863176DAA9BEBE5F7 /* PBXTargetDependency */,
+			);
+			name = mailgun;
+			productName = mailgun;
+			productReference = AF9F9FFA9977297A775EA88176FC20BC /* mailgun.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = 275DB36A131A4155F9529981F22AAF0E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8A5620AA760B2EC1436A34E583563241 /* AFNetworking */,
+				C979F43EE3FBCBC3101D1F1FB65520BB /* mailgun */,
+				6FB22D8556544F47F8A3CA0AEA4ABC6A /* Pods-MailgunServer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7F8CAEEFAFB9C9A9BB2E52BB2FBEE8DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4D7A7BE2F2F671CCE64538AB77E284FF /* Pods-MailgunServer-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8766D72B3DAB26659FCE0F9757F2510B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93198CE3F313C4A1CDF1D1EAEF9BF9E3 /* AFHTTPClient.m in Sources */,
+				EFE33BD4AAEEA77DCC3F75517E999A8A /* AFHTTPRequestOperation.m in Sources */,
+				72384D1A62004318666E9F7EF35F1EFE /* AFImageRequestOperation.m in Sources */,
+				F0A493BEE18D8F9AE6697CDE22C49680 /* AFJSONRequestOperation.m in Sources */,
+				A23967580D8ACD714216A4D3B1CC7455 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				67FDD85D16569423DC4B310A459A18FF /* AFNetworking-dummy.m in Sources */,
+				50988A496750E4EA2007C24855785201 /* AFPropertyListRequestOperation.m in Sources */,
+				476B4907CB72603B0BF103C6B25DBCB9 /* AFURLConnectionOperation.m in Sources */,
+				65EE95D72E6FB98464E534BAE09AD302 /* AFXMLRequestOperation.m in Sources */,
+				D9E05DEB2D942DD8F629105863CB7C37 /* UIImageView+AFNetworking.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD46FFCA6B24F95739F2C23D704C1FCB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				329D8518C875070B8098B468FA91FC9E /* mailgun-dummy.m in Sources */,
+				A9FB704713E52ED463A9880BE34CBF36 /* Mailgun.m in Sources */,
+				3F0F73FF06564551C4B6DD30B5FA468D /* MGMessage.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2BB9005FA54B2AB863176DAA9BEBE5F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AFNetworking;
+			target = 8A5620AA760B2EC1436A34E583563241 /* AFNetworking */;
+			targetProxy = 670AF1BEE7EC6A58D596B71556697153 /* PBXContainerItemProxy */;
+		};
+		86D1287DBAD997549B71F370FBB4444C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AFNetworking;
+			target = 8A5620AA760B2EC1436A34E583563241 /* AFNetworking */;
+			targetProxy = C64259F8688211FEE103093ACE95EE5C /* PBXContainerItemProxy */;
+		};
+		898AE824D71A462DE806DB4026B7B92F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = mailgun;
+			target = C979F43EE3FBCBC3101D1F1FB65520BB /* mailgun */;
+			targetProxy = 0F566F6392D7F5035B3D353087E05AE5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		018A328FA730174E0789573011779D20 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7C71F4269617738186F31E2F1075A148 /* mailgun.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/mailgun/mailgun-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/mailgun/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/mailgun/mailgun.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = mailgun;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		034014829C1E4434983CF3A690C12017 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		10F20489E20E7CEA123E3A085FA29C0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 09F33A8AA778ECC1C1FD5C7B15D99BB8 /* Pods-MailgunServer.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-MailgunServer/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-MailgunServer/Pods-MailgunServer.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_MailgunServer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		46C78B21D2DE27BBB9E4CC1CD3ABCAF8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E1FA5F46AD9C848D0DE9FA774CDC349E /* Pods-MailgunServer.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-MailgunServer/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-MailgunServer/Pods-MailgunServer.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_MailgunServer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		AA4086BAE7879E70251DBCF2726D300B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7C71F4269617738186F31E2F1075A148 /* mailgun.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/mailgun/mailgun-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/mailgun/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/mailgun/mailgun.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = mailgun;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		AEF9A99C98060B71A4A3C5E57A57A63E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1D78D4890424716F4056D9C3649597FD /* AFNetworking.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/AFNetworking/AFNetworking-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AFNetworking/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/AFNetworking/AFNetworking.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = AFNetworking;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		BC05F0221E403B0391F31ECC8265DFAE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1D78D4890424716F4056D9C3649597FD /* AFNetworking.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/AFNetworking/AFNetworking-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AFNetworking/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/AFNetworking/AFNetworking.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = AFNetworking;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C7E474A03CAE21F1CB6046E7344C59BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				034014829C1E4434983CF3A690C12017 /* Debug */,
+				C7E474A03CAE21F1CB6046E7344C59BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8F317E7AB6A50AC6B48AE4BC9BC40A5D /* Build configuration list for PBXNativeTarget "mailgun" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				018A328FA730174E0789573011779D20 /* Debug */,
+				AA4086BAE7879E70251DBCF2726D300B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BC605D48549132E6D59AEBFB7ED9C97A /* Build configuration list for PBXNativeTarget "AFNetworking" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AEF9A99C98060B71A4A3C5E57A57A63E /* Debug */,
+				BC05F0221E403B0391F31ECC8265DFAE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E25AB7FA21ABB401E034BF743FCB261B /* Build configuration list for PBXNativeTarget "Pods-MailgunServer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46C78B21D2DE27BBB9E4CC1CD3ABCAF8 /* Debug */,
+				10F20489E20E7CEA123E3A085FA29C0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}
