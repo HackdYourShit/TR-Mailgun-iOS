@@ -3,10 +3,10 @@
 //  MailgunServer
 
 // TO DO:
-//   Find a way to attach images, hopefully from Photos Library
+//   Find a way to attach images, hopefully from Photos Library. Looks to be not too bad to do.
+    // https://developer.apple.com/library/ios/documentation/AudioVideo/Conceptual/CameraAndPhotoLib_TopicsForIOS/Articles/PickinganItemfromthePhotoLibrary.html
 //   Add extra inputs for your name when sending / receiving.
 //   Error message on sending failure
-//   Add source control support
 //   Bit of reformatting to look more like Mail app
 //   Alignment of SETTINGS / TEDDYROWAN.com text and icons
 
@@ -33,13 +33,11 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    //[self registerForKeyboardNotifications];
-    
+        
     activeField = [[UITextView alloc] init];
     
     API_KEY = [[NSString alloc] initWithFormat:@"key-9a01fe9d60afece3eeda648f0d90206a"];
@@ -102,7 +100,25 @@
     subjectBox.textView.delegate = (id)self;
     [subjectBox.textView addSubview:subjLbl];
     
+    toLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,toBox.textView.frame.size.width - 10.0, 30)];
+    [toLbl setText:@"Enter a recipient..."];
+    [toLbl setBackgroundColor:[UIColor clearColor]];
+    [toLbl setTextColor:[UIColor lightGrayColor]];
+    toLbl.textAlignment = NSTextAlignmentCenter;
+    toLbl.font = [UIFont systemFontOfSize:11.0];
+    toBox.textView.delegate = (id)self;
+    toLbl.hidden = YES; // unhide it if i ever move away from keeping a default recipient. aka final version
+    [toBox.textView addSubview:toLbl];
     
+    fromLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,fromBox.textView.frame.size.width - 10.0, 30)];
+    [fromLbl setText:@"Enter a sender..."];
+    [fromLbl setBackgroundColor:[UIColor clearColor]];
+    [fromLbl setTextColor:[UIColor lightGrayColor]];
+    fromLbl.textAlignment = NSTextAlignmentCenter;
+    fromLbl.font = [UIFont systemFontOfSize:11.0];
+    fromBox.textView.delegate = (id)self;
+    fromLbl.hidden = YES; // unhide it if i ever move away from keeping a default recipient. aka final version
+    [fromBox.textView addSubview:fromLbl];
     
     UILabel* msgLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+3*SPACING, 280, 30)];
     msgLabel.text = @" MESSAGE:    ";
@@ -233,10 +249,21 @@
 - (void) textViewDidChange:(UITextView *)textView{
     if(![subjectBox.textView hasText]) {
         subjLbl.hidden = NO;
-    }
-    else{
+    }else{
         subjLbl.hidden = YES;
-    }  
+    }
+    
+    if(![toBox.textView hasText]) {
+        toLbl.hidden = NO;
+    }else{
+        toLbl.hidden = YES;
+    }
+    
+    if(![fromBox.textView hasText]) {
+        fromLbl.hidden = NO;
+    }else{
+        fromLbl.hidden = YES;
+    }
 }
 
 // Lock / Unlock sending of messages. Designed to prevent accidental and double sending.

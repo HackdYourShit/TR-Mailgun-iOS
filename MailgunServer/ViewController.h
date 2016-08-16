@@ -19,7 +19,9 @@
     BorderedTextField *messageBox;
     BorderedTextField *subjectBox;
     
-    UILabel *subjLbl; // testing with subjectBox placeholder
+    UILabel *subjLbl; // subjectBox Placeholder
+    UILabel *toLbl; // from Placeholder
+    UILabel *fromLbl; // to Placeholder
     
     UIView *backgroundLayer; // put everything on this layer then I can move the whole thing when the text input comes up so that you can still see the input.
     UIView *settingsLayer;
@@ -39,6 +41,9 @@
 }
 
 @property (nonatomic, retain) UILabel* subjLbl;
+@property (nonatomic, retain) UILabel* toLbl;
+@property (nonatomic, retain) UILabel* fromLbl;
+
 
 @property (nonatomic) BOOL locked;
 //@property (nonatomic) int blah;
