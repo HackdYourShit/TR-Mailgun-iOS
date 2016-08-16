@@ -42,6 +42,9 @@
     UIButton* backButton;
     BorderedTextField *apiBox;
     BorderedTextField *urlBox;
+    UIButton* cancelChanges;;
+    UILabel *apiLbl; // api Placeholder
+    UILabel *urlLbl; // url Placeholder
 
 }
 
@@ -52,6 +55,9 @@
 @property (nonatomic, retain) UILabel* subjLbl;
 @property (nonatomic, retain) UILabel* toLbl;
 @property (nonatomic, retain) UILabel* fromLbl;
+
+@property (nonatomic, retain) UILabel* urlLbl;
+@property (nonatomic, retain) UILabel* apiLbl;
 
 
 @property (nonatomic) BOOL locked;
@@ -74,6 +80,7 @@
 @property (nonatomic, retain) BorderedTextField* subjectBox;
 
 @property (nonatomic, retain) UIButton* sendButton;
+@property (nonatomic, retain) UIButton* cancelChanges;
 
 - (void) sendMessage;
 //-(IBAction)editingEnded:(id)sender;
@@ -85,6 +92,7 @@
 - (void) openSettings;
 - (void) closeSettings;
 - (void) loadSettingsLayer;
+- (void) cancelSettingsChange;
 
 @end
 

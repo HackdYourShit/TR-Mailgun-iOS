@@ -11,10 +11,8 @@
 //   Alignment of SETTINGS / TEDDYROWAN.com text and icons
 
 //   Settings page where you can customize the website and api key and such
-    // Add API field
-    // Add server address field
-    // Add cancel field
     // Add NSUserDefaults to save their info
+    // Add a credits label kind of thing.
 
 // TO COMMIT CHANGES through command line:
     // Terminal -- CD to ./Desktop/Teddy/tinker/MailgunServer
@@ -31,7 +29,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -198,6 +196,38 @@
     urlBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 1*SPACING);
     urlBox.textView.text = mailgunURL;
     [settingsLayer addSubview:urlBox];
+    
+    cancelChanges = [[UIButton alloc] init];
+    cancelChanges = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelChanges.frame = CGRectMake(60, INIT_HEIGHT_BOX+2.0*SPACING, 200, 60);
+    cancelChanges.backgroundColor = [UIColor redColor];
+    cancelChanges.titleLabel.textColor = [UIColor whiteColor];
+    [cancelChanges setTitle:@"DISCARD CHANGES" forState:UIControlStateNormal];
+    [cancelChanges addTarget:self action:@selector(cancelSettingsChange) forControlEvents:UIControlEventTouchUpInside];
+    cancelChanges.layer.cornerRadius = 2;
+    [cancelChanges setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
+    [settingsLayer addSubview:cancelChanges];
+    
+    apiLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,apiBox.textView.frame.size.width - 10.0, 30)];
+    [apiLbl setText:@"Enter your private API key..."];
+    [apiLbl setBackgroundColor:[UIColor clearColor]];
+    [apiLbl setTextColor:[UIColor lightGrayColor]];
+    apiLbl.textAlignment = NSTextAlignmentCenter;
+    apiLbl.font = [UIFont systemFontOfSize:11.0];
+    apiBox.textView.delegate = (id)self;
+    apiLbl.hidden = YES;
+    [apiBox.textView addSubview:apiLbl];
+    
+    urlLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,urlBox.textView.frame.size.width - 10.0, 30)];
+    [urlLbl setText:@"Enter your domain address..."];
+    [urlLbl setBackgroundColor:[UIColor clearColor]];
+    [urlLbl setTextColor:[UIColor lightGrayColor]];
+    urlLbl.textAlignment = NSTextAlignmentCenter;
+    urlLbl.font = [UIFont systemFontOfSize:11.0];
+    urlBox.textView.delegate = (id)self;
+    urlLbl.hidden = YES;
+    [urlBox.textView addSubview:urlLbl];
+    
 }
 
 - (void)sendMessage{
@@ -263,6 +293,7 @@
 
 // Check on whether the subjLbl message should be there or not
 - (void) textViewDidChange:(UITextView *)textView{
+    // This can probably be done way way better with a for each loop + an array. 5 lines tops.
     if(![subjectBox.textView hasText]) {
         subjLbl.hidden = NO;
     }else{
@@ -279,6 +310,18 @@
         fromLbl.hidden = NO;
     }else{
         fromLbl.hidden = YES;
+    }
+    
+    if(![apiBox.textView hasText]) {
+        apiLbl.hidden = NO;
+    }else{
+        apiLbl.hidden = YES;
+    }
+    
+    if(![urlBox.textView hasText]) {
+        urlLbl.hidden = NO;
+    }else{
+        urlLbl.hidden = YES;
     }
 }
 
@@ -349,6 +392,30 @@
     API_KEY = apiBox.textView.text;
     mailgunURL = urlBox.textView.text;
     titleLabel.text = [mailgunURL uppercaseString];
+}
+
+- (void) cancelSettingsChange{
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+        backgroundLayer.center = CGPointMake(backgroundLayer.center.x+320, backgroundLayer.center.y);
+    } completion:^(BOOL finished) {}];
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+        settingsLayer.center = CGPointMake(settingsLayer.center.x+320, settingsLayer.center.y);
+    } completion:^(BOOL finished) {}];
+    apiBox.textView.text = API_KEY;
+    urlBox.textView.text = mailgunURL;
+    
+    
+    if(![apiBox.textView hasText]) {
+        apiLbl.hidden = NO;
+    }else{
+        apiLbl.hidden = YES;
+    }
+    
+    if(![urlBox.textView hasText]) {
+        urlLbl.hidden = NO;
+    }else{
+        urlLbl.hidden = YES;
+    }
 }
 
 
