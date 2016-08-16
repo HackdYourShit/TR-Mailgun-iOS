@@ -12,7 +12,7 @@
 
 //   Settings page where you can customize the website and api key and such
     // Add NSUserDefaults to save their info
-    // Add a credits label kind of thing.
+    // Add a TR logo right below the credits label
 
 // TO COMMIT CHANGES through command line:
     // Terminal -- CD to ./Desktop/Teddy/tinker/MailgunServer
@@ -29,7 +29,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -228,6 +228,12 @@
     urlLbl.hidden = YES;
     [urlBox.textView addSubview:urlLbl];
     
+    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+4*SPACING, 280, 90)];
+    creditsLabel.text = [@"Created by Teddy Rowan\nVersion 1.0." uppercaseString];
+    [creditsLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    creditsLabel.textAlignment = NSTextAlignmentCenter;
+    creditsLabel.numberOfLines = 2;
+    [settingsLayer addSubview:creditsLabel];
 }
 
 - (void)sendMessage{

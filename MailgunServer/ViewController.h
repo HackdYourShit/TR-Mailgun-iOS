@@ -45,6 +45,8 @@
     UIButton* cancelChanges;;
     UILabel *apiLbl; // api Placeholder
     UILabel *urlLbl; // url Placeholder
+    
+    UILabel *creditsLabel;
 
 }
 
@@ -59,6 +61,7 @@
 @property (nonatomic, retain) UILabel* urlLbl;
 @property (nonatomic, retain) UILabel* apiLbl;
 
+@property (nonatomic, retain) UILabel* creditsLabel;
 
 @property (nonatomic) BOOL locked;
 //@property (nonatomic) int blah;
