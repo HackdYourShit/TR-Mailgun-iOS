@@ -15,7 +15,6 @@
     // Add server address field
     // Add cancel field
     // Add NSUserDefaults to save their info
-    // Tapping anywhere on the settings page brings back up the normal email sending view...
 
 // TO COMMIT CHANGES:
     // Terminal -- CD to ./Desktop/Teddy/tinker/MailgunServer
@@ -29,7 +28,6 @@
 #define INIT_X 20
 
 @interface ViewController ()
-
 @end
 
 @implementation ViewController
@@ -42,7 +40,6 @@
     
     API_KEY = [[NSString alloc] initWithFormat:@"key-9a01fe9d60afece3eeda648f0d90206a"];
     mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
-    
     
     backgroundLayer = [[UIView alloc] init];
     backgroundLayer.frame = self.view.frame;
@@ -75,7 +72,7 @@
     
     fromBox = [[BorderedTextField alloc] init];
     fromBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX+1*SPACING);
-    fromBox.textView.text = @"teddy@teddyrowan.com";
+    fromBox.textView.text = @"Teddy Rowan <teddy@teddyrowan.com>";
     [backgroundLayer addSubview:fromBox];
     
     
@@ -135,9 +132,6 @@
     [backgroundLayer addSubview:messageBox];
     
     
-    
-    
-    
     sendButton = [[UIButton alloc] init];
     sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     sendButton.frame = CGRectMake(60, 520, 200, 40);
@@ -193,12 +187,13 @@
     }
     
     // This works perfectly for now. Add images and cc and stuff after.
+    // Note: you can still send with a custom name attached to the address, you just need to type
+    //       it into the from bar and put quotes around the email address as desired.
     Mailgun *mailgun = [Mailgun clientWithDomain:mailgunURL apiKey:API_KEY];
     [mailgun sendMessageTo:toBox.textView.text
                       from:fromBox.textView.text
                    subject:subjectBox.textView.text
                       body:messageBox.textView.text];
-    
     
     
     /*[mailgun sendMessageTo:@"Edward Rowan <edward.rowan@alumni.ubc.ca>"
@@ -293,7 +288,9 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [self.view endEditing:YES];
-    backgroundLayer.frame = self.view.frame;
+    if (backgroundLayer.frame.origin.x == 0){
+        backgroundLayer.frame = self.view.frame;
+    }
 }
 
 // Responsible for small flash when you click buttons
