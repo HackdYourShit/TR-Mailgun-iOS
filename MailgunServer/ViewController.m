@@ -16,7 +16,7 @@
     // Add cancel field
     // Add NSUserDefaults to save their info
 
-// TO COMMIT CHANGES:
+// TO COMMIT CHANGES through command line:
     // Terminal -- CD to ./Desktop/Teddy/tinker/MailgunServer
     // git init
     // git commit -am 'description'
@@ -31,7 +31,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -46,8 +46,8 @@
     backgroundLayer.backgroundColor = [UIColor clearColor];
     [self.view addSubview:backgroundLayer];
     
-    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
-    titleLabel.text = @" TEDDYROWAN.com ";
+    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
+    titleLabel.text = [mailgunURL uppercaseString];
     titleLabel.font = [UIFont boldSystemFontOfSize:18.0];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.center = CGPointMake(self.view.center.x, titleLabel.center.y);
@@ -166,7 +166,7 @@
     settingsLayer.backgroundColor = [UIColor clearColor];
     [self.view addSubview:settingsLayer];
     
-    UILabel* settingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 35, 200, 60)];
+    UILabel* settingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
     settingsLabel.text = @" SETTINGS ";
     settingsLabel.font = [UIFont boldSystemFontOfSize:18.0];
     settingsLabel.textAlignment = NSTextAlignmentCenter;
@@ -177,6 +177,27 @@
     backButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"back35.png"]];
     [backButton addTarget:self action:@selector(closeSettings) forControlEvents:UIControlEventTouchUpInside];
     [settingsLayer addSubview:backButton];
+    
+    
+    UILabel* apiLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+0*SPACING, 280, 30)];
+    apiLabel.text = @" PRIVATE API-KEY:    ";
+    apiLabel.font = [UIFont systemFontOfSize:12];
+    [settingsLayer addSubview:apiLabel];
+    
+    apiBox = [[BorderedTextField alloc] init];
+    apiBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 0*SPACING);
+    apiBox.textView.text = API_KEY;
+    [settingsLayer addSubview:apiBox];
+
+    UILabel* urlLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+1*SPACING, 280, 30)];
+    urlLabel.text = @" SENDING URL:    ";
+    urlLabel.font = [UIFont systemFontOfSize:12];
+    [settingsLayer addSubview:urlLabel];
+    
+    urlBox = [[BorderedTextField alloc] init];
+    urlBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 1*SPACING);
+    urlBox.textView.text = mailgunURL;
+    [settingsLayer addSubview:urlBox];
 }
 
 - (void)sendMessage{
@@ -324,6 +345,10 @@
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
         settingsLayer.center = CGPointMake(settingsLayer.center.x+320, settingsLayer.center.y);
     } completion:^(BOOL finished) {}];
+    
+    API_KEY = apiBox.textView.text;
+    mailgunURL = urlBox.textView.text;
+    titleLabel.text = [mailgunURL uppercaseString];
 }
 
 

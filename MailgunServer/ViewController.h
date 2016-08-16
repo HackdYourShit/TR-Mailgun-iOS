@@ -13,33 +13,42 @@
 @interface ViewController : UIViewController
 {
   //  int blah;
+    NSString *API_KEY;
+    NSString *mailgunURL;
+    UITextView *activeField;
 
-    BorderedTextField *fromBox;
-    BorderedTextField *toBox;
-    BorderedTextField *messageBox;
-    BorderedTextField *subjectBox;
+    /* ----- Mail Sending View ----- */
+    UIView *backgroundLayer;
     
-    UILabel *subjLbl; // subjectBox Placeholder
+    BorderedTextField *toBox;
+    BorderedTextField *fromBox;
+    BorderedTextField *subjectBox;
+    BorderedTextField *messageBox;
+    
     UILabel *toLbl; // from Placeholder
     UILabel *fromLbl; // to Placeholder
+    UILabel *subjLbl; // subjectBox Placeholder
     
-    UIView *backgroundLayer; // put everything on this layer then I can move the whole thing when the text input comes up so that you can still see the input.
-    UIView *settingsLayer;
+    UILabel *titleLabel;
     
     UIButton *sendButton;
-    
-    UITextView *activeField;
-    
     UIButton* lockView;
     BOOL locked;
     
+    
+    /* ----- Settings View ----- */
+    UIView *settingsLayer;
     UIButton* settingsButton;
     UIButton* backButton;
-    
-    NSString *API_KEY;
-    NSString *mailgunURL;
+    BorderedTextField *apiBox;
+    BorderedTextField *urlBox;
+
 }
 
+@property (nonatomic, retain) BorderedTextField* apiBox;
+@property (nonatomic, retain) BorderedTextField* urlBox;
+
+@property (nonatomic, retain) UILabel* titleLabel;
 @property (nonatomic, retain) UILabel* subjLbl;
 @property (nonatomic, retain) UILabel* toLbl;
 @property (nonatomic, retain) UILabel* fromLbl;
