@@ -5,10 +5,10 @@
 // TO DO:
 //   Find a way to attach images, hopefully from Photos Library. Looks to be not too bad to do.
     // https://developer.apple.com/library/ios/documentation/AudioVideo/Conceptual/CameraAndPhotoLib_TopicsForIOS/Articles/PickinganItemfromthePhotoLibrary.html
-//   Add extra inputs for your name when sending / receiving.
-//   Error message on sending failure
+//   Add extra inputs for your name when sending / receiving?
 //   Bit of reformatting to look more like Mail app
-//   Alignment of SETTINGS / TEDDYROWAN.com text and icons
+//   Sent history page with NSUserDefaults.
+//   Convert the preview labels to a class
 
 //   Settings page where you can customize the website and api key and such
     // Add NSUserDefaults to save their info
@@ -24,20 +24,29 @@
 #define INIT_HEIGHT_BOX 110
 #define SPACING 60
 #define INIT_X 20
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 480
 
 @interface ViewController ()
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, sentMessages;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-        
     activeField = [[UITextView alloc] init];
     
+    userPreferences = [[NSUserDefaults alloc] init];
+    //API_KEY = [userPreferences objectForKey:@"api_key"];
+    //mailgunURL = [userPreferences objectForKey:@"mail_url"];
     API_KEY = [[NSString alloc] initWithFormat:@"key-9a01fe9d60afece3eeda648f0d90206a"];
     mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
+    //soundEnabled = (bool)[[userPreferences objectForKey:@"soundEnabled"] intValue];
+    //[userPreferences setObject:[NSNumber numberWithBool:soundEnabled] forKey:@"soundEnabled"];
+    //[userPreferences synchronize];
+    sentMessages = [[NSUserDefaults alloc] init];
+    
     
     backgroundLayer = [[UIView alloc] init];
     backgroundLayer.frame = self.view.frame;
@@ -82,7 +91,6 @@
     
     subjectBox = [[BorderedTextField alloc] init];
     subjectBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX+2*SPACING);
-    //subjectBox.textView.text = @"ENTER A SUBJECT...";
     subjectBox.textView.text = @"";
     [backgroundLayer addSubview:subjectBox];
     
@@ -106,7 +114,7 @@
     [toBox.textView addSubview:toLbl];
     
     fromLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,fromBox.textView.frame.size.width - 10.0, 30)];
-    [fromLbl setText:@"Enter a sender..."];
+    [fromLbl setText:@"EX: Teddy Rowan <teddy@teddyrowan.com>"];
     [fromLbl setBackgroundColor:[UIColor clearColor]];
     [fromLbl setTextColor:[UIColor lightGrayColor]];
     fromLbl.textAlignment = NSTextAlignmentCenter;
@@ -188,7 +196,7 @@
     [settingsLayer addSubview:apiBox];
 
     UILabel* urlLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+1*SPACING, 280, 30)];
-    urlLabel.text = @" SENDING URL:    ";
+    urlLabel.text = @" DOMAIN URL:    ";
     urlLabel.font = [UIFont systemFontOfSize:12];
     [settingsLayer addSubview:urlLabel];
     
@@ -209,7 +217,7 @@
     [settingsLayer addSubview:cancelChanges];
     
     apiLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,apiBox.textView.frame.size.width - 10.0, 30)];
-    [apiLbl setText:@"Enter your private API key..."];
+    [apiLbl setText:@"EX: key-4a41a48d30aafce3ccda648i0c90206b"];
     [apiLbl setBackgroundColor:[UIColor clearColor]];
     [apiLbl setTextColor:[UIColor lightGrayColor]];
     apiLbl.textAlignment = NSTextAlignmentCenter;
@@ -219,7 +227,7 @@
     [apiBox.textView addSubview:apiLbl];
     
     urlLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,urlBox.textView.frame.size.width - 10.0, 30)];
-    [urlLbl setText:@"Enter your domain address..."];
+    [urlLbl setText:@"EX: teddyrowan.com/"];
     [urlLbl setBackgroundColor:[UIColor clearColor]];
     [urlLbl setTextColor:[UIColor lightGrayColor]];
     urlLbl.textAlignment = NSTextAlignmentCenter;
@@ -247,19 +255,36 @@
     // Note: you can still send with a custom name attached to the address, you just need to type
     //       it into the from bar and put quotes around the email address as desired.
     Mailgun *mailgun = [Mailgun clientWithDomain:mailgunURL apiKey:API_KEY];
-    [mailgun sendMessageTo:toBox.textView.text
-                      from:fromBox.textView.text
-                   subject:subjectBox.textView.text
-                      body:messageBox.textView.text];
+    MGMessage *message = [MGMessage messageFrom:fromBox.textView.text
+                                             to:toBox.textView.text
+                                        subject:subjectBox.textView.text
+                                           body:messageBox.textView.text];
+    //[message addImage:catImage withName:@"sad_face.png" type:PNGFileType];
     
     
-    /*[mailgun sendMessageTo:@"Edward Rowan <edward.rowan@alumni.ubc.ca>"
-     from:@"Hollow Victory <HV@teddyrowan.com>"
-     subject:@"iOS Sending Test"
-     body:@"This gonna be crazy if it works."];
-    */
+    UIAlertController* alert2 = [UIAlertController  alertControllerWithTitle:@"Mailgun TR"
+                                                                     message:@"To be set later."
+                                                              preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* ok = [UIAlertAction
+                         actionWithTitle:@"OK"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [alert2 dismissViewControllerAnimated:YES completion:nil];}];
+    [alert2 addAction:ok];
     
-    // WOOT WOOT SENDING A PICTURE WORKS
+    [mailgun sendMessage:message success:^(NSString *messageId) {
+        NSLog(@"Message %@ sent successfully!", messageId);
+        [alert2 setMessage:@"Message Sent Successfully!"];
+        [self presentViewController:alert2 animated:YES completion:nil];
+    } failure:^(NSError *error) {
+        NSLog(@"Error sending message. The error was: %@", [error userInfo]);
+        [alert2 setMessage:@"Message Failed to Send."];
+        [self presentViewController:alert2 animated:YES completion:nil];
+ 
+    }];
+
+    
     /*
      Mailgun *mailgun = [Mailgun clientWithDomain:@"teddyrowan.com" apiKey:@"key-9a01fe9d60afece3eeda648f0d90206a"];
      UIImage *catImage = [UIImage imageNamed:@"sad_face.png"];

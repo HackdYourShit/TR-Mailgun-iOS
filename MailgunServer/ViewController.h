@@ -16,7 +16,10 @@
     NSString *API_KEY;
     NSString *mailgunURL;
     UITextView *activeField;
-
+    
+    NSUserDefaults *userPreferences;
+    NSUserDefaults *sentMessages;
+    
     /* ----- Mail Sending View ----- */
     UIView *backgroundLayer;
     
@@ -49,6 +52,9 @@
     UILabel *creditsLabel;
 
 }
+
+@property (nonatomic, retain) NSUserDefaults* userPreferences;
+@property (nonatomic, retain) NSUserDefaults* sentMessages;
 
 @property (nonatomic, retain) BorderedTextField* apiBox;
 @property (nonatomic, retain) BorderedTextField* urlBox;
