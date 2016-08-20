@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Mailgun.h"
 #import "BorderedTextField.h"
+#import "MGHistoryTracker.h"
 
 @interface ViewController : UIViewController
 {
@@ -18,7 +19,12 @@
     UITextView *activeField;
     
     NSUserDefaults *userPreferences;
-    NSUserDefaults *sentMessages;
+    MGHistoryTracker *histMessage;
+    //NSUserDefaults *histMessage;
+    NSUserDefaults *histSubject;
+    NSUserDefaults *histDate;
+    NSUserDefaults *histSender;
+    NSUserDefaults *histRecipient;
     
     /* ----- Mail Sending View ----- */
     UIView *backgroundLayer;
@@ -54,7 +60,14 @@
 }
 
 @property (nonatomic, retain) NSUserDefaults* userPreferences;
-@property (nonatomic, retain) NSUserDefaults* sentMessages;
+@property (nonatomic, retain) MGHistoryTracker* histMessage;
+//@property (nonatomic, retain) NSUserDefaults* histMessage;
+@property (nonatomic, retain) NSUserDefaults* histSubject;
+@property (nonatomic, retain) NSUserDefaults* histDate;
+@property (nonatomic, retain) NSUserDefaults* histSender;
+@property (nonatomic, retain) NSUserDefaults* histRecipient;
+
+
 
 @property (nonatomic, retain) BorderedTextField* apiBox;
 @property (nonatomic, retain) BorderedTextField* urlBox;
@@ -102,6 +115,7 @@
 - (void) closeSettings;
 - (void) loadSettingsLayer;
 - (void) cancelSettingsChange;
+- (void) popHistory:(MGMessage *)message;
 
 @end
 

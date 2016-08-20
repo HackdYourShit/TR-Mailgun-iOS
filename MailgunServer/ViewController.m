@@ -9,6 +9,7 @@
 //   Bit of reformatting to look more like Mail app
 //   Sent history page with NSUserDefaults.
 //   Convert the preview labels to a class
+//   Function for clearing NSUserDefaults
 
 //   Settings page where you can customize the website and api key and such
     // Add NSUserDefaults to save their info
@@ -31,7 +32,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, sentMessages;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,8 +46,26 @@
     //soundEnabled = (bool)[[userPreferences objectForKey:@"soundEnabled"] intValue];
     //[userPreferences setObject:[NSNumber numberWithBool:soundEnabled] forKey:@"soundEnabled"];
     //[userPreferences synchronize];
-    sentMessages = [[NSUserDefaults alloc] init];
     
+    // this will hold the last 5 emails for now, eventually like 50.
+    //histMessage = [[NSUserDefaults alloc] init];
+    histMessage = [[MGHistoryTracker alloc] init];
+    histRecipient = [[NSUserDefaults alloc] init];
+    histSubject = [[NSUserDefaults alloc] init];
+    histSender = [[NSUserDefaults alloc] init];
+    histDate = [[NSUserDefaults alloc] init];
+    histMessage.capacity = 5;
+    
+    
+    //[histMessage clearHistory];
+    // Need to make a function that auto does this.
+    /*
+    [histMessage setObject:nil forKey:@"1"];
+    [histMessage setObject:nil forKey:@"2"];
+    [histMessage setObject:nil forKey:@"3"];
+    [histMessage setObject:nil forKey:@"4"];
+    [histMessage setObject:nil forKey:@"5"];
+    */
     
     backgroundLayer = [[UIView alloc] init];
     backgroundLayer.frame = self.view.frame;
@@ -299,6 +318,8 @@
      NSLog(@"Error sending message. The error was: %@", [error userInfo]);
      }];
      */
+    
+    [self popHistory:message];
 }
 
 // Move the background layer back into place and make sure the subjLbl message is there if it should be
@@ -447,6 +468,34 @@
     }else{
         urlLbl.hidden = YES;
     }
+}
+
+
+- (void)popHistory:(MGMessage *)message{
+    //int capacity = 5;
+    //histMessage.capacity = 5;
+    
+    for (int i=(histMessage.capacity-1); i>0; i--){
+        if ([histMessage objectForKey:[NSString stringWithFormat:@"%d", i]] != nil){
+            [histMessage setObject:[histMessage objectForKey:[NSString stringWithFormat:@"%d", i]] forKey:[NSString stringWithFormat:@"%d",i+1]];
+        } else {
+            //break;
+        }
+    }
+    
+    [histMessage setObject:message.text forKey:@"1"];
+    [histMessage synchronize];
+    
+    NSLog(@"Testing auto print:");
+    [histMessage printTracker];
+    
+    //NSLog(@"testing all keys");
+    //NSLog(@"key:1, message:%@", [histMessage objectForKey:@"1"]);
+    //NSLog(@"key:2, message:%@", [histMessage objectForKey:@"2"]);
+    //NSLog(@"key:3, message:%@", [histMessage objectForKey:@"3"]);
+    //NSLog(@"key:4, message:%@", [histMessage objectForKey:@"4"]);
+    //NSLog(@"key:5, message:%@", [histMessage objectForKey:@"5"]);
+    
 }
 
 
