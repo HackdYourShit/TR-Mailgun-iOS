@@ -9,7 +9,6 @@
 //   Bit of reformatting to look more like Mail app
 //   Sent history page with NSUserDefaults.
      // initial layout complete, need to throw into a scroll view and such.
-//   Function for clearing MGHistoryTracker
 
 //   Move message writing to it's own view that isn't just the default.
 
@@ -48,13 +47,15 @@
     
     // this will hold the last 5 emails for now, eventually like 50.
     //histMessage = [[NSUserDefaults alloc] init];
-    histMessage = [[MGHistoryTracker alloc] init];
-    histRecipient = [[NSUserDefaults alloc] init];
-    histSubject = [[NSUserDefaults alloc] init];
-    histSender = [[NSUserDefaults alloc] init];
-    histDate = [[NSUserDefaults alloc] init];
-    histMessage.capacity = 5;
+    histMessage = [[MGHistoryTracker alloc] initWithSuiteName:@"messageTracker"];
+    histRecipient = [[MGHistoryTracker alloc] initWithSuiteName:@"recipientTracker"];
+    histSubject = [[MGHistoryTracker alloc] initWithSuiteName:@"subjectTracker"];
+    histSender = [[MGHistoryTracker alloc] initWithSuiteName:@"senderTracker"];
+    histDate = [[MGHistoryTracker alloc] initWithSuiteName:@"dateTracker"];
+    [self setStorageLimit:5];
     
+    //[self clearTrackers];
+    //[self printTrackers];
     
     backgroundLayer = [[UIView alloc] init];
     backgroundLayer.frame = self.view.frame;
@@ -267,12 +268,20 @@
     MGEmailPreviewCell *testCell = [[MGEmailPreviewCell alloc] init];
     [testCell awakeFromNib];
     testCell.center = CGPointMake(160, 120);
+    /*
     [testCell populateWithRecipient:@"edward.rowan@alumni.ubc.ca"
                         withSubject:@"RE: Email Transfer"
                         withMessage:@"Don't forget to transfer everything away from this emaill address it's not going to be here long"
                            withDate:@"AUG 20, 2016 at 4:21pm"
                         withSuccess:YES];
-    //[self.view addSubview:testCell];
+     */
+    // these are 1 indexed for now
+    [testCell populateWithRecipient:[histRecipient objectForKey:@"1"]
+                        withSubject:[histSubject objectForKey:@"1"]
+                        withMessage:[histMessage objectForKey:@"1"]
+                           withDate:[histDate objectForKey:@"1"]
+                        withSuccess:YES];
+    
     [historyLayer addSubview:testCell];
     
     MGEmailPreviewCell *testCell2 = [[MGEmailPreviewCell alloc] init];
@@ -510,23 +519,17 @@
 
 
 - (void)popHistory:(MGMessage *)message{
-    //int capacity = 5;
-    //histMessage.capacity = 5;
+    [histMessage addEntry:message.text];
+    [histSubject addEntry:message.subject];
+    [histSender addEntry:message.from];
+    [histRecipient addEntry:message.to[0]]; // for now only track the first recipient
+
     
-    for (int i=(histMessage.capacity-1); i>0; i--){
-        if ([histMessage objectForKey:[NSString stringWithFormat:@"%d", i]] != nil){
-            [histMessage setObject:[histMessage objectForKey:[NSString stringWithFormat:@"%d", i]] forKey:[NSString stringWithFormat:@"%d",i+1]];
-        } else {
-            //break;
-        }
-    }
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"MMM d, yyyy HH:mm:ss";
+    [histDate addEntry:[formatter stringFromDate:[NSDate date]]];
     
-    [histMessage setObject:message.text forKey:@"1"];
-    [histMessage synchronize];
-    
-    //NSLog(@"Testing auto print:");
-    //[histMessage printTracker];
-    
+    //[self printTrackers];
 }
 
 - (void) openHistory{
@@ -545,6 +548,35 @@
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
         historyLayer.center = CGPointMake(historyLayer.center.x-320, historyLayer.center.y);
     } completion:^(BOOL finished) {}];
+}
+
+- (void) setStorageLimit:(int)limit{
+    histMessage.capacity    = 5;
+    histSubject.capacity    = 5;
+    histSender.capacity     = 5;
+    histDate.capacity       = 5;
+    histRecipient.capacity  = 5;
+}
+
+- (void) clearTrackers{
+    [histSender clearHistory];
+    [histSubject clearHistory];
+    [histMessage clearHistory];
+    [histDate clearHistory];
+    [histRecipient clearHistory];
+}
+
+- (void) printTrackers{
+    NSLog(@"printing sender");
+    [histSender printTracker];
+    NSLog(@"printing message");
+    [histMessage printTracker];
+    NSLog(@"printing subject");
+    [histSubject printTracker];
+    NSLog(@"printing recipient");
+    [histRecipient printTracker];
+    NSLog(@"printing date");
+    [histDate printTracker];
 }
 
 @end

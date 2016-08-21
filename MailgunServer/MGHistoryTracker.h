@@ -11,13 +11,12 @@
 @interface MGHistoryTracker : NSUserDefaults
 {
     int capacity;
-    
-    
 }
 
 @property (nonatomic) int capacity;
 
 - (void) clearHistory;
 - (void) printTracker;
+- (void) addEntry:(NSString*)entry;
 
 @end

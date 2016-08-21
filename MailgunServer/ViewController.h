@@ -21,11 +21,10 @@
     
     NSUserDefaults *userPreferences;
     MGHistoryTracker *histMessage;
-    //NSUserDefaults *histMessage;
-    NSUserDefaults *histSubject;
-    NSUserDefaults *histDate;
-    NSUserDefaults *histSender;
-    NSUserDefaults *histRecipient;
+    MGHistoryTracker *histSubject;
+    MGHistoryTracker *histDate;
+    MGHistoryTracker *histSender;
+    MGHistoryTracker *histRecipient;
     
     /* ----- Mail Sending View ----- */
     UIView *backgroundLayer;
@@ -67,11 +66,10 @@
 
 @property (nonatomic, retain) NSUserDefaults* userPreferences;
 @property (nonatomic, retain) MGHistoryTracker* histMessage;
-//@property (nonatomic, retain) NSUserDefaults* histMessage;
-@property (nonatomic, retain) NSUserDefaults* histSubject;
-@property (nonatomic, retain) NSUserDefaults* histDate;
-@property (nonatomic, retain) NSUserDefaults* histSender;
-@property (nonatomic, retain) NSUserDefaults* histRecipient;
+@property (nonatomic, retain) MGHistoryTracker* histSubject;
+@property (nonatomic, retain) MGHistoryTracker* histDate;
+@property (nonatomic, retain) MGHistoryTracker* histSender;
+@property (nonatomic, retain) MGHistoryTracker* histRecipient;
 
 
 
@@ -125,8 +123,12 @@
 - (void) closeSettings;
 - (void) loadSettingsLayer;
 - (void) cancelSettingsChange;
-- (void) popHistory:(MGMessage *)message;
 
+
+- (void) popHistory:(MGMessage *)message;
+- (void) setStorageLimit:(int)limit;
+- (void) clearTrackers;
+- (void) printTrackers;
 
 - (void) openHistory;
 - (void) closeHistory;

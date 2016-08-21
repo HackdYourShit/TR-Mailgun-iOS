@@ -35,5 +35,14 @@
     }
 }
 
+- (void) addEntry:(NSString *)entry{
+    for (int i=(capacity-1); i>0; i--){
+        if ([self objectForKey:[NSString stringWithFormat:@"%d", i]] != nil){
+            [self setObject:[self objectForKey:[NSString stringWithFormat:@"%d", i]] forKey:[NSString stringWithFormat:@"%d",i+1]];
+        }
+    }
+    [self setObject:entry forKey:@"1"];
+}
+
 
 @end
