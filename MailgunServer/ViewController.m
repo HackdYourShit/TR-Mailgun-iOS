@@ -8,8 +8,8 @@
 //   Add extra inputs for your name when sending / receiving?
 //   Bit of reformatting to look more like Mail app
 //   Sent history page with NSUserDefaults.
-//   Convert the preview labels to a class
-//   Function for clearing NSUserDefaults
+     // initial layout complete, need to throw into a scroll view and such.
+//   Function for clearing MGHistoryTracker
 
 //   Settings page where you can customize the website and api key and such
     // Add NSUserDefaults to save their info
@@ -182,6 +182,27 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self loadSettingsLayer];
+    
+    MGEmailPreviewCell *testCell = [[MGEmailPreviewCell alloc] init];
+    [testCell awakeFromNib];
+    testCell.center = CGPointMake(160, 60);
+    [testCell populateWithRecipient:@"edward.rowan@alumni.ubc.ca"
+                        withSubject:@"RE: Email Transfer"
+                     withMessage:@"Don't forget to transfer everything away from this emaill address it's not going to be here long"
+                        withDate:@"AUG 20, 2016 at 4:21pm"
+                     withSuccess:YES];
+    //[self.view addSubview:testCell];
+    MGEmailPreviewCell *testCell2 = [[MGEmailPreviewCell alloc] init];
+    [testCell2 awakeFromNib];
+    testCell2.center = CGPointMake(160, 60 + testCell2.frame.size.height);
+    [testCell2 populateWithRecipient:@"teddy_rowan@hotmail.com"
+                         withSubject:@"How are you?"
+                        withMessage:@"Hi Teddy, just checking to see how you are. Call me."
+                           withDate:@"AUG 19, 2016 at 8:21am"
+                        withSuccess:YES];
+    //[self.view addSubview:testCell2];
+    
+    
 }
 
 - (void) loadSettingsLayer{

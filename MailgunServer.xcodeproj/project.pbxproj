@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2F1148DE1D68225700D1C5E0 /* MGHistoryTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1148DD1D68225700D1C5E0 /* MGHistoryTracker.m */; };
+		2F2C4B611D691C9300B377E3 /* MGEmailPreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2C4B601D691C9300B377E3 /* MGEmailPreviewCell.m */; };
 		2FB45F591D628C11003B67C8 /* settings35.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB45F581D628C11003B67C8 /* settings35.png */; };
 		2FB45F5B1D628EF8003B67C8 /* back35.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB45F5A1D628EF8003B67C8 /* back35.png */; };
 		2FEFFB1E1D61833D008D6106 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FEFFB1D1D61833D008D6106 /* main.m */; };
@@ -27,6 +28,8 @@
 /* Begin PBXFileReference section */
 		2F1148DC1D68225700D1C5E0 /* MGHistoryTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGHistoryTracker.h; sourceTree = "<group>"; };
 		2F1148DD1D68225700D1C5E0 /* MGHistoryTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGHistoryTracker.m; sourceTree = "<group>"; };
+		2F2C4B5F1D691C9300B377E3 /* MGEmailPreviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGEmailPreviewCell.h; sourceTree = "<group>"; };
+		2F2C4B601D691C9300B377E3 /* MGEmailPreviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGEmailPreviewCell.m; sourceTree = "<group>"; };
 		2FB45F581D628C11003B67C8 /* settings35.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings35.png; sourceTree = "<group>"; };
 		2FB45F5A1D628EF8003B67C8 /* back35.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back35.png; sourceTree = "<group>"; };
 		2FEFFB191D61833D008D6106 /* MailgunServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailgunServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +100,8 @@
 				2FEFFB341D618C9F008D6106 /* BorderedTextField.m */,
 				2FEFFB221D61833D008D6106 /* ViewController.h */,
 				2FEFFB231D61833D008D6106 /* ViewController.m */,
+				2F2C4B5F1D691C9300B377E3 /* MGEmailPreviewCell.h */,
+				2F2C4B601D691C9300B377E3 /* MGEmailPreviewCell.m */,
 				2F1148DC1D68225700D1C5E0 /* MGHistoryTracker.h */,
 				2F1148DD1D68225700D1C5E0 /* MGHistoryTracker.m */,
 				2FB45F5A1D628EF8003B67C8 /* back35.png */,
@@ -263,6 +268,7 @@
 				2F1148DE1D68225700D1C5E0 /* MGHistoryTracker.m in Sources */,
 				2FEFFB241D61833D008D6106 /* ViewController.m in Sources */,
 				2FEFFB211D61833D008D6106 /* AppDelegate.m in Sources */,
+				2F2C4B611D691C9300B377E3 /* MGEmailPreviewCell.m in Sources */,
 				2FEFFB351D618C9F008D6106 /* BorderedTextField.m in Sources */,
 				2FEFFB1E1D61833D008D6106 /* main.m in Sources */,
 			);

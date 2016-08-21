@@ -10,6 +10,7 @@
 #import "Mailgun.h"
 #import "BorderedTextField.h"
 #import "MGHistoryTracker.h"
+#import "MGEmailPreviewCell.h"
 
 @interface ViewController : UIViewController
 {
