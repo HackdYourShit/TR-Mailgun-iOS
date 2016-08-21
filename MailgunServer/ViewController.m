@@ -8,9 +8,6 @@
 //   Add extra inputs for your name when sending / receiving?
 //   Bit of reformatting to look more like Mail app
 
-//   Sent history page with NSUserDefaults.
-     // need to add in a check for success or failed sending.
-
 //   Move message writing to it's own view that isn't just the default.
 
 //   Settings page where you can customize the website and api key and such
@@ -34,7 +31,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -46,15 +43,18 @@
     API_KEY = [[NSString alloc] initWithFormat:@"key-9a01fe9d60afece3eeda648f0d90206a"];
     mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
     
-    // this will hold the last 5 emails for now, eventually like 50.
-    //histMessage = [[NSUserDefaults alloc] init];
+    
     histMessage = [[MGHistoryTracker alloc] initWithSuiteName:@"messageTracker"];
     histRecipient = [[MGHistoryTracker alloc] initWithSuiteName:@"recipientTracker"];
     histSubject = [[MGHistoryTracker alloc] initWithSuiteName:@"subjectTracker"];
     histSender = [[MGHistoryTracker alloc] initWithSuiteName:@"senderTracker"];
     histDate = [[MGHistoryTracker alloc] initWithSuiteName:@"dateTracker"];
+    histStatus = [[MGHistoryTracker alloc] initWithSuiteName:@"statusTracker"];
+
     [self setStorageLimit:50];
     //[self printTrackers];
+    //[self clearTrackers];
+    [self printTrackers];
     
     backgroundLayer = [[UIView alloc] init];
     backgroundLayer.frame = self.view.frame;
@@ -278,7 +278,7 @@
                                withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",i]]
                                withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",i]]
                                   withDate:[histDate objectForKey:[NSString stringWithFormat:@"%d",i]]
-                               withSuccess:YES];
+                               withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",i]]];
         [historyScroll addSubview:messageCell];
     }
     historyScroll.contentSize = CGSizeMake(320, histRecipient.filled*70);
@@ -330,15 +330,17 @@
                              [alert2 dismissViewControllerAnimated:YES completion:nil];}];
     [alert2 addAction:ok];
     
+    
     [mailgun sendMessage:message success:^(NSString *messageId) {
         NSLog(@"Message %@ sent successfully!", messageId);
         [alert2 setMessage:@"Message Sent Successfully!"];
         [self presentViewController:alert2 animated:YES completion:nil];
+        [self addToHistory:message withSuccess:YES];
     } failure:^(NSError *error) {
         NSLog(@"Error sending message. The error was: %@", [error userInfo]);
         [alert2 setMessage:@"Message Failed to Send."];
         [self presentViewController:alert2 animated:YES completion:nil];
- 
+        [self addToHistory:message withSuccess:NO];
     }];
 
     
@@ -356,8 +358,6 @@
      NSLog(@"Error sending message. The error was: %@", [error userInfo]);
      }];
      */
-    
-    [self popHistory:message];
 }
 
 // Move the background layer back into place and make sure the subjLbl message is there if it should be
@@ -509,18 +509,21 @@
 }
 
 
-- (void)popHistory:(MGMessage *)message{
+- (void)addToHistory:(MGMessage *)message withSuccess:(BOOL)success{
     [histMessage addEntry:message.text];
     [histSubject addEntry:message.subject];
     [histSender addEntry:message.from];
     [histRecipient addEntry:message.to[0]]; // for now only track the first recipient
-
+    
+    if (success){
+        [histStatus addEntry:@"SENT"];
+    } else {
+        [histStatus addEntry:@"FAILED"];
+    }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"MMM d, yyyy HH:mm:ss";
     [histDate addEntry:[formatter stringFromDate:[NSDate date]]];
-    
-    //[self printTrackers];
 }
 
 - (void) openHistory{
@@ -547,6 +550,7 @@
     histSender.capacity     = limit;
     histDate.capacity       = limit;
     histRecipient.capacity  = limit;
+    histStatus.capacity     = limit;
 }
 
 - (void) clearTrackers{
@@ -555,6 +559,7 @@
     [histMessage clearHistory];
     [histDate clearHistory];
     [histRecipient clearHistory];
+    [histStatus clearHistory];
 }
 
 - (void) printTrackers{
@@ -568,6 +573,8 @@
     [histRecipient printTracker];
     NSLog(@"printing date");
     [histDate printTracker];
+    NSLog(@"printing status");
+    [histStatus printTracker];
 }
 
 @end

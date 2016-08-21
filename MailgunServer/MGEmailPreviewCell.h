@@ -14,16 +14,16 @@
     UILabel *dateLabel;
     UILabel *messageLabel;
     UILabel *subjectLabel;
-    
-    bool success;
+    UILabel *successLabel;
 }
 
 @property (nonatomic, retain) UILabel* recipientLabel;
 @property (nonatomic, retain) UILabel* subjectLabel;
 @property (nonatomic, retain) UILabel* dateLabel;
 @property (nonatomic, retain) UILabel* messageLabel;
+@property (nonatomic, retain) UILabel* succesLabel;
 @property (nonatomic) bool success;
 
-- (void) populateWithRecipient:(NSString *)recipient withSubject:(NSString*)subject withMessage:(NSString *)message withDate:(NSString*)date withSuccess:(bool)status;
+- (void) populateWithRecipient:(NSString *)recipient withSubject:(NSString*)subject withMessage:(NSString *)message withDate:(NSString*)date withSuccess:(NSString *)status;
 
 @end

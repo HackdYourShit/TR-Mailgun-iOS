@@ -25,6 +25,7 @@
     MGHistoryTracker *histDate;
     MGHistoryTracker *histSender;
     MGHistoryTracker *histRecipient;
+    MGHistoryTracker *histStatus;
     
     /* ----- Mail Sending View ----- */
     UIView *backgroundLayer;
@@ -71,7 +72,7 @@
 @property (nonatomic, retain) MGHistoryTracker* histDate;
 @property (nonatomic, retain) MGHistoryTracker* histSender;
 @property (nonatomic, retain) MGHistoryTracker* histRecipient;
-
+@property (nonatomic, retain) MGHistoryTracker* histStatus;
 
 
 @property (nonatomic, retain) BorderedTextField* apiBox;
@@ -127,7 +128,7 @@
 - (void) cancelSettingsChange;
 
 
-- (void) popHistory:(MGMessage *)message;
+- (void) addToHistory:(MGMessage *)message withSuccess:(BOOL)success;
 - (void) setStorageLimit:(int)limit;
 - (void) clearTrackers;
 - (void) printTrackers;
