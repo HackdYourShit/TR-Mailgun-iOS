@@ -9,19 +9,17 @@
 #import "MGHistoryTracker.h"
 
 @implementation MGHistoryTracker
-@synthesize capacity;
+@synthesize capacity, filled;
 
-/*
 - (id) init{
     self = [super init];
     if (self) {
-        
+        filled = 0;
+        [self checkFill];
     }
     return self;
-    
-    
 }
-*/
+
 
 - (void) clearHistory{
     for (int i = 1; i<=capacity; i++){
@@ -42,6 +40,19 @@
         }
     }
     [self setObject:entry forKey:@"1"];
+    filled ++;
+}
+
+- (int) checkFill{
+    for (int i=1; i<=capacity; i++)
+    {
+        if ([self objectForKey:[NSString stringWithFormat:@"%d", i]] != nil){
+            filled = i;
+        } else {
+            return i-1;
+        }
+    }
+    return 0;
 }
 
 

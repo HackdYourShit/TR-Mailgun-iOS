@@ -7,8 +7,9 @@
     // https://developer.apple.com/library/ios/documentation/AudioVideo/Conceptual/CameraAndPhotoLib_TopicsForIOS/Articles/PickinganItemfromthePhotoLibrary.html
 //   Add extra inputs for your name when sending / receiving?
 //   Bit of reformatting to look more like Mail app
+
 //   Sent history page with NSUserDefaults.
-     // initial layout complete, need to throw into a scroll view and such.
+     // need to add in a check for success or failed sending.
 
 //   Move message writing to it's own view that isn't just the default.
 
@@ -33,13 +34,13 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     activeField = [[UITextView alloc] init];
     
-    userPreferences = [[NSUserDefaults alloc] init];
+    userPreferences = [[NSUserDefaults alloc] initWithSuiteName:@"preferences"];
     //API_KEY = [userPreferences objectForKey:@"api_key"];
     //mailgunURL = [userPreferences objectForKey:@"mail_url"];
     API_KEY = [[NSString alloc] initWithFormat:@"key-9a01fe9d60afece3eeda648f0d90206a"];
@@ -52,9 +53,7 @@
     histSubject = [[MGHistoryTracker alloc] initWithSuiteName:@"subjectTracker"];
     histSender = [[MGHistoryTracker alloc] initWithSuiteName:@"senderTracker"];
     histDate = [[MGHistoryTracker alloc] initWithSuiteName:@"dateTracker"];
-    [self setStorageLimit:5];
-    
-    //[self clearTrackers];
+    [self setStorageLimit:50];
     //[self printTrackers];
     
     backgroundLayer = [[UIView alloc] init];
@@ -78,7 +77,6 @@
     toBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 0*SPACING);
     toBox.textView.text = @"edward.rowan@alumni.ubc.ca";
     [backgroundLayer addSubview:toBox];
-    
     
     
     UILabel* fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+1*SPACING, 280, 30)];
@@ -263,38 +261,30 @@
 
 - (void) loadHistoryLayer{
     historyLayer = [[UIView alloc] initWithFrame:self.view.frame];
+    historyLayer.frame = CGRectMake(0, 0, 320, 700);
     historyLayer.center = CGPointMake(historyLayer.center.x-320, historyLayer.center.y);
     
-    MGEmailPreviewCell *testCell = [[MGEmailPreviewCell alloc] init];
-    [testCell awakeFromNib];
-    testCell.center = CGPointMake(160, 120);
-    /*
-    [testCell populateWithRecipient:@"edward.rowan@alumni.ubc.ca"
-                        withSubject:@"RE: Email Transfer"
-                        withMessage:@"Don't forget to transfer everything away from this emaill address it's not going to be here long"
-                           withDate:@"AUG 20, 2016 at 4:21pm"
-                        withSuccess:YES];
-     */
-    // these are 1 indexed for now
-    [testCell populateWithRecipient:[histRecipient objectForKey:@"1"]
-                        withSubject:[histSubject objectForKey:@"1"]
-                        withMessage:[histMessage objectForKey:@"1"]
-                           withDate:[histDate objectForKey:@"1"]
-                        withSuccess:YES];
-    
-    [historyLayer addSubview:testCell];
-    
-    MGEmailPreviewCell *testCell2 = [[MGEmailPreviewCell alloc] init];
-    [testCell2 awakeFromNib];
-    testCell2.center = CGPointMake(160, 120 + testCell2.frame.size.height);
-    [testCell2 populateWithRecipient:@"teddy_rowan@hotmail.com"
-                         withSubject:@"How are you?"
-                         withMessage:@"Hi Teddy, just checking to see how you are. Call me."
-                            withDate:@"AUG 19, 2016 at 8:21am"
-                         withSuccess:YES];
-    //[self.view addSubview:testCell2];
-    [historyLayer addSubview:testCell2];
+    historyScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 90, 320, 480)];
+    historyScroll.layer.borderWidth = 1;
+    historyScroll.layer.borderColor = [UIColor blackColor].CGColor;
+    [historyLayer addSubview:historyScroll];
+    histMessage.filled = [histMessage checkFill];
+        
+    for (int i = 1; i<=histMessage.filled; i++){
+        MGEmailPreviewCell *messageCell = [[MGEmailPreviewCell alloc] init];
+        [messageCell awakeFromNib];
+        messageCell.center = CGPointMake(160, 35 + messageCell.frame.size.height*(i-1));
+        [messageCell populateWithRecipient:[histRecipient objectForKey:[NSString stringWithFormat:@"%d",i]]
+                               withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",i]]
+                               withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",i]]
+                                  withDate:[histDate objectForKey:[NSString stringWithFormat:@"%d",i]]
+                               withSuccess:YES];
+        [historyScroll addSubview:messageCell];
+    }
+    historyScroll.contentSize = CGSizeMake(320, histRecipient.filled*70);
+    [historyScroll setScrollEnabled:YES];
     [self.view addSubview:historyLayer];
+    
     
     UILabel* sentMessagesLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
     sentMessagesLabel.text = @" SENT MESSAGES ";
@@ -309,6 +299,7 @@
     [historyLayer addSubview:historyBackButton];
     
 }
+
 
 - (void)sendMessage{
     if (!locked){
@@ -551,11 +542,11 @@
 }
 
 - (void) setStorageLimit:(int)limit{
-    histMessage.capacity    = 5;
-    histSubject.capacity    = 5;
-    histSender.capacity     = 5;
-    histDate.capacity       = 5;
-    histRecipient.capacity  = 5;
+    histMessage.capacity    = limit;
+    histSubject.capacity    = limit;
+    histSender.capacity     = limit;
+    histDate.capacity       = limit;
+    histRecipient.capacity  = limit;
 }
 
 - (void) clearTrackers{

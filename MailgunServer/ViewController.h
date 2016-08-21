@@ -60,6 +60,7 @@
     
     /* ----- History View ----- */
     UIView *historyLayer;
+    UIScrollView *historyScroll;
     UIButton *historyBackButton;
 
 }
@@ -97,6 +98,7 @@
 
 @property (nonatomic, retain) UIView* settingsLayer;
 @property (nonatomic, retain) UIView* backgroundLayer;
+@property (nonatomic, retain) UIScrollView* historyScroll;
 @property (nonatomic, retain) UIView* historyLayer;
 @property (nonatomic, retain) UITextView* activeField;
 
