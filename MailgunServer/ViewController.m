@@ -11,6 +11,8 @@
      // initial layout complete, need to throw into a scroll view and such.
 //   Function for clearing MGHistoryTracker
 
+//   Move message writing to it's own view that isn't just the default.
+
 //   Settings page where you can customize the website and api key and such
     // Add NSUserDefaults to save their info
     // Add a TR logo right below the credits label
@@ -32,7 +34,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -43,9 +45,6 @@
     //mailgunURL = [userPreferences objectForKey:@"mail_url"];
     API_KEY = [[NSString alloc] initWithFormat:@"key-9a01fe9d60afece3eeda648f0d90206a"];
     mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
-    //soundEnabled = (bool)[[userPreferences objectForKey:@"soundEnabled"] intValue];
-    //[userPreferences setObject:[NSNumber numberWithBool:soundEnabled] forKey:@"soundEnabled"];
-    //[userPreferences synchronize];
     
     // this will hold the last 5 emails for now, eventually like 50.
     //histMessage = [[NSUserDefaults alloc] init];
@@ -56,16 +55,6 @@
     histDate = [[NSUserDefaults alloc] init];
     histMessage.capacity = 5;
     
-    
-    //[histMessage clearHistory];
-    // Need to make a function that auto does this.
-    /*
-    [histMessage setObject:nil forKey:@"1"];
-    [histMessage setObject:nil forKey:@"2"];
-    [histMessage setObject:nil forKey:@"3"];
-    [histMessage setObject:nil forKey:@"4"];
-    [histMessage setObject:nil forKey:@"5"];
-    */
     
     backgroundLayer = [[UIView alloc] init];
     backgroundLayer.frame = self.view.frame;
@@ -179,28 +168,15 @@
     [settingsButton addTarget:self action:@selector(openSettings) forControlEvents:UIControlEventTouchUpInside];
     [backgroundLayer addSubview:settingsButton];
     
-    // Do any additional setup after loading the view, typically from a nib.
+    historyButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 520, 35, 35)];
+    historyButton.backgroundColor = [UIColor redColor];//[UIColor colorWithPatternImage:[UIImage imageNamed:@"settings35.png"]];
+    [historyButton addTarget:self action:@selector(openHistory) forControlEvents:UIControlEventTouchUpInside];
+    [backgroundLayer addSubview:historyButton];
+    
+    
     
     [self loadSettingsLayer];
-    
-    MGEmailPreviewCell *testCell = [[MGEmailPreviewCell alloc] init];
-    [testCell awakeFromNib];
-    testCell.center = CGPointMake(160, 60);
-    [testCell populateWithRecipient:@"edward.rowan@alumni.ubc.ca"
-                        withSubject:@"RE: Email Transfer"
-                     withMessage:@"Don't forget to transfer everything away from this emaill address it's not going to be here long"
-                        withDate:@"AUG 20, 2016 at 4:21pm"
-                     withSuccess:YES];
-    //[self.view addSubview:testCell];
-    MGEmailPreviewCell *testCell2 = [[MGEmailPreviewCell alloc] init];
-    [testCell2 awakeFromNib];
-    testCell2.center = CGPointMake(160, 60 + testCell2.frame.size.height);
-    [testCell2 populateWithRecipient:@"teddy_rowan@hotmail.com"
-                         withSubject:@"How are you?"
-                        withMessage:@"Hi Teddy, just checking to see how you are. Call me."
-                           withDate:@"AUG 19, 2016 at 8:21am"
-                        withSuccess:YES];
-    //[self.view addSubview:testCell2];
+    [self loadHistoryLayer];
     
     
 }
@@ -282,6 +258,47 @@
     creditsLabel.textAlignment = NSTextAlignmentCenter;
     creditsLabel.numberOfLines = 2;
     [settingsLayer addSubview:creditsLabel];
+}
+
+- (void) loadHistoryLayer{
+    historyLayer = [[UIView alloc] initWithFrame:self.view.frame];
+    historyLayer.center = CGPointMake(historyLayer.center.x-320, historyLayer.center.y);
+    
+    MGEmailPreviewCell *testCell = [[MGEmailPreviewCell alloc] init];
+    [testCell awakeFromNib];
+    testCell.center = CGPointMake(160, 120);
+    [testCell populateWithRecipient:@"edward.rowan@alumni.ubc.ca"
+                        withSubject:@"RE: Email Transfer"
+                        withMessage:@"Don't forget to transfer everything away from this emaill address it's not going to be here long"
+                           withDate:@"AUG 20, 2016 at 4:21pm"
+                        withSuccess:YES];
+    //[self.view addSubview:testCell];
+    [historyLayer addSubview:testCell];
+    
+    MGEmailPreviewCell *testCell2 = [[MGEmailPreviewCell alloc] init];
+    [testCell2 awakeFromNib];
+    testCell2.center = CGPointMake(160, 120 + testCell2.frame.size.height);
+    [testCell2 populateWithRecipient:@"teddy_rowan@hotmail.com"
+                         withSubject:@"How are you?"
+                         withMessage:@"Hi Teddy, just checking to see how you are. Call me."
+                            withDate:@"AUG 19, 2016 at 8:21am"
+                         withSuccess:YES];
+    //[self.view addSubview:testCell2];
+    [historyLayer addSubview:testCell2];
+    [self.view addSubview:historyLayer];
+    
+    UILabel* sentMessagesLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
+    sentMessagesLabel.text = @" SENT MESSAGES ";
+    sentMessagesLabel.font = [UIFont boldSystemFontOfSize:18.0];
+    sentMessagesLabel.textAlignment = NSTextAlignmentCenter;
+    sentMessagesLabel.center = CGPointMake(self.view.center.x, sentMessagesLabel.center.y);
+    [historyLayer addSubview:sentMessagesLabel];
+    
+    historyBackButton = [[UIButton alloc] initWithFrame:CGRectMake(260, 35, 35, 35)];
+    historyBackButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"back35.png"]];
+    [historyBackButton addTarget:self action:@selector(closeHistory) forControlEvents:UIControlEventTouchUpInside];
+    [historyLayer addSubview:historyBackButton];
+    
 }
 
 - (void)sendMessage{
@@ -507,17 +524,27 @@
     [histMessage setObject:message.text forKey:@"1"];
     [histMessage synchronize];
     
-    NSLog(@"Testing auto print:");
-    [histMessage printTracker];
-    
-    //NSLog(@"testing all keys");
-    //NSLog(@"key:1, message:%@", [histMessage objectForKey:@"1"]);
-    //NSLog(@"key:2, message:%@", [histMessage objectForKey:@"2"]);
-    //NSLog(@"key:3, message:%@", [histMessage objectForKey:@"3"]);
-    //NSLog(@"key:4, message:%@", [histMessage objectForKey:@"4"]);
-    //NSLog(@"key:5, message:%@", [histMessage objectForKey:@"5"]);
+    //NSLog(@"Testing auto print:");
+    //[histMessage printTracker];
     
 }
 
+- (void) openHistory{
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+        backgroundLayer.center = CGPointMake(backgroundLayer.center.x+320, backgroundLayer.center.y);
+    } completion:^(BOOL finished) {}];
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+        historyLayer.center = CGPointMake(historyLayer.center.x+320, historyLayer.center.y);
+    } completion:^(BOOL finished) {}];
+}
+
+- (void) closeHistory{
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+        backgroundLayer.center = CGPointMake(backgroundLayer.center.x-320, backgroundLayer.center.y);
+    } completion:^(BOOL finished) {}];
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+        historyLayer.center = CGPointMake(historyLayer.center.x-320, historyLayer.center.y);
+    } completion:^(BOOL finished) {}];
+}
 
 @end

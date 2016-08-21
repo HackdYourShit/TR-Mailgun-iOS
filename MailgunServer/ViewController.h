@@ -43,6 +43,7 @@
     
     UIButton *sendButton;
     UIButton* lockView;
+    UIButton *historyButton;
     BOOL locked;
     
     
@@ -55,8 +56,12 @@
     UIButton* cancelChanges;;
     UILabel *apiLbl; // api Placeholder
     UILabel *urlLbl; // url Placeholder
-    
     UILabel *creditsLabel;
+    
+    
+    /* ----- History View ----- */
+    UIView *historyLayer;
+    UIButton *historyBackButton;
 
 }
 
@@ -88,9 +93,13 @@
 @property (nonatomic, retain) UIButton* lockView;
 @property (nonatomic, retain) UIButton* settingsButton;
 @property (nonatomic, retain) UIButton* backButton;
+@property (nonatomic, retain) UIButton* historyButton;
+@property (nonatomic, retain) UIButton* historyBackButton;
+
 
 @property (nonatomic, retain) UIView* settingsLayer;
 @property (nonatomic, retain) UIView* backgroundLayer;
+@property (nonatomic, retain) UIView* historyLayer;
 @property (nonatomic, retain) UITextView* activeField;
 
 @property (nonatomic, retain) NSString* API_KEY;
@@ -117,6 +126,11 @@
 - (void) loadSettingsLayer;
 - (void) cancelSettingsChange;
 - (void) popHistory:(MGMessage *)message;
+
+
+- (void) openHistory;
+- (void) closeHistory;
+- (void) loadHistoryLayer;
 
 @end
 
