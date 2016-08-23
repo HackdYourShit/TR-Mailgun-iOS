@@ -18,8 +18,6 @@
 //   Add CC and multiple sending tracking status.
 //   Add button in settings page for number of sent messages saved
 
-//   Fix auto-capitalization in the bordered text views
-    //ex: subjectBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
 //   Move message writing to it's own view that isn't just the default.
         // Do like an intro page then push everything to the side.
 
@@ -103,6 +101,7 @@
     toBox = [[BorderedTextField alloc] init];
     toBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 0*SPACING);
     toBox.textView.text = @"edward.rowan@alumni.ubc.ca";
+    toBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [backgroundLayer addSubview:toBox];
     
     
@@ -114,6 +113,7 @@
     fromBox = [[BorderedTextField alloc] init];
     fromBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX+1*SPACING);
     fromBox.textView.text = @"Teddy Rowan <teddy@teddyrowan.com>";
+    fromBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [backgroundLayer addSubview:fromBox];
     
     
@@ -236,6 +236,7 @@
     apiBox = [[BorderedTextField alloc] init];
     apiBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 0*SPACING);
     apiBox.textView.text = API_KEY;
+    apiBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [settingsLayer addSubview:apiBox];
 
     UILabel* urlLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+1*SPACING, 280, 30)];
@@ -246,6 +247,7 @@
     urlBox = [[BorderedTextField alloc] init];
     urlBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 1*SPACING);
     urlBox.textView.text = mailgunURL;
+    urlBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [settingsLayer addSubview:urlBox];
     
     cancelChanges = [[UIButton alloc] init];
