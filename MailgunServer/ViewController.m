@@ -8,10 +8,7 @@
 //   Add extra inputs for your name when sending / receiving?
 //   Bit of reformatting to look more like Mail app
 
-//   Update sent messages page after you send an email instead of on re-open.
 //   Add the ability to popout the sent messages into a full message view.
-//   Potential bug with scrollview contentSize if you send empty messages. need a workaround, probably check status.
-        // This should be fixed, might be a 1 off error type thing right now though. Check later.
 
 //   Refactor ViewController.m
         // Lots of duplicates for the Lbl stuff aka the preview shit
@@ -22,6 +19,7 @@
 //   Add button in settings page for number of sent messages saved
 
 //   Fix auto-capitalization in the bordered text views
+    //ex: subjectBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
 //   Move message writing to it's own view that isn't just the default.
         // Do like an intro page then push everything to the side.
 
@@ -129,6 +127,7 @@
     subjectBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX+2*SPACING);
     subjectBox.textView.text = @"";
     [backgroundLayer addSubview:subjectBox];
+    
     
     subjLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,subjectBox.textView.frame.size.width - 10.0, 30)];
     [subjLbl setText:@"Enter a subject..."];
@@ -368,11 +367,13 @@
         [alert2 setMessage:@"Message Sent Successfully!"];
         [self presentViewController:alert2 animated:YES completion:nil];
         [self addToHistory:message withSuccess:YES];
+        [self addSentEntry];
     } failure:^(NSError *error) {
         NSLog(@"Error sending message. The error was: %@", [error userInfo]);
         [alert2 setMessage:@"Message Failed to Send."];
         [self presentViewController:alert2 animated:YES completion:nil];
         [self addToHistory:message withSuccess:NO];
+        [self addSentEntry];
     }];
 
     
@@ -585,5 +586,24 @@
     
     return largest;
 }
+
+- (void) addSentEntry{
+    
+    for (MGEmailPreviewCell* cell in [historyScroll subviews]){
+        cell.center = CGPointMake(cell.center.x, cell.center.y + 70);
+    }
+    historyScroll.contentSize = CGSizeMake(historyScroll.contentSize.width, historyScroll.contentSize.height + 70);
+    MGEmailPreviewCell *messageCell = [[MGEmailPreviewCell alloc] init];
+    [messageCell awakeFromNib];
+    messageCell.center = CGPointMake(160, 35);
+    [messageCell populateWithRecipient:[histRecipient objectForKey:[NSString stringWithFormat:@"%d",1]]
+                           withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",1]]
+                           withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",1]]
+                              withDate:[histDate objectForKey:[NSString stringWithFormat:@"%d",1]]
+                           withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",1]]];
+    [historyScroll addSubview:messageCell];
+    
+}
+
 
 @end

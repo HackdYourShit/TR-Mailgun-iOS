@@ -139,6 +139,7 @@
 - (void) openHistory;
 - (void) closeHistory;
 - (void) loadHistoryLayer;
+- (void) addSentEntry;
 - (int) findLargestHistory;
 
 @end
