@@ -9,13 +9,14 @@
 #import "MGHistoryTracker.h"
 
 @implementation MGHistoryTracker
-@synthesize capacity, filled;
+@synthesize capacity, filled, title;
 
 - (id) init{
     self = [super init];
     if (self) {
         filled = 0;
         [self checkFill];
+        title = [[NSString alloc] initWithFormat:@""];
     }
     return self;
 }

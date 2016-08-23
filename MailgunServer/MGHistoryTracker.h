@@ -12,11 +12,12 @@
 {
     int capacity;
     int filled;
+    NSString *title;
 }
 
 @property (nonatomic) int capacity;
 @property (nonatomic) int filled;
-
+@property (nonatomic, retain) NSString* title;
 
 - (void) clearHistory;
 - (void) printTracker;

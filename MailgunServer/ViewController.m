@@ -8,7 +8,22 @@
 //   Add extra inputs for your name when sending / receiving?
 //   Bit of reformatting to look more like Mail app
 
+//   Update sent messages page after you send an email instead of on re-open.
+//   Add the ability to popout the sent messages into a full message view.
+//   Potential bug with scrollview contentSize if you send empty messages. need a workaround, probably check status.
+        // This should be fixed, might be a 1 off error type thing right now though. Check later.
+
+//   Refactor ViewController.m
+        // Lots of duplicates for the Lbl stuff aka the preview shit
+        // No comments..
+        // Ordering of functions is fucking awful.
+
+//   Add CC and multiple sending tracking status.
+//   Add button in settings page for number of sent messages saved
+
+//   Fix auto-capitalization in the bordered text views
 //   Move message writing to it's own view that isn't just the default.
+        // Do like an intro page then push everything to the side.
 
 //   Settings page where you can customize the website and api key and such
     // Add NSUserDefaults to save their info
@@ -25,13 +40,13 @@
 #define SPACING 60
 #define INIT_X 20
 #define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 480
+#define SCREEN_HEIGHT 480  // this is wrong. 560?
 
 @interface ViewController ()
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -50,7 +65,21 @@
     histSender = [[MGHistoryTracker alloc] initWithSuiteName:@"senderTracker"];
     histDate = [[MGHistoryTracker alloc] initWithSuiteName:@"dateTracker"];
     histStatus = [[MGHistoryTracker alloc] initWithSuiteName:@"statusTracker"];
-
+    histMessage.title = @"messages";
+    histRecipient.title = @"recipient";
+    histSubject.title = @"subject";
+    histSender.title = @"sender";
+    histDate.title = @"date";
+    histStatus.title = @"status";
+    histArray = [[NSMutableArray alloc] init];
+    [histArray addObject:histMessage];
+    [histArray addObject:histRecipient];
+    [histArray addObject:histSubject];
+    [histArray addObject:histSender];
+    [histArray addObject:histDate];
+    [histArray addObject:histStatus];
+    
+    
     [self setStorageLimit:50];
     //[self printTrackers];
     //[self clearTrackers];
@@ -268,9 +297,10 @@
     historyScroll.layer.borderWidth = 1;
     historyScroll.layer.borderColor = [UIColor blackColor].CGColor;
     [historyLayer addSubview:historyScroll];
-    histMessage.filled = [histMessage checkFill];
+    
+    int filledCapacity = [self findLargestHistory];
         
-    for (int i = 1; i<=histMessage.filled; i++){
+    for (int i = 1; i<=filledCapacity; i++){
         MGEmailPreviewCell *messageCell = [[MGEmailPreviewCell alloc] init];
         [messageCell awakeFromNib];
         messageCell.center = CGPointMake(160, 35 + messageCell.frame.size.height*(i-1));
@@ -281,7 +311,9 @@
                                withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",i]]];
         [historyScroll addSubview:messageCell];
     }
-    historyScroll.contentSize = CGSizeMake(320, histRecipient.filled*70);
+    
+    NSLog(@"filled: %d", histMessage.filled);
+    historyScroll.contentSize = CGSizeMake(320, histMessage.filled*70);
     [historyScroll setScrollEnabled:YES];
     [self.view addSubview:historyLayer];
     
@@ -383,36 +415,11 @@
 
 // Check on whether the subjLbl message should be there or not
 - (void) textViewDidChange:(UITextView *)textView{
-    // This can probably be done way way better with a for each loop + an array. 5 lines tops.
-    if(![subjectBox.textView hasText]) {
-        subjLbl.hidden = NO;
-    }else{
-        subjLbl.hidden = YES;
-    }
-    
-    if(![toBox.textView hasText]) {
-        toLbl.hidden = NO;
-    }else{
-        toLbl.hidden = YES;
-    }
-    
-    if(![fromBox.textView hasText]) {
-        fromLbl.hidden = NO;
-    }else{
-        fromLbl.hidden = YES;
-    }
-    
-    if(![apiBox.textView hasText]) {
-        apiLbl.hidden = NO;
-    }else{
-        apiLbl.hidden = YES;
-    }
-    
-    if(![urlBox.textView hasText]) {
-        urlLbl.hidden = NO;
-    }else{
-        urlLbl.hidden = YES;
-    }
+    if(![subjectBox.textView hasText]) {subjLbl.hidden = NO;}else{subjLbl.hidden = YES;}
+    if(![toBox.textView hasText]) {toLbl.hidden = NO;}else{toLbl.hidden = YES;}
+    if(![fromBox.textView hasText]) {fromLbl.hidden = NO;}else{fromLbl.hidden = YES;}
+    if(![apiBox.textView hasText]) {apiLbl.hidden = NO;}else{apiLbl.hidden = YES;}
+    if(![urlBox.textView hasText]) {urlLbl.hidden = NO;}else{urlLbl.hidden = YES;}
 }
 
 // Lock / Unlock sending of messages. Designed to prevent accidental and double sending.
@@ -513,6 +520,8 @@
     [histMessage addEntry:message.text];
     [histSubject addEntry:message.subject];
     [histSender addEntry:message.from];
+    
+    
     [histRecipient addEntry:message.to[0]]; // for now only track the first recipient
     
     if (success){
@@ -544,37 +553,37 @@
     } completion:^(BOOL finished) {}];
 }
 
+
 - (void) setStorageLimit:(int)limit{
-    histMessage.capacity    = limit;
-    histSubject.capacity    = limit;
-    histSender.capacity     = limit;
-    histDate.capacity       = limit;
-    histRecipient.capacity  = limit;
-    histStatus.capacity     = limit;
+    for (MGHistoryTracker* track in histArray){
+        track.capacity = limit;
+    }
 }
 
 - (void) clearTrackers{
-    [histSender clearHistory];
-    [histSubject clearHistory];
-    [histMessage clearHistory];
-    [histDate clearHistory];
-    [histRecipient clearHistory];
-    [histStatus clearHistory];
+    for (MGHistoryTracker* track in histArray){
+        [track clearHistory];
+    }
 }
 
 - (void) printTrackers{
-    NSLog(@"printing sender");
-    [histSender printTracker];
-    NSLog(@"printing message");
-    [histMessage printTracker];
-    NSLog(@"printing subject");
-    [histSubject printTracker];
-    NSLog(@"printing recipient");
-    [histRecipient printTracker];
-    NSLog(@"printing date");
-    [histDate printTracker];
-    NSLog(@"printing status");
-    [histStatus printTracker];
+    for (MGHistoryTracker* track in histArray){
+        NSLog(@"Printing %@", track.title);
+        [track printTracker];
+    }
+    
+}
+
+- (int) findLargestHistory{
+    int largest = 0;
+    
+    for (MGHistoryTracker* track in histArray){
+        if ([track checkFill] > largest){
+            largest = [track checkFill];
+        }
+    }
+    
+    return largest;
 }
 
 @end

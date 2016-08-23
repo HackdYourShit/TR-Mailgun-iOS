@@ -27,6 +27,8 @@
     MGHistoryTracker *histRecipient;
     MGHistoryTracker *histStatus;
     
+    NSMutableArray *histArray;
+    
     /* ----- Mail Sending View ----- */
     UIView *backgroundLayer;
     
@@ -74,6 +76,7 @@
 @property (nonatomic, retain) MGHistoryTracker* histRecipient;
 @property (nonatomic, retain) MGHistoryTracker* histStatus;
 
+@property (nonatomic, retain) NSMutableArray *histArray;
 
 @property (nonatomic, retain) BorderedTextField* apiBox;
 @property (nonatomic, retain) BorderedTextField* urlBox;
@@ -136,6 +139,7 @@
 - (void) openHistory;
 - (void) closeHistory;
 - (void) loadHistoryLayer;
+- (int) findLargestHistory;
 
 @end
 
