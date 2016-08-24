@@ -15,7 +15,13 @@
     UILabel *messageLabel;
     UILabel *subjectLabel;
     UILabel *successLabel;
+    
+    UIButton *popoutButton;
+    NSString *fullMessage;
 }
+
+@property (nonatomic, retain) UIButton* popoutButton;
+@property (nonatomic, retain) NSString* fullMessage;
 
 @property (nonatomic, retain) UILabel* recipientLabel;
 @property (nonatomic, retain) UILabel* subjectLabel;
@@ -25,5 +31,6 @@
 @property (nonatomic) bool success;
 
 - (void) populateWithRecipient:(NSString *)recipient withSubject:(NSString*)subject withMessage:(NSString *)message withDate:(NSString*)date withSuccess:(NSString *)status;
+- (void) popMessage;
 
 @end
