@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MGEmailPopoutView.h"
 
 @interface MGEmailPreviewCell : UITableViewCell
 {
@@ -16,12 +17,17 @@
     UILabel *subjectLabel;
     UILabel *successLabel;
     
-    UIButton *popoutButton;
-    NSString *fullMessage;
+    MGEmailPopoutView *popoutButton;
+    UILabel *fullMessage;
+    
+    int storeY; // i need to pass this in... fuck. i could also parse through the MGHistoryTrackers to find the right one... that's annoying though.
+    
+    // Create a 2nd View that will become unhidden when the think is clicked. then bring that to the front and have a dismiss button on it. I think that should work...
+    
 }
 
-@property (nonatomic, retain) UIButton* popoutButton;
-@property (nonatomic, retain) NSString* fullMessage;
+@property (nonatomic, retain) MGEmailPopoutView* popoutButton;
+@property (nonatomic, retain) UILabel* fullMessage;
 
 @property (nonatomic, retain) UILabel* recipientLabel;
 @property (nonatomic, retain) UILabel* subjectLabel;
@@ -30,7 +36,7 @@
 @property (nonatomic, retain) UILabel* succesLabel;
 @property (nonatomic) bool success;
 
-- (void) populateWithRecipient:(NSString *)recipient withSubject:(NSString*)subject withMessage:(NSString *)message withDate:(NSString*)date withSuccess:(NSString *)status;
+- (void) populateWithRecipient:(NSString *)recipient withSubject:(NSString*)subject withMessage:(NSString *)message withDate:(NSString*)date withSuccess:(NSString *)status withNumber:(int)index;
 - (void) popMessage;
 
 @end

@@ -21,6 +21,8 @@
 //   Move message writing to it's own view that isn't just the default.
         // Do like an intro page then push everything to the side.
 
+// NEED TO ADD SOMETHING TO INCREMENT ALL THE INDEXS WHEN ADDING A SENT ENTRY
+
 //   Settings page where you can customize the website and api key and such
     // Add NSUserDefaults to save their info
     // Add a TR logo right below the credits label
@@ -309,7 +311,8 @@
                                withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",i]]
                                withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",i]]
                                   withDate:[histDate objectForKey:[NSString stringWithFormat:@"%d",i]]
-                               withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",i]]];
+                               withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",i]]
+                                 withNumber:i];
         [historyScroll addSubview:messageCell];
     }
     
@@ -602,7 +605,8 @@
                            withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",1]]
                            withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",1]]
                               withDate:[histDate objectForKey:[NSString stringWithFormat:@"%d",1]]
-                           withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",1]]];
+                           withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",1]]
+                            withNumber:0];
     [historyScroll addSubview:messageCell];
     
 }

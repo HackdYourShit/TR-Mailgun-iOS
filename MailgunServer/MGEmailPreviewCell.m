@@ -21,11 +21,12 @@
     dateLabel       = [[UILabel alloc] initWithFrame:CGRectMake(15, 50, 180, 15)];
     successLabel    = [[UILabel alloc] initWithFrame:CGRectMake(255, 50, 50, 15)];
     
-    fullMessage = [[NSString alloc] init];
-    fullMessage = @"";
+    fullMessage = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 450)];
+    fullMessage.hidden = YES;
+    [self addSubview:fullMessage];
     
-    popoutButton = [[UIButton alloc] init];
-    popoutButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    popoutButton = [[MGEmailPopoutView alloc] init];
+    popoutButton = [MGEmailPopoutView buttonWithType:UIButtonTypeCustom];
     popoutButton.frame = CGRectMake(0, 0, 320, 70);
     [popoutButton setBackgroundColor:[UIColor clearColor]];
     [popoutButton addTarget:self action:@selector(popMessage) forControlEvents:UIControlEventTouchUpInside];
@@ -42,6 +43,9 @@
     [self addSubview:subjectLabel];
     [self addSubview:successLabel];
     [self addSubview:popoutButton];
+    
+    [self bringSubviewToFront:fullMessage];
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -50,14 +54,16 @@
     // Configure the view for the selected state
 }
 
-- (void) populateWithRecipient:(NSString *)recipient withSubject:(NSString *)subject withMessage:(NSString *)message withDate:(NSString *)date withSuccess:(NSString *)status{
+- (void) populateWithRecipient:(NSString *)recipient withSubject:(NSString *)subject withMessage:(NSString *)message withDate:(NSString *)date withSuccess:(NSString *)status withNumber:(int)index{
     recipientLabel.text = [NSString stringWithFormat:@"TO: %@", recipient];
     messageLabel.text = message;//[message substringToIndex:24];
     dateLabel.text = [NSString stringWithFormat:@"SENT: %@", date];
     subjectLabel.text = subject;
     successLabel.text = status;
+    storeY = index;
     
-    fullMessage = message;
+    fullMessage.text = message;
+    fullMessage.numberOfLines = 6;
     
     messageLabel.font = [UIFont systemFontOfSize:10];
     recipientLabel.font = [UIFont systemFontOfSize:12];
@@ -77,6 +83,20 @@
 
 - (void) popMessage{
     NSLog(@"attempting to popMessage");
+    
+    /* // THIS IS THE HACKIEST WAY TO DO IT AND PROBABLY THE BEST. NEED TO PARSE THROUGH THE MGHISTORYTRACKERS TO FIND THE RIGHT MESSAGE THEN GO FROM THERE.
+    self.frame = CGRectMake(0, -storeY + 150, 320, 580);
+    self.layer.borderWidth = 2;
+    self.layer.borderColor = [UIColor blackColor].CGColor;
+    self.layer.cornerRadius = 5;
+    fullMessage.hidden = NO;
+    fullMessage.layer.borderColor = [UIColor greenColor].CGColor;
+    fullMessage.layer.borderWidth = 3;
+    fullMessage.layer.cornerRadius = 4;
+    //fullMessage.backgroundColor = [UIColor greenColor];
+    [self.superview bringSubviewToFront:self];
+    */
+        
     /* // ---- INTERESTING IDEA. SOME ISSUES IN EXECUTION
     self.frame = CGRectMake(0, 0, 320, 300);
     messageLabel.numberOfLines = 5;
@@ -84,20 +104,20 @@
     [self.superview bringSubviewToFront:self];
     */
     
-    /* // ---- COULDN'T GET ALERT VIEW TO POP UP
-    UIAlertController* alert2 = [UIAlertController  alertControllerWithTitle:@"Mailgun TR"
-                                                                     message:@"To be set later."
-                                                              preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction* ok = [UIAlertAction
-                         actionWithTitle:@"OK"
-                         style:UIAlertActionStyleDefault
-                         handler:^(UIAlertAction * action)
-                         {
-                             [alert2 dismissViewControllerAnimated:YES completion:nil];}];
-    [alert2 addAction:ok];
-    [alert2 setMessage:@"Message Sent Successfully!"];
-    [self.superview.inputViewController presentViewController:alert2 animated:YES completion:nil];
-     */
+    self.frame= CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    self.layer.borderWidth = 2;
+    self.layer.borderColor = [UIColor blackColor].CGColor;
+    self.layer.cornerRadius = 5;
+    fullMessage.hidden = NO;
+    
+    fullMessage.layer.borderColor = [UIColor greenColor].CGColor;
+    fullMessage.layer.borderWidth = 3;
+    fullMessage.layer.cornerRadius = 4;
+    fullMessage.backgroundColor = [UIColor whiteColor];
+    
+     [self.superview bringSubviewToFront:self];
+    
+    
 }
 
 @end
