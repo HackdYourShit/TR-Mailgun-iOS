@@ -44,7 +44,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -206,7 +206,7 @@
     
     [self loadSettingsLayer];
     [self loadHistoryLayer];
-    
+    [self loadNewSendingLayer];
     
 }
 
@@ -335,6 +335,50 @@
     [historyLayer addSubview:historyBackButton];
     
 }
+
+- (void) loadNewSendingLayer{
+    reSendingLayer = [[UIView alloc] initWithFrame:self.view.frame];
+    reSendingLayer.backgroundColor = [UIColor whiteColor];
+    //[self.view addSubview:reSendingLayer];
+    
+    
+    /* ----- ADD SEND / CANCEL BUTTONS ----- */
+    
+    
+    
+    /* ----- ENTRY FIELDS ARE 32 PIX HIGH  ------ */
+    int initHeight = 120;
+    int fieldSpacing = 32;
+    
+    MGNewEntryField *toEntryField = [[MGNewEntryField alloc] init];
+    toEntryField.frame = CGRectMake(0, initHeight, toEntryField.frame.size.width, toEntryField.frame.size.height);
+    toEntryField.entryLabel.text = @"TO:";
+    [reSendingLayer addSubview:toEntryField];
+    
+    MGNewEntryField *ccEntryField = [[MGNewEntryField alloc] init];
+    ccEntryField.frame = CGRectMake(0, initHeight + 1*fieldSpacing, ccEntryField.frame.size.width, ccEntryField.frame.size.height);
+    ccEntryField.entryLabel.text = @"CC:";
+    [reSendingLayer addSubview:ccEntryField];
+    
+    MGNewEntryField *fromEntryField = [[MGNewEntryField alloc] init];
+    fromEntryField.frame = CGRectMake(0, initHeight + 2*fieldSpacing, fromEntryField.frame.size.width, fromEntryField.frame.size.height);
+    fromEntryField.entryLabel.text = @"FROM:";
+    [reSendingLayer addSubview:fromEntryField];
+
+    MGNewEntryField *subjEntryField = [[MGNewEntryField alloc] init];
+    subjEntryField.frame = CGRectMake(0, initHeight + 3*fieldSpacing, subjEntryField.frame.size.width, subjEntryField.frame.size.height);
+    subjEntryField.entryLabel.text = @"SUBJECT:";
+    subjEntryField.entryView.autocorrectionType = UITextAutocorrectionTypeYes;
+    [reSendingLayer addSubview:subjEntryField];
+    
+    
+    /* --- MESSAGE FIELD:  ----- */
+    
+    
+    
+    
+}
+
 
 
 - (void)sendMessage{

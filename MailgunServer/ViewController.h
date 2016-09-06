@@ -12,6 +12,9 @@
 #import "MGHistoryTracker.h"
 #import "MGEmailPreviewCell.h"
 
+#import "MGNewEntryField.h"
+
+
 @interface ViewController : UIViewController
 {
   //  int blah;
@@ -65,8 +68,18 @@
     UIView *historyLayer;
     UIScrollView *historyScroll;
     UIButton *historyBackButton;
+    
+    
+    /* ----- New Sending View ----- */
+    UIView *reSendingLayer;
+    
+    
 
 }
+
+@property (nonatomic, retain) UIView* reSendingLayer;
+
+
 
 @property (nonatomic, retain) NSUserDefaults* userPreferences;
 @property (nonatomic, retain) MGHistoryTracker* histMessage;
@@ -141,6 +154,9 @@
 - (void) loadHistoryLayer;
 - (void) addSentEntry;
 - (int) findLargestHistory;
+
+- (void) loadNewSendingLayer;
+
 
 @end
 
