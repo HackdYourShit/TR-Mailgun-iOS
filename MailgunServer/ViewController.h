@@ -74,11 +74,16 @@
     UIView *reSendingLayer;
     
     
+    /* ---- Menu Layer ----- */
+    UIView *menuLayer;
+    
+    
 
 }
 
 @property (nonatomic, retain) UIView* reSendingLayer;
 
+@property (nonatomic, retain) UIView* menuLayer;
 
 
 @property (nonatomic, retain) NSUserDefaults* userPreferences;
@@ -156,6 +161,7 @@
 - (int) findLargestHistory;
 
 - (void) loadNewSendingLayer;
+- (void) loadMenuLayer;
 
 
 @end

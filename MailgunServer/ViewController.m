@@ -44,7 +44,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -207,6 +207,68 @@
     [self loadSettingsLayer];
     [self loadHistoryLayer];
     [self loadNewSendingLayer];
+    [self loadMenuLayer];
+    
+}
+
+- (void) loadMenuLayer{
+    menuLayer = [[UIView alloc] initWithFrame:self.view.frame];
+    //[self.view addSubview:menuLayer];
+    menuLayer.backgroundColor = [UIColor whiteColor];
+    
+    UILabel *menuLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 40, 220, 30)];
+    menuLabel.text = @"MENU";
+    menuLabel.textAlignment = NSTextAlignmentCenter;
+    menuLabel.font = [UIFont boldSystemFontOfSize:18];
+    [menuLayer addSubview:menuLabel];
+    
+    /* ---- TURN THESE BUTTONS INTO A CLASS ---- */
+    UIButton *goToSend = [[UIButton alloc] init];
+    goToSend = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToSend.frame = CGRectMake(5, 90, 310, 50);
+    [goToSend setTitle:@"Send a message" forState:UIControlStateNormal];
+    goToSend.layer.borderColor = [UIColor blackColor].CGColor;
+    goToSend.layer.borderWidth = 1;
+    [goToSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    goToSend.layer.cornerRadius = 5;
+    goToSend.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
+    [menuLayer addSubview:goToSend];
+    
+    UIButton *goToHistory = [[UIButton alloc] init];
+    goToHistory = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToHistory.frame = CGRectMake(5, 150, 310, 50);
+    [goToHistory setTitle:@"View Sent Messages" forState:UIControlStateNormal];
+    goToHistory.layer.borderWidth = 1;
+    goToHistory.layer.borderColor = [UIColor blackColor].CGColor;
+    [goToHistory setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    goToHistory.layer.cornerRadius = 5;
+    goToHistory.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
+    [menuLayer addSubview:goToHistory];
+    
+    UIButton *goToTrash = [[UIButton alloc] init];
+    goToTrash = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToTrash.frame = CGRectMake(5, 210, 310, 50);
+    [goToTrash setTitle:@"View Deleted Messages" forState:UIControlStateNormal];
+    goToTrash.layer.borderWidth = 1;
+    goToTrash.layer.borderColor = [UIColor blackColor].CGColor;
+    [goToTrash setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    goToTrash.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
+    goToTrash.layer.cornerRadius = 5;
+    [menuLayer addSubview:goToTrash];
+    
+    UIButton *goToOptions = [[UIButton alloc] init];
+    goToOptions = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToOptions.frame = CGRectMake(5, 270, 310, 50);
+    [goToOptions setTitle:@"Change API Key / Mailgun URL" forState:UIControlStateNormal];
+    [goToOptions setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    goToOptions.layer.borderWidth = 1;
+    goToOptions.layer.borderColor = [UIColor blackColor].CGColor;
+    goToOptions.layer.cornerRadius = 5;
+    goToOptions.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
+    [menuLayer addSubview:goToOptions];
+    
+    
+    
     
 }
 
