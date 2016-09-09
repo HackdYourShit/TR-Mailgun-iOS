@@ -19,4 +19,6 @@
 @property (nonatomic, retain) UILabel *entryLabel;
 @property (nonatomic, retain) UITextField *entryView;
 
+- (id) initWithHeight:(int)height;
+
 @end

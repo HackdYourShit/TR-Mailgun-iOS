@@ -11,10 +11,10 @@
 @implementation MGNewEntryField
 @synthesize entryView, entryLabel, borderView;
 
-- (id) init {
+- (id) initWithHeight:(int)height {
     self = [super init];
     if (self) {
-        self.frame = CGRectMake(0, 0, 320, 30);
+        self.frame = CGRectMake(0, 0, 320, height);
         
         entryView = [[UITextField alloc] initWithFrame:CGRectMake(75, 0, self.frame.size.width-75, self.frame.size.height)];
         entryView.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -24,6 +24,7 @@
         entryLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 60, self.frame.size.height)];
         entryLabel.font = [UIFont boldSystemFontOfSize:12];
         entryLabel.textAlignment = NSTextAlignmentLeft;
+        entryLabel.textColor = [UIColor darkGrayColor];
         
         borderView = [[UIView alloc] initWithFrame:CGRectMake(-5, -2, 400, self.frame.size.height + 4)];
         borderView.layer.borderColor = [UIColor lightGrayColor].CGColor;

@@ -21,7 +21,7 @@
 //   Move message writing to it's own view that isn't just the default.
         // Do like an intro page then push everything to the side.
 
-// NEED TO ADD SOMETHING TO INCREMENT ALL THE INDEXS WHEN ADDING A SENT ENTRY
+//   Need a main menu page type thing that links to send / options / history
 
 //   Settings page where you can customize the website and api key and such
     // Add NSUserDefaults to save their info
@@ -337,43 +337,67 @@
 }
 
 - (void) loadNewSendingLayer{
+    /* --- NEED TO EMBED ALL THIS IN A SCROLL VIEW AND SCROLL DOWN AS THE MESSAGE GETS LONGER --- */
     reSendingLayer = [[UIView alloc] initWithFrame:self.view.frame];
     reSendingLayer.backgroundColor = [UIColor whiteColor];
     //[self.view addSubview:reSendingLayer];
     
+    /* ----- ADD SEND / CANCEL / IMAGE ATTACH BUTTONS ----- */
+    UIButton *reSendButton = [[UIButton alloc] init];
+    reSendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    reSendButton.frame = CGRectMake(250, 40, 60, 40);
+    reSendButton.backgroundColor = [UIColor clearColor];
+    [reSendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [reSendButton setTitle:@"  Send" forState:UIControlStateNormal];
+    [reSendingLayer addSubview:reSendButton];
     
-    /* ----- ADD SEND / CANCEL BUTTONS ----- */
+    UIButton *reCancelButton = [[UIButton alloc] init];
+    reCancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    reCancelButton.frame = CGRectMake(10, 40, 60, 40);
+    reCancelButton.backgroundColor = [UIColor clearColor];
+    [reCancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [reCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [reSendingLayer addSubview:reCancelButton];
     
-    
+    UILabel *composeLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 40, 180, 40)];
+    composeLabel.text = @"New Message";
+    composeLabel.textColor = [UIColor blackColor];
+    composeLabel.textAlignment = NSTextAlignmentCenter;
+    [reSendingLayer addSubview:composeLabel];
     
     /* ----- ENTRY FIELDS ARE 32 PIX HIGH  ------ */
-    int initHeight = 120;
+    int initHeight = 90;
     int fieldSpacing = 32;
     
-    MGNewEntryField *toEntryField = [[MGNewEntryField alloc] init];
+    MGNewEntryField *toEntryField = [[MGNewEntryField alloc] initWithHeight:30];
     toEntryField.frame = CGRectMake(0, initHeight, toEntryField.frame.size.width, toEntryField.frame.size.height);
     toEntryField.entryLabel.text = @"TO:";
     [reSendingLayer addSubview:toEntryField];
     
-    MGNewEntryField *ccEntryField = [[MGNewEntryField alloc] init];
+    MGNewEntryField *ccEntryField = [[MGNewEntryField alloc] initWithHeight:30];
     ccEntryField.frame = CGRectMake(0, initHeight + 1*fieldSpacing, ccEntryField.frame.size.width, ccEntryField.frame.size.height);
     ccEntryField.entryLabel.text = @"CC:";
     [reSendingLayer addSubview:ccEntryField];
     
-    MGNewEntryField *fromEntryField = [[MGNewEntryField alloc] init];
+    MGNewEntryField *fromEntryField = [[MGNewEntryField alloc] initWithHeight:30];
     fromEntryField.frame = CGRectMake(0, initHeight + 2*fieldSpacing, fromEntryField.frame.size.width, fromEntryField.frame.size.height);
     fromEntryField.entryLabel.text = @"FROM:";
     [reSendingLayer addSubview:fromEntryField];
 
-    MGNewEntryField *subjEntryField = [[MGNewEntryField alloc] init];
+    MGNewEntryField *subjEntryField = [[MGNewEntryField alloc] initWithHeight:30];
     subjEntryField.frame = CGRectMake(0, initHeight + 3*fieldSpacing, subjEntryField.frame.size.width, subjEntryField.frame.size.height);
     subjEntryField.entryLabel.text = @"SUBJECT:";
     subjEntryField.entryView.autocorrectionType = UITextAutocorrectionTypeYes;
+    subjEntryField.entryView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
     [reSendingLayer addSubview:subjEntryField];
     
     
     /* --- MESSAGE FIELD:  ----- */
-    
+    UITextView *messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, 320, 300)];
+    messageEntryField.font = [UIFont systemFontOfSize:12];
+    messageEntryField.delegate = (id)self;
+    [reSendingLayer addSubview:messageEntryField];
+
     
     
     
