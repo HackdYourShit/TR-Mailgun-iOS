@@ -83,9 +83,20 @@
     //[self clearTrackers];
     [self printTrackers];
     
+    [self loadBackgroundLayer];
+    [self loadSettingsLayer];
+    [self loadHistoryLayer];
+    [self loadNewSendingLayer];
+    [self loadMenuLayer];
+    
+}
+
+// Old send message form
+- (void) loadBackgroundLayer{
     backgroundLayer = [[UIView alloc] init];
     backgroundLayer.frame = self.view.frame;
-    backgroundLayer.backgroundColor = [UIColor clearColor];
+    backgroundLayer.center = CGPointMake(backgroundLayer.center.x+320, backgroundLayer.center.y);
+    backgroundLayer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:backgroundLayer];
     
     titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
@@ -117,8 +128,6 @@
     fromBox.textView.text = @"Teddy Rowan <teddy@teddyrowan.com>";
     fromBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [backgroundLayer addSubview:fromBox];
-    
-    
     
     UILabel* subjLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+2*SPACING, 280, 30)];
     subjLabel.text = @" SUBJECT:    ";
@@ -160,6 +169,7 @@
     fromLbl.hidden = YES; // unhide it if i ever move away from keeping a default recipient. aka final version
     [fromBox.textView addSubview:fromLbl];
     
+    
     UILabel* msgLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+3*SPACING, 280, 30)];
     msgLabel.text = @" MESSAGE:    ";
     msgLabel.font = [UIFont systemFontOfSize:12];
@@ -191,25 +201,8 @@
     [lockView addTarget:self action:@selector(switchLock) forControlEvents:UIControlEventTouchUpInside];
     [backgroundLayer addSubview:lockView];
     locked = YES;
-    
-    settingsButton = [[UIButton alloc] initWithFrame:CGRectMake(260, 35, 35, 35)];
-    settingsButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings35.png"]];
-    [settingsButton addTarget:self action:@selector(openSettings) forControlEvents:UIControlEventTouchUpInside];
-    [backgroundLayer addSubview:settingsButton];
-    
-    historyButton = [[UIButton alloc] initWithFrame:CGRectMake(15, 520, 35, 35)];
-    historyButton.backgroundColor = [UIColor redColor];//[UIColor colorWithPatternImage:[UIImage imageNamed:@"settings35.png"]];
-    [historyButton addTarget:self action:@selector(openHistory) forControlEvents:UIControlEventTouchUpInside];
-    [backgroundLayer addSubview:historyButton];
-    
-    
-    
-    [self loadSettingsLayer];
-    [self loadHistoryLayer];
-    [self loadNewSendingLayer];
-    [self loadMenuLayer];
-    
 }
+
 
 - (void) loadMenuLayer{
     menuLayer = [[UIView alloc] initWithFrame:self.view.frame];
@@ -269,6 +262,20 @@
     goToOptions.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
     [goToOptions addTarget:self action:@selector(goSettings) forControlEvents:UIControlEventTouchUpInside];
     [menuLayer addSubview:goToOptions];
+    
+    UIButton *goToOldSend = [[UIButton alloc] init];
+    goToOldSend = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToOldSend.frame = CGRectMake(5, 330, 310, 50);
+    [goToOldSend setTitle:@"Deprecated Send Message Form" forState:UIControlStateNormal];
+    [goToOldSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    goToOldSend.layer.borderWidth = 1;
+    goToOldSend.layer.borderColor = [UIColor blackColor].CGColor;
+    goToOldSend.layer.cornerRadius = 5;
+    goToOldSend.backgroundColor = [UIColor colorWithRed:.99 green:.99 blue:.95 alpha:.8];
+    [goToOldSend addTarget:self action:@selector(goOldSend) forControlEvents:UIControlEventTouchUpInside];
+    [menuLayer addSubview:goToOldSend];
+    
+    
     
     
 }
@@ -422,6 +429,7 @@
     reCancelButton.backgroundColor = [UIColor clearColor];
     [reCancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [reCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [reCancelButton addTarget:self action:@selector(reShiftWindow) forControlEvents:UIControlEventTouchUpInside];
     [reSendingLayer addSubview:reCancelButton];
     
     UILabel *composeLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 40, 180, 40)];
@@ -463,11 +471,9 @@
     messageEntryField.delegate = (id)self;
     [reSendingLayer addSubview:messageEntryField];
 
-    
-    
-    
 }
 
+// Should really bump these together by having the view as an input to the function
 - (void) goSendMessage{
     [self.view bringSubviewToFront:reSendingLayer];
     [self shiftWindow];
@@ -483,12 +489,28 @@
     [self shiftWindow];
 }
 
+- (void) goOldSend{
+    [self.view bringSubviewToFront:backgroundLayer];
+    [self shiftWindow];
+}
+
 - (void) shiftWindow{
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
         menuLayer.center = CGPointMake(-160, menuLayer.center.y);
         settingsLayer.center = CGPointMake(160, settingsLayer.center.y);
         reSendingLayer.center = CGPointMake(160, reSendingLayer.center.y);
         historyLayer.center = CGPointMake(160, historyLayer.center.y);
+        backgroundLayer.center = CGPointMake(160, backgroundLayer.center.y);
+    } completion:^(BOOL finished) {}];
+}
+
+- (void) reShiftWindow{
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+        menuLayer.center = CGPointMake(160, menuLayer.center.y);
+        settingsLayer.center = CGPointMake(480, settingsLayer.center.y);
+        reSendingLayer.center = CGPointMake(480, reSendingLayer.center.y);
+        historyLayer.center = CGPointMake(480, historyLayer.center.y);
+        backgroundLayer.center = CGPointMake(480, backgroundLayer.center.y);
     } completion:^(BOOL finished) {}];
 }
 
@@ -631,22 +653,8 @@
     return image;
 }
 
-- (void) openSettings{
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        backgroundLayer.center = CGPointMake(backgroundLayer.center.x-320, backgroundLayer.center.y);
-    } completion:^(BOOL finished) {}];
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        settingsLayer.center = CGPointMake(settingsLayer.center.x-320, settingsLayer.center.y);
-    } completion:^(BOOL finished) {}];
-}
-
 - (void) closeSettings{
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        backgroundLayer.center = CGPointMake(backgroundLayer.center.x+320, backgroundLayer.center.y);
-    } completion:^(BOOL finished) {}];
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        settingsLayer.center = CGPointMake(settingsLayer.center.x+320, settingsLayer.center.y);
-    } completion:^(BOOL finished) {}];
+    [self reShiftWindow];
     
     API_KEY = apiBox.textView.text;
     mailgunURL = urlBox.textView.text;
@@ -654,12 +662,8 @@
 }
 
 - (void) cancelSettingsChange{
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        backgroundLayer.center = CGPointMake(backgroundLayer.center.x+320, backgroundLayer.center.y);
-    } completion:^(BOOL finished) {}];
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        settingsLayer.center = CGPointMake(settingsLayer.center.x+320, settingsLayer.center.y);
-    } completion:^(BOOL finished) {}];
+    [self reShiftWindow];
+    
     apiBox.textView.text = API_KEY;
     urlBox.textView.text = mailgunURL;
     
@@ -697,22 +701,8 @@
     [histDate addEntry:[formatter stringFromDate:[NSDate date]]];
 }
 
-- (void) openHistory{
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        backgroundLayer.center = CGPointMake(backgroundLayer.center.x+320, backgroundLayer.center.y);
-    } completion:^(BOOL finished) {}];
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        historyLayer.center = CGPointMake(historyLayer.center.x+320, historyLayer.center.y);
-    } completion:^(BOOL finished) {}];
-}
-
 - (void) closeHistory{
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        backgroundLayer.center = CGPointMake(backgroundLayer.center.x-320, backgroundLayer.center.y);
-    } completion:^(BOOL finished) {}];
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        historyLayer.center = CGPointMake(historyLayer.center.x-320, historyLayer.center.y);
-    } completion:^(BOOL finished) {}];
+    [self reShiftWindow];
 }
 
 

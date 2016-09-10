@@ -162,12 +162,14 @@
 
 - (void) loadNewSendingLayer;
 - (void) loadMenuLayer;
-
+- (void) loadBackgroundLayer;
 
 - (void) goSettings;
 - (void) goHistory;
 - (void) goSendMessage;
+- (void) goOldSend;
 - (void) shiftWindow;
+- (void) reShiftWindow;
 
 @end
 
