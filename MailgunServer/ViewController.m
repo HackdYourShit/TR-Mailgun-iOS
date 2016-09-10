@@ -213,7 +213,7 @@
 
 - (void) loadMenuLayer{
     menuLayer = [[UIView alloc] initWithFrame:self.view.frame];
-    //[self.view addSubview:menuLayer];
+    [self.view addSubview:menuLayer];
     menuLayer.backgroundColor = [UIColor whiteColor];
     
     UILabel *menuLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 40, 220, 30)];
@@ -232,6 +232,7 @@
     [goToSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     goToSend.layer.cornerRadius = 5;
     goToSend.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
+    [goToSend addTarget:self action:@selector(goSendMessage) forControlEvents:UIControlEventTouchUpInside];
     [menuLayer addSubview:goToSend];
     
     UIButton *goToHistory = [[UIButton alloc] init];
@@ -243,6 +244,7 @@
     [goToHistory setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     goToHistory.layer.cornerRadius = 5;
     goToHistory.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
+    [goToHistory addTarget:self action:@selector(goHistory) forControlEvents:UIControlEventTouchUpInside];
     [menuLayer addSubview:goToHistory];
     
     UIButton *goToTrash = [[UIButton alloc] init];
@@ -265,9 +267,8 @@
     goToOptions.layer.borderColor = [UIColor blackColor].CGColor;
     goToOptions.layer.cornerRadius = 5;
     goToOptions.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
+    [goToOptions addTarget:self action:@selector(goSettings) forControlEvents:UIControlEventTouchUpInside];
     [menuLayer addSubview:goToOptions];
-    
-    
     
     
 }
@@ -276,7 +277,7 @@
     settingsLayer = [[UIView alloc] init];
     settingsLayer.frame = self.view.frame;
     settingsLayer.center = CGPointMake(settingsLayer.center.x+320, settingsLayer.center.y);
-    settingsLayer.backgroundColor = [UIColor clearColor];
+    settingsLayer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:settingsLayer];
     
     UILabel* settingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
@@ -356,7 +357,8 @@
 - (void) loadHistoryLayer{
     historyLayer = [[UIView alloc] initWithFrame:self.view.frame];
     historyLayer.frame = CGRectMake(0, 0, 320, 700);
-    historyLayer.center = CGPointMake(historyLayer.center.x-320, historyLayer.center.y);
+    historyLayer.center = CGPointMake(historyLayer.center.x+320, historyLayer.center.y);
+    historyLayer.backgroundColor = [UIColor whiteColor];
     
     historyScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 90, 320, 480)];
     historyScroll.layer.borderWidth = 1;
@@ -401,8 +403,9 @@
 - (void) loadNewSendingLayer{
     /* --- NEED TO EMBED ALL THIS IN A SCROLL VIEW AND SCROLL DOWN AS THE MESSAGE GETS LONGER --- */
     reSendingLayer = [[UIView alloc] initWithFrame:self.view.frame];
+    reSendingLayer.center = CGPointMake(reSendingLayer.center.x+320, reSendingLayer.center.y);
     reSendingLayer.backgroundColor = [UIColor whiteColor];
-    //[self.view addSubview:reSendingLayer];
+    [self.view addSubview:reSendingLayer];
     
     /* ----- ADD SEND / CANCEL / IMAGE ATTACH BUTTONS ----- */
     UIButton *reSendButton = [[UIButton alloc] init];
@@ -465,6 +468,29 @@
     
 }
 
+- (void) goSendMessage{
+    [self.view bringSubviewToFront:reSendingLayer];
+    [self shiftWindow];
+}
+
+- (void) goSettings{
+    [self.view bringSubviewToFront:settingsLayer];
+    [self shiftWindow];
+}
+
+- (void) goHistory{
+    [self.view bringSubviewToFront:historyLayer];
+    [self shiftWindow];
+}
+
+- (void) shiftWindow{
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+        menuLayer.center = CGPointMake(-160, menuLayer.center.y);
+        settingsLayer.center = CGPointMake(160, settingsLayer.center.y);
+        reSendingLayer.center = CGPointMake(160, reSendingLayer.center.y);
+        historyLayer.center = CGPointMake(160, historyLayer.center.y);
+    } completion:^(BOOL finished) {}];
+}
 
 
 - (void)sendMessage{

@@ -164,5 +164,10 @@
 - (void) loadMenuLayer;
 
 
+- (void) goSettings;
+- (void) goHistory;
+- (void) goSendMessage;
+- (void) shiftWindow;
+
 @end
 
