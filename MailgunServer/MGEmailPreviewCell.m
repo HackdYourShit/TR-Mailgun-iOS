@@ -55,6 +55,7 @@
 }
 
 - (void) populateWithRecipient:(NSString *)recipient withSubject:(NSString *)subject withMessage:(NSString *)message withDate:(NSString *)date withSuccess:(NSString *)status withNumber:(int)index{
+    
     recipientLabel.text = [NSString stringWithFormat:@"TO: %@", recipient];
     messageLabel.text = message;//[message substringToIndex:24];
     dateLabel.text = [NSString stringWithFormat:@"SENT: %@", date];
@@ -103,6 +104,10 @@
     messageLabel.frame = CGRectMake(25, 280, 270, 120);
     [self.superview bringSubviewToFront:self];
     */
+    
+    // this is broken as fuck. fix it later.
+    return;
+    
     
     self.frame= CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     self.layer.borderWidth = 2;
