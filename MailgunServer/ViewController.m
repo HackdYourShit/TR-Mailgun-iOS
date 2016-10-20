@@ -294,8 +294,20 @@
     settingsLabel.center = CGPointMake(self.view.center.x, settingsLabel.center.y);
     [settingsLayer addSubview:settingsLabel];
     
-    backButton = [[UIButton alloc] initWithFrame:CGRectMake(25, 35, 35, 35)];
-    backButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"back35.png"]];
+    //backButton = [[UIButton alloc] initWithFrame:CGRectMake(25, 35, 35, 35)];
+    //backButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"back35.png"]];
+    //[backButton addTarget:self action:@selector(closeSettings) forControlEvents:UIControlEventTouchUpInside];
+    //[settingsLayer addSubview:backButton];
+    
+    backButton = [[UIButton alloc] init];
+    backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame = CGRectMake(250, 35, 60, 40);
+    backButton.backgroundColor = [UIColor clearColor];
+    [backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [backButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+    [backButton setTitle:@"MENU" forState:UIControlStateNormal];
+    backButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    backButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     [backButton addTarget:self action:@selector(closeSettings) forControlEvents:UIControlEventTouchUpInside];
     [settingsLayer addSubview:backButton];
     
@@ -353,12 +365,14 @@
     urlLbl.hidden = YES;
     [urlBox.textView addSubview:urlLbl];
     
+    NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
     creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+4*SPACING, 280, 90)];
-    creditsLabel.text = [@"Created by Teddy Rowan\nVersion 1.0." uppercaseString];
+    creditsLabel.text = [[NSString stringWithFormat:@"Created by Teddy Rowan\nVersion %@.", versionText] uppercaseString];
     [creditsLabel setLineBreakMode:NSLineBreakByWordWrapping];
     creditsLabel.textAlignment = NSTextAlignmentCenter;
     creditsLabel.numberOfLines = 2;
     [settingsLayer addSubview:creditsLabel];
+    
 }
 
 - (void) loadHistoryLayer{
@@ -400,8 +414,20 @@
     sentMessagesLabel.center = CGPointMake(self.view.center.x, sentMessagesLabel.center.y);
     [historyLayer addSubview:sentMessagesLabel];
     
-    historyBackButton = [[UIButton alloc] initWithFrame:CGRectMake(260, 35, 35, 35)];
-    historyBackButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"back35.png"]];
+    //historyBackButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 35, 35, 35)];
+    //historyBackButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"back35.png"]];
+    //[historyBackButton addTarget:self action:@selector(closeHistory) forControlEvents:UIControlEventTouchUpInside];
+    //[historyLayer addSubview:historyBackButton];
+    
+    historyBackButton = [[UIButton alloc] init];
+    historyBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    historyBackButton.frame = CGRectMake(250, 35, 60, 40);
+    historyBackButton.backgroundColor = [UIColor clearColor];
+    [historyBackButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [historyBackButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+    [historyBackButton setTitle:@"MENU" forState:UIControlStateNormal];
+    historyBackButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    historyBackButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     [historyBackButton addTarget:self action:@selector(closeHistory) forControlEvents:UIControlEventTouchUpInside];
     [historyLayer addSubview:historyBackButton];
     
