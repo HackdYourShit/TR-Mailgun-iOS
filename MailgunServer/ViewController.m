@@ -229,6 +229,21 @@
     [menuLayer addSubview:goToSend];
     
     
+    CAGradientLayer *sendGradient = [CAGradientLayer layer];
+    sendGradient.frame = goToSend.layer.bounds;
+    sendGradient.colors = [NSArray arrayWithObjects:
+                            (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
+                            (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
+                            nil];
+    sendGradient.locations = [NSArray arrayWithObjects:
+                               [NSNumber numberWithFloat:0.0f],
+                               [NSNumber numberWithFloat:1.0f],
+                               nil];
+    
+    sendGradient.cornerRadius = goToSend.layer.cornerRadius;
+    [goToSend.layer addSublayer:sendGradient];
+    
+    
     UIButton *goToHistory = [[UIButton alloc] init];
     goToHistory = [UIButton buttonWithType:UIButtonTypeCustom];
     goToHistory.frame = CGRectMake(5, 150, 310, 50);
@@ -241,6 +256,22 @@
     [goToHistory addTarget:self action:@selector(goHistory) forControlEvents:UIControlEventTouchUpInside];
     [goToHistory setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
     [menuLayer addSubview:goToHistory];
+    
+    CAGradientLayer *historyGradient = [CAGradientLayer layer];
+    historyGradient.frame = goToSend.layer.bounds;
+    historyGradient.colors = [NSArray arrayWithObjects:
+                            (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
+                            (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
+                            nil];
+    historyGradient.locations = [NSArray arrayWithObjects:
+                               [NSNumber numberWithFloat:0.0f],
+                               [NSNumber numberWithFloat:1.0f],
+                               nil];
+    historyGradient.cornerRadius = goToHistory.layer.cornerRadius;
+    [goToHistory.layer addSublayer:historyGradient];
+    
+    
+    
     
     UIButton *goToTrash = [[UIButton alloc] init];
     goToTrash = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -266,6 +297,20 @@
     [goToOptions addTarget:self action:@selector(goSettings) forControlEvents:UIControlEventTouchUpInside];
     [goToOptions setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
     [menuLayer addSubview:goToOptions];
+    
+    CAGradientLayer *optionsGradient = [CAGradientLayer layer];
+    optionsGradient.frame = goToOptions.layer.bounds;
+    optionsGradient.colors = [NSArray arrayWithObjects:
+                              (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
+                              (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
+                              nil];
+    optionsGradient.locations = [NSArray arrayWithObjects:
+                                 [NSNumber numberWithFloat:0.0f],
+                                 [NSNumber numberWithFloat:1.0f],
+                                 nil];
+    optionsGradient.cornerRadius = goToOptions.layer.cornerRadius;
+    [goToOptions.layer addSublayer:optionsGradient];
+    
     
     UIButton *goToOldSend = [[UIButton alloc] init];
     goToOldSend = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -357,11 +402,24 @@
     showHideAPI.titleLabel.font = [UIFont systemFontOfSize:14];
     showHideAPI.layer.cornerRadius = 5;
     showHideAPI.layer.borderColor = [UIColor blackColor].CGColor;
-    showHideAPI.layer.borderWidth = 2;
+    showHideAPI.layer.borderWidth = 1;
     [showHideAPI addTarget:self action:@selector(showHideAPIField) forControlEvents:UIControlEventTouchUpInside];
     [showHideAPI setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:25.0/255 green:25.0/255 blue:25.0/255 alpha:0.3]] forState:UIControlStateHighlighted];
     showHideAPI.clipsToBounds = YES;
     [settingsLayer addSubview:showHideAPI];
+    
+    CAGradientLayer *apiGradient = [CAGradientLayer layer];
+    apiGradient.frame = showHideAPI.layer.bounds;
+    apiGradient.colors = [NSArray arrayWithObjects:
+                              (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
+                              (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
+                              nil];
+    apiGradient.locations = [NSArray arrayWithObjects:
+                                 [NSNumber numberWithFloat:0.0f],
+                                 [NSNumber numberWithFloat:1.0f],
+                                 nil];
+    apiGradient.cornerRadius = showHideAPI.layer.cornerRadius;
+    [showHideAPI.layer addSublayer:apiGradient];
     
     
     UILabel* urlLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+2*SPACING, 280, 30)];
@@ -384,10 +442,24 @@
     [cancelChanges addTarget:self action:@selector(cancelSettingsChange) forControlEvents:UIControlEventTouchUpInside];
     cancelChanges.layer.cornerRadius = 5;
     cancelChanges.layer.borderColor = [UIColor blackColor].CGColor;
-    cancelChanges.layer.borderWidth = 2;
+    cancelChanges.layer.borderWidth = 1;
     [cancelChanges setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
     cancelChanges.clipsToBounds = YES;
     [settingsLayer addSubview:cancelChanges];
+    
+    CAGradientLayer *cancelGradient = [CAGradientLayer layer];
+    cancelGradient.frame = cancelChanges.layer.bounds;
+    cancelGradient.colors = [NSArray arrayWithObjects:
+                          (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
+                          (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
+                          nil];
+    cancelGradient.locations = [NSArray arrayWithObjects:
+                             [NSNumber numberWithFloat:0.0f],
+                             [NSNumber numberWithFloat:1.0f],
+                             nil];
+    cancelGradient.cornerRadius = cancelChanges.layer.cornerRadius;
+    [cancelChanges.layer addSublayer:cancelGradient];
+    
     
     apiLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,apiBox.textView.frame.size.width - 10.0, 30)];
     [apiLbl setText:@"EX: key-4a41a48d30aafce3ccda648i0c90206b"];
@@ -416,21 +488,12 @@
     [settingsLayer addSubview:creditsLabel];
     
     
-    /*
-    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
-    logoView.center = CGPointMake(self.view.center.x, INIT_HEIGHT_LAB+7*SPACING);
-    logoView.backgroundColor = [UIColor clearColor];
-    [settingsLayer addSubview:logoView];
-    */
-    
     UIImageView *settingsMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
     settingsMGLogo.frame = CGRectMake(50, 420, 90, 90);
-    //menuMGLogo.backgroundColor = [UIColor greenColor];
     [settingsLayer addSubview:settingsMGLogo];
     
     UIImageView *settingsTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
     settingsTRLogo.frame = CGRectMake(160, 420, 90, 90);
-    //menuTRLogo.backgroundColor = [UIColor greenColor];
     [settingsLayer addSubview:settingsTRLogo];
     
     UILabel *customMGAppLabelSettings = [[UILabel alloc] initWithFrame:CGRectMake(0, 510, self.view.frame.size.width, 40)];
