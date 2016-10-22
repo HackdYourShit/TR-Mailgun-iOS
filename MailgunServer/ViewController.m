@@ -24,6 +24,8 @@
 
 //  Add in an address book type menu that lets you quickly fill in the to/cc/from fields
 
+// Add support for deleted messages
+    // Both a deleted messages page and the capability for deleting messages
 
 // TO COMMIT CHANGES through command line:
     // Terminal -- CD to ./Desktop/Teddy/tinker/MailgunServer
@@ -280,7 +282,7 @@
     goToTrash.layer.borderWidth = 1;
     goToTrash.layer.borderColor = [UIColor blackColor].CGColor;
     [goToTrash setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goToTrash.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
+    goToTrash.backgroundColor = [UIColor colorWithRed:.95 green:.40 blue:.40 alpha:.8];
     goToTrash.layer.cornerRadius = 5;
     [goToTrash setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
     [menuLayer addSubview:goToTrash];
@@ -396,7 +398,7 @@
     showHideAPI = [UIButton buttonWithType:UIButtonTypeCustom];
     showHideAPI.frame = CGRectMake(0, 0, 140, 30);
     showHideAPI.center = CGPointMake(apiBox.center.x, apiBox.center.y + SPACING*3.0/4.0);
-    showHideAPI.backgroundColor = [UIColor lightGrayColor];
+    showHideAPI.backgroundColor = [UIColor colorWithRed:.65 green:.65 blue:.65 alpha:.9];
     [showHideAPI setTitle:@"Show / Hide" forState:UIControlStateNormal];
     [showHideAPI setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     showHideAPI.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -539,6 +541,21 @@
                                withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",i]]
                                  withNumber:i];
         [historyScroll addSubview:messageCell];
+        
+        CAGradientLayer *messageGradient = [CAGradientLayer layer];
+        messageGradient.frame = messageCell.layer.bounds;
+        messageGradient.colors = [NSArray arrayWithObjects:
+                               (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
+                               (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
+                               nil];
+        messageGradient.locations = [NSArray arrayWithObjects:
+                                  [NSNumber numberWithFloat:0.0f],
+                                  [NSNumber numberWithFloat:1.0f],
+                                  nil];
+        
+        messageGradient.cornerRadius = messageCell.layer.cornerRadius;
+        [messageCell.layer addSublayer:messageGradient];
+        
     }
     
     NSLog(@"filled: %d", histMessage.filled);
