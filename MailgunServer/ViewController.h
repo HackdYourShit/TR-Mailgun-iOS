@@ -143,8 +143,8 @@
 
 - (void) switchLock;
 - (UIImage *)imageWithColor:(UIColor *)color;
-- (void) openSettings;
-- (void) closeSettings;
+//- (void) openSettings;
+//- (void) closeSettings;
 - (void) loadSettingsLayer;
 - (void) cancelSettingsChange;
 
@@ -154,7 +154,7 @@
 - (void) clearTrackers;
 - (void) printTrackers;
 
-- (void) openHistory;
+//- (void) openHistory;
 - (void) closeHistory;
 - (void) loadHistoryLayer;
 - (void) addSentEntry;
@@ -170,6 +170,8 @@
 - (void) goOldSend;
 - (void) shiftWindow;
 - (void) reShiftWindow;
+
+- (void) showHideAPIField;
 
 @end
 

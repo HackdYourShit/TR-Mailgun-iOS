@@ -321,28 +321,50 @@
     apiBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 0*SPACING);
     apiBox.textView.text = API_KEY;
     apiBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    apiBox.textView.backgroundColor = [UIColor blackColor];
     [settingsLayer addSubview:apiBox];
 
-    UILabel* urlLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+1*SPACING, 280, 30)];
+    
+    UIButton *showHideAPI = [[UIButton alloc] init];
+    showHideAPI = [UIButton buttonWithType:UIButtonTypeCustom];
+    showHideAPI.frame = CGRectMake(0, 0, 140, 30);
+    showHideAPI.center = CGPointMake(apiBox.center.x, apiBox.center.y + SPACING*3.0/4.0);
+    showHideAPI.backgroundColor = [UIColor lightGrayColor];
+    [showHideAPI setTitle:@"Show / Hide" forState:UIControlStateNormal];
+    [showHideAPI setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    showHideAPI.titleLabel.font = [UIFont systemFontOfSize:14];
+    showHideAPI.layer.cornerRadius = 5;
+    showHideAPI.layer.borderColor = [UIColor blackColor].CGColor;
+    showHideAPI.layer.borderWidth = 2;
+    [showHideAPI addTarget:self action:@selector(showHideAPIField) forControlEvents:UIControlEventTouchUpInside];
+    [showHideAPI setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:25.0/255 green:25.0/255 blue:25.0/255 alpha:0.3]] forState:UIControlStateHighlighted];
+    showHideAPI.clipsToBounds = YES;
+    [settingsLayer addSubview:showHideAPI];
+    
+    
+    UILabel* urlLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+2*SPACING, 280, 30)];
     urlLabel.text = @" DOMAIN URL:    ";
     urlLabel.font = [UIFont systemFontOfSize:12];
     [settingsLayer addSubview:urlLabel];
     
     urlBox = [[BorderedTextField alloc] init];
-    urlBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 1*SPACING);
+    urlBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 2*SPACING);
     urlBox.textView.text = mailgunURL;
     urlBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [settingsLayer addSubview:urlBox];
     
     cancelChanges = [[UIButton alloc] init];
     cancelChanges = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelChanges.frame = CGRectMake(60, INIT_HEIGHT_BOX+2.0*SPACING, 200, 60);
+    cancelChanges.frame = CGRectMake(60, INIT_HEIGHT_BOX+2.75*SPACING, 200, 60);
     cancelChanges.backgroundColor = [UIColor redColor];
     cancelChanges.titleLabel.textColor = [UIColor whiteColor];
     [cancelChanges setTitle:@"DISCARD CHANGES" forState:UIControlStateNormal];
     [cancelChanges addTarget:self action:@selector(cancelSettingsChange) forControlEvents:UIControlEventTouchUpInside];
-    cancelChanges.layer.cornerRadius = 2;
+    cancelChanges.layer.cornerRadius = 5;
+    cancelChanges.layer.borderColor = [UIColor blackColor].CGColor;
+    cancelChanges.layer.borderWidth = 2;
     [cancelChanges setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
+    cancelChanges.clipsToBounds = YES;
     [settingsLayer addSubview:cancelChanges];
     
     apiLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,apiBox.textView.frame.size.width - 10.0, 30)];
@@ -366,13 +388,24 @@
     [urlBox.textView addSubview:urlLbl];
     
     NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+4*SPACING, 280, 90)];
+    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+5*SPACING, 280, 90)];
     creditsLabel.text = [[NSString stringWithFormat:@"Created by Teddy Rowan\nVersion %@.", versionText] uppercaseString];
     [creditsLabel setLineBreakMode:NSLineBreakByWordWrapping];
     creditsLabel.textAlignment = NSTextAlignmentCenter;
     creditsLabel.numberOfLines = 2;
     [settingsLayer addSubview:creditsLabel];
     
+}
+
+- (void) showHideAPIField{
+    double LIGHT_GREY = 0.87;
+    if ([apiBox.textView.backgroundColor isEqual:[UIColor colorWithRed:LIGHT_GREY green:LIGHT_GREY blue:LIGHT_GREY alpha:1.0]]){
+        apiBox.textView.backgroundColor = [UIColor blackColor];
+        NSLog(@"change to black");
+    } else {
+        apiBox.textView.backgroundColor = [UIColor colorWithRed:LIGHT_GREY green:LIGHT_GREY blue:LIGHT_GREY alpha:1.0];
+        NSLog(@"change to grey");
+    }
 }
 
 - (void) loadHistoryLayer{
