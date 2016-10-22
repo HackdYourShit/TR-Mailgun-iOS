@@ -18,14 +18,12 @@
 //   Add CC and multiple sending tracking status.
 //   Add button in settings page for number of sent messages saved
 
-//   Move message writing to it's own view that isn't just the default.
-        // Do like an intro page then push everything to the side.
+//  Redesign intro page
 
-//   Need a main menu page type thing that links to send / options / history
-
-//   Settings page where you can customize the website and api key and such
-    // Add NSUserDefaults to save their info
     // Add a TR logo right below the credits label
+
+//  Add in an address book type menu that lets you quickly fill in the to/cc/from fields
+
 
 // TO COMMIT CHANGES through command line:
     // Terminal -- CD to ./Desktop/Teddy/tinker/MailgunServer
@@ -388,12 +386,18 @@
     [urlBox.textView addSubview:urlLbl];
     
     NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+5*SPACING, 280, 90)];
+    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+4.8*SPACING, 280, 90)];
     creditsLabel.text = [[NSString stringWithFormat:@"Created by Teddy Rowan\nVersion %@.", versionText] uppercaseString];
     [creditsLabel setLineBreakMode:NSLineBreakByWordWrapping];
     creditsLabel.textAlignment = NSTextAlignmentCenter;
     creditsLabel.numberOfLines = 2;
     [settingsLayer addSubview:creditsLabel];
+    
+    
+    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
+    logoView.center = CGPointMake(self.view.center.x, INIT_HEIGHT_LAB+7*SPACING);
+    logoView.backgroundColor = [UIColor clearColor];
+    [settingsLayer addSubview:logoView];
     
 }
 
