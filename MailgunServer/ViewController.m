@@ -224,7 +224,10 @@
     goToSend.layer.cornerRadius = 5;
     goToSend.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
     [goToSend addTarget:self action:@selector(goSendMessage) forControlEvents:UIControlEventTouchUpInside];
+    [goToSend setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
+    goToSend.clipsToBounds = YES;
     [menuLayer addSubview:goToSend];
+    
     
     UIButton *goToHistory = [[UIButton alloc] init];
     goToHistory = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -236,6 +239,7 @@
     goToHistory.layer.cornerRadius = 5;
     goToHistory.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
     [goToHistory addTarget:self action:@selector(goHistory) forControlEvents:UIControlEventTouchUpInside];
+    [goToHistory setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
     [menuLayer addSubview:goToHistory];
     
     UIButton *goToTrash = [[UIButton alloc] init];
@@ -247,6 +251,7 @@
     [goToTrash setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     goToTrash.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
     goToTrash.layer.cornerRadius = 5;
+    [goToTrash setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
     [menuLayer addSubview:goToTrash];
     
     UIButton *goToOptions = [[UIButton alloc] init];
@@ -259,6 +264,7 @@
     goToOptions.layer.cornerRadius = 5;
     goToOptions.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
     [goToOptions addTarget:self action:@selector(goSettings) forControlEvents:UIControlEventTouchUpInside];
+    [goToOptions setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
     [menuLayer addSubview:goToOptions];
     
     UIButton *goToOldSend = [[UIButton alloc] init];
@@ -271,7 +277,25 @@
     goToOldSend.layer.cornerRadius = 5;
     goToOldSend.backgroundColor = [UIColor colorWithRed:.99 green:.99 blue:.95 alpha:.8];
     [goToOldSend addTarget:self action:@selector(goOldSend) forControlEvents:UIControlEventTouchUpInside];
+    [goToOldSend setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
     [menuLayer addSubview:goToOldSend];
+    
+    UIImageView *menuMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
+    menuMGLogo.frame = CGRectMake(50, 420, 90, 90);
+    //menuMGLogo.backgroundColor = [UIColor greenColor];
+    [menuLayer addSubview:menuMGLogo];
+    
+    UIImageView *menuTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
+    menuTRLogo.frame = CGRectMake(160, 420, 90, 90);
+    //menuTRLogo.backgroundColor = [UIColor greenColor];
+    [menuLayer addSubview:menuTRLogo];
+    
+    UILabel *customMGAppLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 510, self.view.frame.size.width, 40)];
+    customMGAppLabel.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
+    customMGAppLabel.font = [UIFont systemFontOfSize:12];
+    customMGAppLabel.textColor = [UIColor blackColor];
+    customMGAppLabel.textAlignment = NSTextAlignmentCenter;
+    [menuLayer addSubview:customMGAppLabel];
     
     
     
@@ -386,19 +410,35 @@
     [urlBox.textView addSubview:urlLbl];
     
     NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+4.8*SPACING, 280, 90)];
-    creditsLabel.text = [[NSString stringWithFormat:@"Created by Teddy Rowan\nVersion %@.", versionText] uppercaseString];
-    [creditsLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+4.8*SPACING, 280, 45)];
+    creditsLabel.text = [[NSString stringWithFormat:@"Version %@.", versionText] uppercaseString];
     creditsLabel.textAlignment = NSTextAlignmentCenter;
-    creditsLabel.numberOfLines = 2;
     [settingsLayer addSubview:creditsLabel];
     
     
+    /*
     UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
     logoView.center = CGPointMake(self.view.center.x, INIT_HEIGHT_LAB+7*SPACING);
     logoView.backgroundColor = [UIColor clearColor];
     [settingsLayer addSubview:logoView];
+    */
     
+    UIImageView *settingsMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
+    settingsMGLogo.frame = CGRectMake(50, 420, 90, 90);
+    //menuMGLogo.backgroundColor = [UIColor greenColor];
+    [settingsLayer addSubview:settingsMGLogo];
+    
+    UIImageView *settingsTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
+    settingsTRLogo.frame = CGRectMake(160, 420, 90, 90);
+    //menuTRLogo.backgroundColor = [UIColor greenColor];
+    [settingsLayer addSubview:settingsTRLogo];
+    
+    UILabel *customMGAppLabelSettings = [[UILabel alloc] initWithFrame:CGRectMake(0, 510, self.view.frame.size.width, 40)];
+    customMGAppLabelSettings.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
+    customMGAppLabelSettings.font = [UIFont systemFontOfSize:12];
+    customMGAppLabelSettings.textColor = [UIColor blackColor];
+    customMGAppLabelSettings.textAlignment = NSTextAlignmentCenter;
+    [settingsLayer addSubview:customMGAppLabelSettings];
 }
 
 - (void) showHideAPIField{

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2F1148DE1D68225700D1C5E0 /* MGHistoryTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1148DD1D68225700D1C5E0 /* MGHistoryTracker.m */; };
 		2F176C441DBBFA59001BD6F9 /* TR_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F176C431DBBFA59001BD6F9 /* TR_logo.png */; };
+		2F176C481DBC0113001BD6F9 /* Mailgun180white.png in Resources */ = {isa = PBXBuildFile; fileRef = 2F176C471DBC0113001BD6F9 /* Mailgun180white.png */; };
 		2F2C4B611D691C9300B377E3 /* MGEmailPreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F2C4B601D691C9300B377E3 /* MGEmailPreviewCell.m */; };
 		2F5808A01D7F85D0005913E4 /* MGNewEntryField.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F58089F1D7F85D0005913E4 /* MGNewEntryField.m */; };
 		2FA75B2A1D6F4D470007EAFA /* MGEmailPopoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75B291D6F4D470007EAFA /* MGEmailPopoutView.m */; };
@@ -32,6 +33,7 @@
 		2F1148DC1D68225700D1C5E0 /* MGHistoryTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGHistoryTracker.h; sourceTree = "<group>"; };
 		2F1148DD1D68225700D1C5E0 /* MGHistoryTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGHistoryTracker.m; sourceTree = "<group>"; };
 		2F176C431DBBFA59001BD6F9 /* TR_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TR_logo.png; sourceTree = "<group>"; };
+		2F176C471DBC0113001BD6F9 /* Mailgun180white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mailgun180white.png; sourceTree = "<group>"; };
 		2F2C4B5F1D691C9300B377E3 /* MGEmailPreviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGEmailPreviewCell.h; sourceTree = "<group>"; };
 		2F2C4B601D691C9300B377E3 /* MGEmailPreviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGEmailPreviewCell.m; sourceTree = "<group>"; };
 		2F58089E1D7F85D0005913E4 /* MGNewEntryField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGNewEntryField.h; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				2F58089F1D7F85D0005913E4 /* MGNewEntryField.m */,
 				2FEFFB221D61833D008D6106 /* ViewController.h */,
 				2FEFFB231D61833D008D6106 /* ViewController.m */,
+				2F176C471DBC0113001BD6F9 /* Mailgun180white.png */,
 				2F176C431DBBFA59001BD6F9 /* TR_logo.png */,
 				2FB45F5A1D628EF8003B67C8 /* back35.png */,
 				2FEFFB421D61C1FB008D6106 /* lock35.png */,
@@ -218,6 +221,7 @@
 				2FEFFB291D61833D008D6106 /* Assets.xcassets in Resources */,
 				2FB45F5B1D628EF8003B67C8 /* back35.png in Resources */,
 				2FEFFB271D61833D008D6106 /* Main.storyboard in Resources */,
+				2F176C481DBC0113001BD6F9 /* Mailgun180white.png in Resources */,
 				2FEFFB451D61C1FB008D6106 /* unlock35.png in Resources */,
 				2F176C441DBBFA59001BD6F9 /* TR_logo.png in Resources */,
 				2FEFFB441D61C1FB008D6106 /* lock35.png in Resources */,
