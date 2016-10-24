@@ -20,12 +20,14 @@
 
 //  Redesign intro page
 
-    // Add a TR logo right below the credits label
-
 //  Add in an address book type menu that lets you quickly fill in the to/cc/from fields
+        // Can i just connect to contacts?
 
 // Add support for deleted messages
     // Both a deleted messages page and the capability for deleting messages
+
+// When new message send is attempted, the history entry for it isn't gradient-ed
+
 
 // TO COMMIT CHANGES through command line:
     // Terminal -- CD to ./Desktop/Teddy/tinker/MailgunServer
@@ -44,7 +46,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -196,11 +198,23 @@
     [sendButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
     [backgroundLayer addSubview:sendButton];
     
-    lockView = [[UIButton alloc] initWithFrame:CGRectMake(25, 35, 35, 35)];
+    lockView = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-25-35, 35, 35, 35)];
     lockView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lock35.png"]];
     [lockView addTarget:self action:@selector(switchLock) forControlEvents:UIControlEventTouchUpInside];
     [backgroundLayer addSubview:lockView];
     locked = YES;
+    
+    UIButton *oldBackButton = [[UIButton alloc] init];
+    oldBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    oldBackButton.frame = CGRectMake(10, 35, 60, 40);
+    oldBackButton.backgroundColor = [UIColor clearColor];
+    [oldBackButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [oldBackButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+    [oldBackButton setTitle:@"MENU" forState:UIControlStateNormal];
+    oldBackButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    oldBackButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+    [oldBackButton addTarget:self action:@selector(closeHistory) forControlEvents:UIControlEventTouchUpInside];
+    [backgroundLayer addSubview:oldBackButton];
 }
 
 
@@ -357,7 +371,7 @@
     [self.view addSubview:settingsLayer];
     
     UILabel* settingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
-    settingsLabel.text = @" SETTINGS ";
+    settingsLabel.text = @" APP SETTINGS ";
     settingsLabel.font = [UIFont boldSystemFontOfSize:18.0];
     settingsLabel.textAlignment = NSTextAlignmentCenter;
     settingsLabel.center = CGPointMake(self.view.center.x, settingsLabel.center.y);
@@ -370,7 +384,8 @@
     
     backButton = [[UIButton alloc] init];
     backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(250, 35, 60, 40);
+    //backButton.frame = CGRectMake(250, 35, 60, 40);
+    backButton.frame = CGRectMake(10, 35, 60, 40);
     backButton.backgroundColor = [UIColor clearColor];
     [backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [backButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
@@ -578,7 +593,8 @@
     
     historyBackButton = [[UIButton alloc] init];
     historyBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    historyBackButton.frame = CGRectMake(250, 35, 60, 40);
+    //historyBackButton.frame = CGRectMake(250, 35, 60, 40);
+    historyBackButton.frame = CGRectMake(10, 35, 60, 40);
     historyBackButton.backgroundColor = [UIColor clearColor];
     [historyBackButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [historyBackButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
@@ -604,6 +620,7 @@
     reSendButton.backgroundColor = [UIColor clearColor];
     [reSendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [reSendButton setTitle:@"  Send" forState:UIControlStateNormal];
+    [reSendButton addTarget:self action:@selector(sendMessageNew) forControlEvents:UIControlEventTouchUpInside];
     [reSendingLayer addSubview:reSendButton];
     
     UIButton *reCancelButton = [[UIButton alloc] init];
@@ -625,22 +642,22 @@
     int initHeight = 90;
     int fieldSpacing = 32;
     
-    MGNewEntryField *toEntryField = [[MGNewEntryField alloc] initWithHeight:30];
+    toEntryField = [[MGNewEntryField alloc] initWithHeight:30];
     toEntryField.frame = CGRectMake(0, initHeight, toEntryField.frame.size.width, toEntryField.frame.size.height);
     toEntryField.entryLabel.text = @"TO:";
     [reSendingLayer addSubview:toEntryField];
     
-    MGNewEntryField *ccEntryField = [[MGNewEntryField alloc] initWithHeight:30];
+    ccEntryField = [[MGNewEntryField alloc] initWithHeight:30];
     ccEntryField.frame = CGRectMake(0, initHeight + 1*fieldSpacing, ccEntryField.frame.size.width, ccEntryField.frame.size.height);
     ccEntryField.entryLabel.text = @"CC:";
     [reSendingLayer addSubview:ccEntryField];
     
-    MGNewEntryField *fromEntryField = [[MGNewEntryField alloc] initWithHeight:30];
+    fromEntryField = [[MGNewEntryField alloc] initWithHeight:30];
     fromEntryField.frame = CGRectMake(0, initHeight + 2*fieldSpacing, fromEntryField.frame.size.width, fromEntryField.frame.size.height);
     fromEntryField.entryLabel.text = @"FROM:";
     [reSendingLayer addSubview:fromEntryField];
 
-    MGNewEntryField *subjEntryField = [[MGNewEntryField alloc] initWithHeight:30];
+    subjEntryField = [[MGNewEntryField alloc] initWithHeight:30];
     subjEntryField.frame = CGRectMake(0, initHeight + 3*fieldSpacing, subjEntryField.frame.size.width, subjEntryField.frame.size.height);
     subjEntryField.entryLabel.text = @"SUBJECT:";
     subjEntryField.entryView.autocorrectionType = UITextAutocorrectionTypeYes;
@@ -649,7 +666,8 @@
     
     
     /* --- MESSAGE FIELD:  ----- */
-    UITextView *messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, 320, 300)];
+    //UITextView *messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, 320, 300)];
+    messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, 320, 300)];
     messageEntryField.font = [UIFont systemFontOfSize:12];
     messageEntryField.delegate = (id)self;
     [reSendingLayer addSubview:messageEntryField];
@@ -695,6 +713,8 @@
         historyLayer.center = CGPointMake(480, historyLayer.center.y);
         backgroundLayer.center = CGPointMake(480, backgroundLayer.center.y);
     } completion:^(BOOL finished) {}];
+    
+    [self.view endEditing:YES];
 }
 
 
@@ -713,8 +733,8 @@
                                              to:toBox.textView.text
                                         subject:subjectBox.textView.text
                                            body:messageBox.textView.text];
+    //UIImage *catImage = [UIImage imageNamed:@"sad_face.png"];
     //[message addImage:catImage withName:@"sad_face.png" type:PNGFileType];
-    
     
     UIAlertController* alert2 = [UIAlertController  alertControllerWithTitle:@"Mailgun TR"
                                                                      message:@"To be set later."
@@ -741,23 +761,56 @@
         [self addToHistory:message withSuccess:NO];
         [self addSentEntry];
     }];
-
-    
-    /*
-     Mailgun *mailgun = [Mailgun clientWithDomain:@"teddyrowan.com" apiKey:@"key-9a01fe9d60afece3eeda648f0d90206a"];
-     UIImage *catImage = [UIImage imageNamed:@"sad_face.png"];
-     MGMessage *message = [MGMessage messageFrom:@"Teddy Rowan <teddy@teddyrowan.com>"
-     to:@"Edward Rowan <edward.rowan@alumni.ubc.ca>"
-     subject:@"Figured out how to send images"
-     body:@"But I still can't send PDFs... welp."];
-     [message addImage:catImage withName:@"sad_face.png" type:PNGFileType];
-     [mailgun sendMessage:message success:^(NSString *messageId) {
-     NSLog(@"Message %@ sent successfully!", messageId);
-     } failure:^(NSError *error) {
-     NSLog(@"Error sending message. The error was: %@", [error userInfo]);
-     }];
-     */
 }
+
+// From new sending form
+- (void)sendMessageNew{
+    NSLog(@"got to here");
+    
+    Mailgun *mailgun = [Mailgun clientWithDomain:mailgunURL apiKey:API_KEY];
+    MGMessage *message = [MGMessage messageFrom:fromEntryField.entryView.text
+                                             to:toEntryField.entryView.text
+                                        subject:subjEntryField.entryView.text
+                                           body:messageEntryField.text];
+    //UIImage *catImage = [UIImage imageNamed:@"sad_face.png"];
+    //[message addImage:catImage withName:@"sad_face.png" type:PNGFileType];
+    
+    // add cc only if it isn't empty
+    //if (![ccEntryField.entryView.text isEqualToString:@""]){
+    //    [message addCc:ccEntryField.entryView.text];
+    //}
+    
+    UIAlertController* alert2 = [UIAlertController  alertControllerWithTitle:@"Mailgun TR"
+                                                                     message:@"To be set later."
+                                                              preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* ok = [UIAlertAction
+                         actionWithTitle:@"OK"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [alert2 dismissViewControllerAnimated:YES completion:nil];}];
+    
+    
+    [alert2 setMessage:@"Attempting to send message. Please wait."];
+    [self presentViewController:alert2 animated:YES completion:nil];
+    
+    [mailgun sendMessage:message success:^(NSString *messageId) {
+        NSLog(@"Message %@ sent successfully!", messageId);
+        [alert2 setMessage:@"Message Sent Successfully!"];
+        //[self presentViewController:alert2 animated:YES completion:nil];
+        [alert2 addAction:ok];
+        [self addToHistory:message withSuccess:YES];
+        [self addSentEntry];
+    } failure:^(NSError *error) {
+        NSLog(@"Error sending message. The error was: %@", [error userInfo]);
+        [alert2 setMessage:@"Message Failed to Send."];
+        [alert2 addAction:ok];
+        //[self presentViewController:alert2 animated:YES completion:nil];
+        [self addToHistory:message withSuccess:NO];
+        [self addSentEntry];
+    }];
+}
+
 
 // Move the background layer back into place and make sure the subjLbl message is there if it should be
 - (void)textViewDidEndEditing:(UITextView *)theTextView{
@@ -768,7 +821,15 @@
     if (theTextView == messageBox.textView){
         [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
             backgroundLayer.center = CGPointMake(backgroundLayer.center.x, backgroundLayer.center.y+210);
-        } completion:^(BOOL finished) {}];    }
+        } completion:^(BOOL finished) {}];
+    }
+    
+    // New sending form
+    if (theTextView == messageEntryField){
+        [UIView animateWithDuration:.5 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+            reSendingLayer.center = CGPointMake(reSendingLayer.center.x, reSendingLayer.center.y+120);
+        } completion:^(BOOL finished) {}];
+    }
 }
 
 // Move the background layer if you're editting the message box so that you can see the whole box
@@ -778,6 +839,16 @@
              backgroundLayer.center = CGPointMake(backgroundLayer.center.x, backgroundLayer.center.y-210);
          } completion:^(BOOL finished) {}];
     }
+    
+    
+    // New sending form
+    if (theTextView == messageEntryField){
+        [UIView animateWithDuration:.5 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+            reSendingLayer.center = CGPointMake(reSendingLayer.center.x, reSendingLayer.center.y-120);
+        } completion:^(BOOL finished) {}];
+    }
+    
+    
 }
 
 // Check on whether the subjLbl message should be there or not

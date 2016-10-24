@@ -70,8 +70,13 @@
     UIButton *historyBackButton;
     
     
-    /* ----- New Sending View ----- */
+    /* ----- New Sending View ----- */ // Fields are needed to grab the text when you're sending a message
     UIView *reSendingLayer;
+    UITextView *messageEntryField;
+    MGNewEntryField *subjEntryField;
+    MGNewEntryField *fromEntryField;
+    MGNewEntryField *ccEntryField;
+    MGNewEntryField *toEntryField;
     
     
     /* ---- Menu Layer ----- */
@@ -84,7 +89,11 @@
 @property (nonatomic, retain) UIView* reSendingLayer;
 
 @property (nonatomic, retain) UIView* menuLayer;
-
+@property (nonatomic, retain) UITextView* messageEntryField;
+@property (nonatomic, retain) MGNewEntryField* subjEntryField;
+@property (nonatomic, retain) MGNewEntryField* fromEntryField;
+@property (nonatomic, retain) MGNewEntryField* ccEntryField;
+@property (nonatomic, retain) MGNewEntryField* toEntryField;
 
 @property (nonatomic, retain) NSUserDefaults* userPreferences;
 @property (nonatomic, retain) MGHistoryTracker* histMessage;
@@ -172,6 +181,8 @@
 - (void) reShiftWindow;
 
 - (void) showHideAPIField;
+
+- (void) sendMessageNew;
 
 @end
 
