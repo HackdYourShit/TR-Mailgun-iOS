@@ -83,8 +83,19 @@
     UIView *menuLayer;
     
     
+    /* ---- Message View Layer ---- */
+    UIView *messageView;
+    //UILabel *MVSenderLabel;
+    //UILabel *MVRecipientLabel;
+    //UILabel *MVCCLabel;
+    //UILabel *MVMessageLabel;
+    UIButton *MVBackButton;
+    
 
 }
+
+@property (nonatomic, retain) UIView* messageView;
+@property (nonatomic, retain) UIButton* MVBackButton;
 
 @property (nonatomic, retain) UIView* reSendingLayer;
 
@@ -181,8 +192,11 @@
 - (void) reShiftWindow;
 
 - (void) showHideAPIField;
-
 - (void) sendMessageNew;
+
+- (void)selectCell:(id) sender;
+- (void)loadMessageLayerWithIndex:(int)index;
+- (void)MVGoBack;
 
 @end
 

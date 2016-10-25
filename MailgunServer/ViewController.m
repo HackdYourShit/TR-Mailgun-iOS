@@ -46,7 +46,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -571,6 +571,10 @@
         messageGradient.cornerRadius = messageCell.layer.cornerRadius;
         [messageCell.layer addSublayer:messageGradient];
         
+        messageCell.popoutButton.titleLabel.text = [NSString stringWithFormat:@"%d", i];
+        
+        //[messageCell.popoutButton addTarget:self action:@selector(myTestWithAnInteger:) forControlEvents:UIControlEventTouchUpInside];
+        [messageCell.popoutButton addTarget:self action:@selector(selectCell:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     NSLog(@"filled: %d", histMessage.filled);
@@ -941,7 +945,6 @@
     [histSubject addEntry:message.subject];
     [histSender addEntry:message.from];
     
-    
     [histRecipient addEntry:message.to[0]]; // for now only track the first recipient
     
     if (success){
@@ -1011,5 +1014,116 @@
     
 }
 
+
+- (void)selectCell:(id) sender{
+    UIButton *btn = (UIButton*) sender;
+    int index = [btn.titleLabel.text intValue];
+    NSLog(@"selected index: %d", index);
+    [self loadMessageLayerWithIndex:index];
+}
+
+- (void)loadMessageLayerWithIndex:(int)index{
+    messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [self.view addSubview:messageView];
+    messageView.backgroundColor = [UIColor whiteColor];
+    
+    /*
+     [messageCell populateWithRecipient:[histRecipient objectForKey:[NSString stringWithFormat:@"%d",i]]
+     withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",i]]
+     withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",i]]
+     withDate:[histDate objectForKey:[NSString stringWithFormat:@"%d",i]]
+     withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",i]]
+     withNumber:i];
+     */
+    
+    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 80, 150, 20)];
+    dateLabel.text = @"SENT: ";
+    dateLabel.font = [UIFont boldSystemFontOfSize:16];
+    [messageView addSubview:dateLabel];
+
+    UILabel *MVDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 100, 300, 30)];
+    MVDateLabel.text = [histDate objectForKey:[NSString stringWithFormat:@"%d",index]];
+    MVDateLabel.font = [UIFont systemFontOfSize:14];
+    [messageView addSubview:MVDateLabel];
+    
+    
+    UILabel *toLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 140, 150, 20)];
+    toLabel.text = @"TO: ";
+    toLabel.font = [UIFont boldSystemFontOfSize:16];
+    [messageView addSubview:toLabel];
+    
+    UILabel *MVToLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 300, 30)];
+    MVToLabel.text = [histRecipient objectForKey:[NSString stringWithFormat:@"%d",index]];
+    MVToLabel.font = [UIFont systemFontOfSize:14];
+    [messageView addSubview:MVToLabel];
+    
+    
+    UILabel *fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 200, 150, 20)];
+    fromLabel.text = @"SENDER: ";
+    fromLabel.font = [UIFont boldSystemFontOfSize:16];
+    [messageView addSubview:fromLabel];
+    
+    UILabel *MVFromLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 220, 300, 30)];
+    MVFromLabel.text = [histSender objectForKey:[NSString stringWithFormat:@"%d",index]];
+    MVFromLabel.font = [UIFont systemFontOfSize:14];
+    [messageView addSubview:MVFromLabel];
+    
+    
+    UILabel *subjectLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 260, 150, 20)];
+    subjectLabel.text = @"SUBJECT: ";
+    subjectLabel.font = [UIFont boldSystemFontOfSize:16];
+    [messageView addSubview:subjectLabel];
+    
+    UILabel *MVSubjectLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 280, 300, 30)];
+    MVSubjectLabel.text = [histSubject objectForKey:[NSString stringWithFormat:@"%d",index]];
+    MVSubjectLabel.font = [UIFont systemFontOfSize:14];
+    [messageView addSubview:MVSubjectLabel];
+    
+    
+    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 320, 150, 20)];
+    messageLabel.text = @"MESSAGE: ";
+    messageLabel.font = [UIFont boldSystemFontOfSize:16];
+    [messageView addSubview:messageLabel];
+    
+    UILabel *MVMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 340, 300, 90)];
+    MVMessageLabel.text = [histMessage objectForKey:[NSString stringWithFormat:@"%d",index]];
+    MVMessageLabel.font = [UIFont systemFontOfSize:14];
+    MVMessageLabel.numberOfLines = 0;
+    [MVMessageLabel sizeToFit];
+    [messageView addSubview:MVMessageLabel];
+    
+                      
+    MVBackButton = [[UIButton alloc] init];
+    MVBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    MVBackButton.frame = CGRectMake(10, 35, 60, 40);
+    [MVBackButton setTitle:@"HISTORY" forState:UIControlStateNormal];
+    MVBackButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    MVBackButton.backgroundColor = [UIColor clearColor];
+    [MVBackButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [MVBackButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+    MVBackButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+    [MVBackButton addTarget:self action:@selector(MVGoBack) forControlEvents:UIControlEventTouchUpInside];
+    [messageView addSubview:MVBackButton];
+    
+    UILabel* viewTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
+    viewTitleLabel.text = @" SENT MESSAGE ";
+    viewTitleLabel.font = [UIFont boldSystemFontOfSize:18.0];
+    viewTitleLabel.textAlignment = NSTextAlignmentCenter;
+    viewTitleLabel.center = CGPointMake(self.view.center.x, viewTitleLabel.center.y);
+    [messageView addSubview:viewTitleLabel];
+    
+    
+    
+    
+}
+
+// This should just clear all of it.
+- (void) MVGoBack{
+    for (UIView* cont in [messageView subviews]){
+        [cont removeFromSuperview];
+    }
+    
+    [messageView removeFromSuperview];
+}
 
 @end

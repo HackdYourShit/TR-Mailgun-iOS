@@ -29,7 +29,9 @@
     popoutButton = [MGEmailPopoutView buttonWithType:UIButtonTypeCustom];
     popoutButton.frame = CGRectMake(0, 0, 320, 70);
     [popoutButton setBackgroundColor:[UIColor clearColor]];
-    [popoutButton addTarget:self action:@selector(popMessage) forControlEvents:UIControlEventTouchUpInside];
+    
+    // making this into a global function now that will populate one specific premade layer
+    //[popoutButton addTarget:self action:@selector(popMessage) forControlEvents:UIControlEventTouchUpInside];
 
     
     self.frame = CGRectMake(0, 0, 320, 70);
