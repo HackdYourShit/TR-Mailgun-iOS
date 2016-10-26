@@ -72,7 +72,7 @@
     recipientLabel.font = [UIFont systemFontOfSize:12];
     dateLabel.font = [UIFont systemFontOfSize:11];
     subjectLabel.font = [UIFont systemFontOfSize:11];
-    successLabel.font = [UIFont systemFontOfSize:12];
+    successLabel.font = [UIFont boldSystemFontOfSize:12];
     successLabel.textAlignment = NSTextAlignmentRight;
     
     messageLabel.textColor = [UIColor grayColor];

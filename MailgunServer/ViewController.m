@@ -8,7 +8,6 @@
 //   Add extra inputs for your name when sending / receiving?
 //   Bit of reformatting to look more like Mail app
 
-//   Add the ability to popout the sent messages into a full message view.
 
 //   Refactor ViewController.m
         // Lots of duplicates for the Lbl stuff aka the preview shit
@@ -79,11 +78,10 @@
     [histArray addObject:histDate];
     [histArray addObject:histStatus];
     
-    
     [self setStorageLimit:50];
     //[self printTrackers];
     //[self clearTrackers];
-    [self printTrackers];
+    //[self printTrackers];
     
     [self loadBackgroundLayer];
     [self loadSettingsLayer];
