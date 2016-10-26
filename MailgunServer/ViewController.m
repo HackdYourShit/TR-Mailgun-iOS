@@ -47,7 +47,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -643,7 +643,7 @@
     [reCancelButton addTarget:self action:@selector(reShiftWindow) forControlEvents:UIControlEventTouchUpInside];
     [reSendingLayer addSubview:reCancelButton];
     
-    UILabel *composeLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 40, 180, 40)];
+    composeLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 40, 140, 40)];
     composeLabel.text = @"New Message";
     composeLabel.textColor = [UIColor blackColor];
     composeLabel.textAlignment = NSTextAlignmentCenter;
@@ -674,6 +674,7 @@
     subjEntryField.entryView.autocorrectionType = UITextAutocorrectionTypeYes;
     subjEntryField.entryView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
     [reSendingLayer addSubview:subjEntryField];
+    [subjEntryField.entryView addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     
     /* --- MESSAGE FIELD:  ----- */
@@ -697,6 +698,7 @@
 }
 
 - (void) goHistory{
+    [self loadHistoryLayer];
     [self.view bringSubviewToFront:historyLayer];
     [self shiftWindow];
 }
@@ -867,6 +869,17 @@
     if(![fromBox.textView hasText]) {fromLbl.hidden = NO;}else{fromLbl.hidden = YES;}
     if(![apiBox.textView hasText]) {apiLbl.hidden = NO;}else{apiLbl.hidden = YES;}
     if(![urlBox.textView hasText]) {urlLbl.hidden = NO;}else{urlLbl.hidden = YES;}
+}
+
+// For auto changing the label to the email message
+- (void) textFieldDidChange:(UITextField *)textField{
+    if ([subjEntryField.entryView isEqual:textField]){
+        if ([textField hasText]){
+            composeLabel.text = textField.text;
+        } else {
+            composeLabel.text = @"New Message";
+        }
+    }
 }
 
 // Lock / Unlock sending of messages. Designed to prevent accidental and double sending.

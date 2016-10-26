@@ -77,6 +77,7 @@
     MGNewEntryField *fromEntryField;
     MGNewEntryField *ccEntryField;
     MGNewEntryField *toEntryField;
+    UILabel *composeLabel;
     
     
     /* ---- Menu Layer ----- */
@@ -94,6 +95,7 @@
 
 }
 
+@property (nonatomic, retain) UILabel* composeLabel;
 @property (nonatomic, retain) UIView* messageView;
 @property (nonatomic, retain) UIButton* MVBackButton;
 
