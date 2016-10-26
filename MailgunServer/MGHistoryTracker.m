@@ -24,7 +24,7 @@
 
 - (void) clearHistory{
     for (int i = 1; i<=capacity; i++){
-        [self setObject:nil forKey:[NSString stringWithFormat:@"%d",i]];
+        [self setObject:@" " forKey:[NSString stringWithFormat:@"%d",i]];
     }
 }
 
@@ -36,24 +36,24 @@
 
 - (void) addEntry:(NSString *)entry{
     for (int i=(capacity-1); i>0; i--){
-        if ([self objectForKey:[NSString stringWithFormat:@"%d", i]] != nil){
-            [self setObject:[self objectForKey:[NSString stringWithFormat:@"%d", i]] forKey:[NSString stringWithFormat:@"%d",i+1]];
-        }
+//        if (!([[self objectForKey:[NSString stringWithFormat:@"%d", i]] isEqualToString:@" "] || ([self objectForKey:[NSString stringWithFormat:@"%d", i]] == nil))){
+              [self setObject:[self objectForKey:[NSString stringWithFormat:@"%d", i]] forKey:[NSString stringWithFormat:@"%d",i+1]];
+  //      }
     }
     [self setObject:entry forKey:@"1"];
-    filled ++;
+    
+    if (filled < capacity){filled ++;}
 }
 
 - (int) checkFill{
-    for (int i=1; i<=capacity; i++)
-    {
-        if ([self objectForKey:[NSString stringWithFormat:@"%d", i]] != nil){
+    for (int i=1; i<=capacity; i++){
+        if (!([[self objectForKey:[NSString stringWithFormat:@"%d", i]] isEqualToString:@" "] || ([self objectForKey:[NSString stringWithFormat:@"%d", i]] == nil))){
             filled = i;
         } else {
             return i-1;
         }
     }
-    return 0;
+    return capacity;
 }
 
 

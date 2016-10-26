@@ -14,6 +14,8 @@
         // No comments..
         // Ordering of functions is fucking awful.
 
+// There's some nasty bug right now with when you send an empty message. Right now it's not displaying any others.
+
 //   Add CC and multiple sending tracking status.
 //   Add button in settings page for number of sent messages saved
 
@@ -51,6 +53,7 @@
     [super viewDidLoad];
     activeField = [[UITextView alloc] init];
     
+    
     userPreferences = [[NSUserDefaults alloc] initWithSuiteName:@"preferences"];
     //API_KEY = [userPreferences objectForKey:@"api_key"];
     //mailgunURL = [userPreferences objectForKey:@"mail_url"];
@@ -58,12 +61,12 @@
     mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
     
     
-    histMessage = [[MGHistoryTracker alloc] initWithSuiteName:@"messageTracker"];
-    histRecipient = [[MGHistoryTracker alloc] initWithSuiteName:@"recipientTracker"];
-    histSubject = [[MGHistoryTracker alloc] initWithSuiteName:@"subjectTracker"];
-    histSender = [[MGHistoryTracker alloc] initWithSuiteName:@"senderTracker"];
-    histDate = [[MGHistoryTracker alloc] initWithSuiteName:@"dateTracker"];
-    histStatus = [[MGHistoryTracker alloc] initWithSuiteName:@"statusTracker"];
+    histMessage = [[MGHistoryTracker alloc] initWithSuiteName:@"messageTracker2"];
+    histRecipient = [[MGHistoryTracker alloc] initWithSuiteName:@"recipientTracker2"];
+    histSubject = [[MGHistoryTracker alloc] initWithSuiteName:@"subjectTracker2"];
+    histSender = [[MGHistoryTracker alloc] initWithSuiteName:@"senderTracker2"];
+    histDate = [[MGHistoryTracker alloc] initWithSuiteName:@"dateTracker2"];
+    histStatus = [[MGHistoryTracker alloc] initWithSuiteName:@"statusTracker2"];
     histMessage.title = @"messages";
     histRecipient.title = @"recipient";
     histSubject.title = @"subject";
@@ -78,17 +81,21 @@
     [histArray addObject:histDate];
     [histArray addObject:histStatus];
     
-    [self setStorageLimit:50];
+    
+    
+    [self setStorageLimit:25];
     //[self printTrackers];
     //[self clearTrackers];
-    //[self printTrackers];
-    
+    //[self clearTrackers];
+    [self printTrackers];
+
     [self loadBackgroundLayer];
     [self loadSettingsLayer];
     [self loadHistoryLayer];
     [self loadNewSendingLayer];
     [self loadMenuLayer];
-    
+
+
 }
 
 // Old send message form
@@ -542,7 +549,9 @@
     [historyLayer addSubview:historyScroll];
     
     int filledCapacity = [self findLargestHistory];
-        
+    
+    NSLog(@"filledCapacity: %d", filledCapacity);
+    
     for (int i = 1; i<=filledCapacity; i++){
         MGEmailPreviewCell *messageCell = [[MGEmailPreviewCell alloc] init];
         [messageCell awakeFromNib];
@@ -575,8 +584,8 @@
         [messageCell.popoutButton addTarget:self action:@selector(selectCell:) forControlEvents:UIControlEventTouchUpInside];
     }
     
-    NSLog(@"filled: %d", histMessage.filled);
-    historyScroll.contentSize = CGSizeMake(320, histMessage.filled*70);
+    NSLog(@"filled: %d", filledCapacity);
+    historyScroll.contentSize = CGSizeMake(320, filledCapacity*70);
     [historyScroll setScrollEnabled:YES];
     [self.view addSubview:historyLayer];
     
@@ -799,7 +808,6 @@
     [mailgun sendMessage:message success:^(NSString *messageId) {
         NSLog(@"Message %@ sent successfully!", messageId);
         [alert2 setMessage:@"Message Sent Successfully!"];
-        //[self presentViewController:alert2 animated:YES completion:nil];
         [alert2 addAction:ok];
         [self addToHistory:message withSuccess:YES];
         [self addSentEntry];
@@ -807,7 +815,6 @@
         NSLog(@"Error sending message. The error was: %@", [error userInfo]);
         [alert2 setMessage:@"Message Failed to Send."];
         [alert2 addAction:ok];
-        //[self presentViewController:alert2 animated:YES completion:nil];
         [self addToHistory:message withSuccess:NO];
         [self addSentEntry];
     }];
@@ -939,11 +946,30 @@
 
 
 - (void)addToHistory:(MGMessage *)message withSuccess:(BOOL)success{
-    [histMessage addEntry:message.text];
-    [histSubject addEntry:message.subject];
-    [histSender addEntry:message.from];
+    if ([message.text isEqualToString:@""] || message.text == nil){
+        [histMessage addEntry:@"- NO MESSAGE -"];
+    } else {
+        [histMessage addEntry:message.text];
+    }
     
-    [histRecipient addEntry:message.to[0]]; // for now only track the first recipient
+    if ([message.subject isEqualToString:@""] || message.subject == nil){
+        [histSubject addEntry:@"- NO SUBJECT-"];
+    } else {
+        [histSubject addEntry:message.subject];
+    }
+    
+    if ([message.from isEqualToString:@""] || message.from == nil){
+        [histSender addEntry:@"- NO SENDER -"];
+    } else {
+        [histSender addEntry:message.from];
+    }
+    
+    if ([message.to[0] isEqualToString:@""] || message.to[0] == nil){
+        [histRecipient addEntry:@"- NO RECIPIENT -"];
+    } else {
+        [histRecipient addEntry:message.to[0]]; // for now only track the first recipient
+    }
+    
     
     if (success){
         [histStatus addEntry:@"SENT"];
@@ -954,6 +980,14 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"MMM d, yyyy HH:mm:ss";
     [histDate addEntry:[formatter stringFromDate:[NSDate date]]];
+    
+    [histMessage synchronize];
+    [histRecipient synchronize];
+    [histSubject synchronize];
+    [histStatus synchronize];
+    [histSender synchronize];
+    [histDate synchronize];
+    
 }
 
 - (void) closeHistory{
@@ -969,13 +1003,14 @@
 
 - (void) clearTrackers{
     for (MGHistoryTracker* track in histArray){
+        NSLog(@"Clearing: %@", track.title);
         [track clearHistory];
     }
 }
 
 - (void) printTrackers{
     for (MGHistoryTracker* track in histArray){
-        NSLog(@"Printing %@", track.title);
+        NSLog(@"Printing: %@", track.title);
         [track printTracker];
     }
     
@@ -985,6 +1020,8 @@
     int largest = 0;
     
     for (MGHistoryTracker* track in histArray){
+        NSLog(@"checking: %@", track.title);
+        NSLog(@"checkFill: %d", [track checkFill]);
         if ([track checkFill] > largest){
             largest = [track checkFill];
         }
@@ -1025,6 +1062,9 @@
     [self.view addSubview:messageView];
     messageView.backgroundColor = [UIColor whiteColor];
     
+    UIScrollView *messageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, self.view.frame.size.width, 600)];
+    [messageView addSubview:messageScrollView];
+    
     /*
      [messageCell populateWithRecipient:[histRecipient objectForKey:[NSString stringWithFormat:@"%d",i]]
      withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",i]]
@@ -1034,63 +1074,70 @@
      withNumber:i];
      */
     
-    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 80, 150, 20)];
+    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 150, 20)];
     dateLabel.text = @"SENT: ";
     dateLabel.font = [UIFont boldSystemFontOfSize:16];
-    [messageView addSubview:dateLabel];
+    [messageScrollView addSubview:dateLabel];
 
-    UILabel *MVDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 100, 300, 30)];
+    UILabel *MVDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 40, 300, 30)];
     MVDateLabel.text = [histDate objectForKey:[NSString stringWithFormat:@"%d",index]];
     MVDateLabel.font = [UIFont systemFontOfSize:14];
-    [messageView addSubview:MVDateLabel];
+    [messageScrollView addSubview:MVDateLabel];
     
     
-    UILabel *toLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 140, 150, 20)];
+    UILabel *toLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 80, 150, 20)];
     toLabel.text = @"TO: ";
     toLabel.font = [UIFont boldSystemFontOfSize:16];
-    [messageView addSubview:toLabel];
+    [messageScrollView addSubview:toLabel];
     
-    UILabel *MVToLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 300, 30)];
+    UILabel *MVToLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 100, 300, 30)];
     MVToLabel.text = [histRecipient objectForKey:[NSString stringWithFormat:@"%d",index]];
     MVToLabel.font = [UIFont systemFontOfSize:14];
-    [messageView addSubview:MVToLabel];
+    [messageScrollView addSubview:MVToLabel];
     
     
-    UILabel *fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 200, 150, 20)];
+    UILabel *fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 140, 150, 20)];
     fromLabel.text = @"SENDER: ";
     fromLabel.font = [UIFont boldSystemFontOfSize:16];
-    [messageView addSubview:fromLabel];
+    [messageScrollView addSubview:fromLabel];
     
-    UILabel *MVFromLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 220, 300, 30)];
+    UILabel *MVFromLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 160, 300, 30)];
     MVFromLabel.text = [histSender objectForKey:[NSString stringWithFormat:@"%d",index]];
     MVFromLabel.font = [UIFont systemFontOfSize:14];
-    [messageView addSubview:MVFromLabel];
+    [messageScrollView addSubview:MVFromLabel];
     
     
-    UILabel *subjectLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 260, 150, 20)];
+    UILabel *subjectLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 200, 150, 20)];
     subjectLabel.text = @"SUBJECT: ";
     subjectLabel.font = [UIFont boldSystemFontOfSize:16];
-    [messageView addSubview:subjectLabel];
+    [messageScrollView addSubview:subjectLabel];
     
-    UILabel *MVSubjectLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 280, 300, 30)];
+    UILabel *MVSubjectLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 220, 300, 30)];
     MVSubjectLabel.text = [histSubject objectForKey:[NSString stringWithFormat:@"%d",index]];
     MVSubjectLabel.font = [UIFont systemFontOfSize:14];
-    [messageView addSubview:MVSubjectLabel];
+    [messageScrollView addSubview:MVSubjectLabel];
     
     
-    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 320, 150, 20)];
+    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 260, 150, 20)];
     messageLabel.text = @"MESSAGE: ";
     messageLabel.font = [UIFont boldSystemFontOfSize:16];
-    [messageView addSubview:messageLabel];
+    [messageScrollView addSubview:messageLabel];
     
-    UILabel *MVMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 340, 300, 90)];
+    UILabel *MVMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 280, 280, 400)];
     MVMessageLabel.text = [histMessage objectForKey:[NSString stringWithFormat:@"%d",index]];
     MVMessageLabel.font = [UIFont systemFontOfSize:14];
     MVMessageLabel.numberOfLines = 0;
     [MVMessageLabel sizeToFit];
-    [messageView addSubview:MVMessageLabel];
+    [messageScrollView addSubview:MVMessageLabel];
     
-                      
+    messageScrollView.contentSize = CGSizeMake(self.view.frame.size.width, MVMessageLabel.frame.origin.y + MVMessageLabel.frame.size.height + 100);
+    
+    
+    // to block word scrolling behind title
+    UIView *whiteBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 75)];
+    whiteBackground.backgroundColor = [UIColor whiteColor];
+    [messageView addSubview:whiteBackground];
+    
     MVBackButton = [[UIButton alloc] init];
     MVBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
     MVBackButton.frame = CGRectMake(10, 35, 60, 40);
