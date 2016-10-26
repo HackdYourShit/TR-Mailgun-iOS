@@ -14,10 +14,8 @@
         // No comments..
         // Ordering of functions is fucking awful.
 
-// There's some nasty bug right now with when you send an empty message. Right now it's not displaying any others.
-
 //   Add CC and multiple sending tracking status.
-//   Add button in settings page for number of sent messages saved
+//   Make capacity tuneable in app
 
 //  Redesign intro page
 
@@ -26,8 +24,6 @@
 
 // Add support for deleted messages
     // Both a deleted messages page and the capability for deleting messages
-
-// When new message send is attempted, the history entry for it isn't gradient-ed
 
 
 // TO COMMIT CHANGES through command line:
@@ -57,7 +53,7 @@
     userPreferences = [[NSUserDefaults alloc] initWithSuiteName:@"preferences"];
     //API_KEY = [userPreferences objectForKey:@"api_key"];
     //mailgunURL = [userPreferences objectForKey:@"mail_url"];
-    API_KEY = [[NSString alloc] initWithFormat:@"key-9a01fe9d60afece3eeda648f0d90206a"];
+    API_KEY = [[NSString alloc] initWithFormat:@"key-e0a9097a1bb7c65df36f9df5cf00ab25"];
     mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
     
     
