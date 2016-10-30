@@ -13,6 +13,7 @@
 #import "MGEmailPreviewCell.h"
 
 #import "MGNewEntryField.h"
+#import <Contacts/Contacts.h>
 
 
 @interface ViewController : UIViewController

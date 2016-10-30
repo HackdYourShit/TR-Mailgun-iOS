@@ -39,6 +39,8 @@
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 480  // this is wrong. 560?
 
+//#import <AddressBook/AddressBook.h>
+
 @interface ViewController ()
 @end
 
@@ -49,13 +51,32 @@
     [super viewDidLoad];
     activeField = [[UITextView alloc] init];
     
-    
     userPreferences = [[NSUserDefaults alloc] initWithSuiteName:@"preferences"];
     //API_KEY = [userPreferences objectForKey:@"api_key"];
     //mailgunURL = [userPreferences objectForKey:@"mail_url"];
     API_KEY = [[NSString alloc] initWithFormat:@"key-e0a9097a1bb7c65df36f9df5cf00ab25"];
     mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
     
+
+    /* ---- GRABS YOUR CONTACTS EMAIL ADDRESSES ------*/
+    CNContactStore *store = [[CNContactStore alloc] init];
+    //keys with fetching properties
+    NSArray *keys = @[CNContactFamilyNameKey, CNContactGivenNameKey, CNContactPhoneNumbersKey, CNContactEmailAddressesKey,CNContactPostalAddressesKey, CNLabelWork, CNLabelDateAnniversary];
+    NSString *containerId = store.defaultContainerIdentifier;
+    NSPredicate *predicate = [CNContact predicateForContactsInContainerWithIdentifier:containerId];
+    NSError *error;
+    NSArray *cnContacts = [store unifiedContactsMatchingPredicate:predicate keysToFetch:keys error:&error];
+    NSLog(@"cnContacts %lu",(unsigned long)cnContacts.count);
+    if (error) {
+        NSLog(@"Error Grabbing Contacts");
+    } else {
+        for (CNContact *contact in cnContacts) {
+            if ([contact.emailAddresses count]){
+                NSLog(@"%@ %@", contact.givenName, contact.familyName);
+                NSLog(@"%@", contact.emailAddresses[0]);
+            }
+        }
+    }
     
     histMessage = [[MGHistoryTracker alloc] initWithSuiteName:@"messageTracker2"];
     histRecipient = [[MGHistoryTracker alloc] initWithSuiteName:@"recipientTracker2"];
