@@ -45,7 +45,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel, contactEmails;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -57,7 +57,8 @@
     API_KEY = [[NSString alloc] initWithFormat:@"key-e0a9097a1bb7c65df36f9df5cf00ab25"];
     mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
     
-
+    contactEmails = [[NSMutableDictionary alloc] init];
+    
     /* ---- GRABS YOUR CONTACTS EMAIL ADDRESSES ------*/
     CNContactStore *store = [[CNContactStore alloc] init];
     //keys with fetching properties
@@ -66,17 +67,25 @@
     NSPredicate *predicate = [CNContact predicateForContactsInContainerWithIdentifier:containerId];
     NSError *error;
     NSArray *cnContacts = [store unifiedContactsMatchingPredicate:predicate keysToFetch:keys error:&error];
-    NSLog(@"cnContacts %lu",(unsigned long)cnContacts.count);
+    //NSLog(@"cnContacts %lu",(unsigned long)cnContacts.count);
     if (error) {
         NSLog(@"Error Grabbing Contacts");
     } else {
         for (CNContact *contact in cnContacts) {
             if ([contact.emailAddresses count]){
-                NSLog(@"%@ %@", contact.givenName, contact.familyName);
-                NSLog(@"%@", contact.emailAddresses[0]);
+                //NSLog(@"%@ %@", contact.givenName, contact.familyName);
+                //NSLog(@"%@", contact.emailAddresses[0]);
+                NSString *contactName = [NSString stringWithFormat:@"%@ %@", contact.givenName, contact.familyName];
+                NSString *contactEmail = (NSString *)contact.emailAddresses[0].value;
+                [contactEmails setValue:contactEmail forKey:contactName];
             }
         }
     }
+    
+    for(NSString *key in [contactEmails allKeys]) {
+        NSLog(@"%@: %@",key, [contactEmails objectForKey:key]);
+    }
+    
     
     histMessage = [[MGHistoryTracker alloc] initWithSuiteName:@"messageTracker2"];
     histRecipient = [[MGHistoryTracker alloc] initWithSuiteName:@"recipientTracker2"];
@@ -111,7 +120,6 @@
     [self loadHistoryLayer];
     [self loadNewSendingLayer];
     [self loadMenuLayer];
-
 
 }
 
@@ -700,6 +708,22 @@
     messageEntryField.font = [UIFont systemFontOfSize:12];
     messageEntryField.delegate = (id)self;
     [reSendingLayer addSubview:messageEntryField];
+    
+    UIButton *popSend = [[UIButton alloc] init];
+    popSend = [UIButton buttonWithType:UIButtonTypeCustom];
+    //popSend.backgroundColor = [UIColor greenColor];
+    popSend.frame = CGRectMake(290, initHeight+8, 16, 16);
+    popSend.layer.cornerRadius = popSend.frame.size.height/2;
+    popSend.layer.borderWidth = 1;
+    popSend.layer.borderColor = [UIColor blackColor].CGColor;
+    [popSend setTitle:@"+" forState:UIControlStateNormal];
+    [popSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [reSendingLayer addSubview:popSend];
+    
+    MGContactPopUpList* testPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
+    testPopUp.frame = CGRectMake(100, 140, testPopUp.frame.size.width, testPopUp.frame.size.height);
+    [reSendingLayer addSubview:testPopUp];
+    
 
 }
 

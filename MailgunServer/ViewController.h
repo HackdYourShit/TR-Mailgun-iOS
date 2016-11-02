@@ -14,6 +14,7 @@
 
 #import "MGNewEntryField.h"
 #import <Contacts/Contacts.h>
+#import "MGContactPopUpList.h"
 
 
 @interface ViewController : UIViewController
@@ -32,6 +33,8 @@
     MGHistoryTracker *histStatus;
     
     NSMutableArray *histArray;
+    
+    NSMutableDictionary *contactEmails;
     
     /* ----- Mail Sending View ----- */
     UIView *backgroundLayer;
@@ -99,6 +102,8 @@
 @property (nonatomic, retain) UILabel* composeLabel;
 @property (nonatomic, retain) UIView* messageView;
 @property (nonatomic, retain) UIButton* MVBackButton;
+
+@property (nonatomic, retain) NSMutableDictionary* contactEmails;
 
 @property (nonatomic, retain) UIView* reSendingLayer;
 
