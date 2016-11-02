@@ -82,7 +82,9 @@
     MGNewEntryField *ccEntryField;
     MGNewEntryField *toEntryField;
     UILabel *composeLabel;
-    
+    MGContactPopUpList* toContactPopUp;
+    UIButton *popSendList;
+    UIButton *hideSendList;
     
     /* ---- Menu Layer ----- */
     UIView *menuLayer;
@@ -102,6 +104,10 @@
 @property (nonatomic, retain) UILabel* composeLabel;
 @property (nonatomic, retain) UIView* messageView;
 @property (nonatomic, retain) UIButton* MVBackButton;
+@property (nonatomic, retain) MGContactPopUpList* toContactPopUp;
+
+@property (nonatomic, retain) UIButton* popSendList;
+@property (nonatomic, retain) UIButton* hideSendList;
 
 @property (nonatomic, retain) NSMutableDictionary* contactEmails;
 
@@ -205,6 +211,9 @@
 - (void)selectCell:(id) sender;
 - (void)loadMessageLayerWithIndex:(int)index;
 - (void)MVGoBack;
+
+- (void) showToContactList;
+- (void) hideToContactList;
 
 @end
 

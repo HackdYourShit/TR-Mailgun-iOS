@@ -9,14 +9,16 @@
 #import "MGContactPopUpList.h"
 
 @implementation MGContactPopUpList
+@synthesize lastSelected;
 
 - (id) initWithDictionary:(NSDictionary *)contactList{
     self = [super init];
     if (self) {
         int spacing = 40;
         int count = 0;
+        lastSelected = @"";
         
-        self.frame = CGRectMake(0, 0, 200, 140);
+        self.frame = CGRectMake(0, 0, 240, 180);
         self.backgroundColor = [UIColor whiteColor];
         self.layer.borderColor = [UIColor darkGrayColor].CGColor;
         self.layer.borderWidth = 3;
@@ -73,11 +75,14 @@
     return image;
 }
 
-- (NSString *)addEmail:(id)sender{
+- (void)addEmail:(id)sender{
     UIButton* btn = (UIButton*)sender;
     NSLog(@"addEmail: %@", btn.titleLabel.text);
-    return btn.titleLabel.text;
+    lastSelected = [NSString stringWithFormat:@"%@%@,", lastSelected, btn.titleLabel.text];
 }
 
+- (NSString *)getEmails{
+    return lastSelected;
+}
 
 @end

@@ -39,13 +39,11 @@
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 480  // this is wrong. 560?
 
-//#import <AddressBook/AddressBook.h>
-
 @interface ViewController ()
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel, contactEmails;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel, contactEmails, toContactPopUp, hideSendList, popSendList;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -709,23 +707,56 @@
     messageEntryField.delegate = (id)self;
     [reSendingLayer addSubview:messageEntryField];
     
-    UIButton *popSend = [[UIButton alloc] init];
-    popSend = [UIButton buttonWithType:UIButtonTypeCustom];
-    //popSend.backgroundColor = [UIColor greenColor];
-    popSend.frame = CGRectMake(290, initHeight+8, 16, 16);
-    popSend.layer.cornerRadius = popSend.frame.size.height/2;
-    popSend.layer.borderWidth = 1;
-    popSend.layer.borderColor = [UIColor blackColor].CGColor;
-    [popSend setTitle:@"+" forState:UIControlStateNormal];
-    [popSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [reSendingLayer addSubview:popSend];
+    popSendList = [[UIButton alloc] init];
+    popSendList = [UIButton buttonWithType:UIButtonTypeCustom];
+    popSendList.backgroundColor = [UIColor greenColor];
+    popSendList.frame = CGRectMake(290, initHeight+3, 25, 25);
+    popSendList.layer.cornerRadius = popSendList.frame.size.height/2;
+    popSendList.layer.borderWidth = 1;
+    popSendList.layer.borderColor = [UIColor blackColor].CGColor;
+    popSendList.hidden = NO;
+    [popSendList setTitle:@"+" forState:UIControlStateNormal];
+    [popSendList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [popSendList addTarget:self action:@selector(showToContactList) forControlEvents:UIControlEventTouchDown];
+    [reSendingLayer addSubview:popSendList];
     
-    MGContactPopUpList* testPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
-    testPopUp.frame = CGRectMake(100, 140, testPopUp.frame.size.width, testPopUp.frame.size.height);
-    [reSendingLayer addSubview:testPopUp];
+    hideSendList = [[UIButton alloc] init];
+    hideSendList = [UIButton buttonWithType:UIButtonTypeCustom];
+    hideSendList.frame = CGRectMake(290, initHeight+3, 25, 25);
+    hideSendList.layer.cornerRadius = popSendList.frame.size.height/2;
+    hideSendList.layer.borderWidth = 1;
+    hideSendList.hidden = YES;
+    hideSendList.backgroundColor = [UIColor redColor];
+    hideSendList.layer.borderColor = [UIColor blackColor].CGColor;
+    [hideSendList setTitle:@"-" forState:UIControlStateNormal];
+    [hideSendList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [hideSendList addTarget:self action:@selector(hideToContactList) forControlEvents:UIControlEventTouchDown];
+    [reSendingLayer addSubview:hideSendList];
+    
+    toContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
+    toContactPopUp.frame = CGRectMake(60, 130, toContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
+    toContactPopUp.hidden = YES;
+    [reSendingLayer addSubview:toContactPopUp];
     
 
 }
+
+- (void) showToContactList{
+    toContactPopUp.hidden = NO;
+    toContactPopUp.lastSelected = @"";
+    hideSendList.hidden = NO;
+    popSendList.hidden = YES;
+    NSLog(@"showToContactList");
+}
+
+- (void) hideToContactList{
+    toContactPopUp.hidden = YES;
+    toEntryField.entryView.text = [NSString stringWithFormat:@"%@%@", toEntryField.entryView.text, toContactPopUp.lastSelected];
+    hideSendList.hidden = YES;
+    popSendList.hidden = NO;
+    NSLog(@"hideToContactList");
+}
+
 
 // Should really bump these together by having the view as an input to the function
 - (void) goSendMessage{

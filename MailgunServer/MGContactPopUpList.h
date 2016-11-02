@@ -10,11 +10,13 @@
 
 @interface MGContactPopUpList : UIView
 {
-    
+    NSString *lastSelected;
 }
+
+@property(nonatomic, strong) NSString* lastSelected;
 
 - (id) initWithDictionary:(NSDictionary*)contactList;
 - (UIImage *)imageWithColor:(UIColor *)color;
-- (NSString *) addEmail:(id)sender;
-
+- (void) addEmail:(id)sender;
+- (NSString *) getEmails;
 @end

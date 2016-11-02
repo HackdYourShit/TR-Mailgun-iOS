@@ -14,7 +14,7 @@
 - (id) initWithHeight:(int)height {
     self = [super init];
     if (self) {
-        self.frame = CGRectMake(0, 0, 320, height);
+        self.frame = CGRectMake(0, 0, 280, height);
         
         entryView = [[UITextField alloc] initWithFrame:CGRectMake(75, 0, self.frame.size.width-75, self.frame.size.height)];
         entryView.autocorrectionType = UITextAutocorrectionTypeNo;
