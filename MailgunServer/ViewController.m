@@ -43,7 +43,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel, contactEmails, toContactPopUp, hideSendList, popSendList;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel, contactEmails, toContactPopUp, hideSendList, popSendList, ccContactPopUp, hideCCList, popCCList;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -736,6 +736,38 @@
     toContactPopUp.hidden = YES;
     [reSendingLayer addSubview:toContactPopUp];
     
+    
+    popCCList = [[UIButton alloc] init];
+    popCCList = [UIButton buttonWithType:UIButtonTypeCustom];
+    popCCList.backgroundColor = [UIColor greenColor];
+    popCCList.frame = CGRectMake(290, initHeight+3+fieldSpacing, 25, 25);
+    popCCList.layer.cornerRadius = popCCList.frame.size.height/2;
+    popCCList.layer.borderWidth = 1;
+    popCCList.layer.borderColor = [UIColor blackColor].CGColor;
+    popCCList.hidden = NO;
+    [popCCList setTitle:@"+" forState:UIControlStateNormal];
+    [popCCList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [popCCList addTarget:self action:@selector(showCCContactList) forControlEvents:UIControlEventTouchDown];
+    [reSendingLayer addSubview:popCCList];
+    
+    hideCCList = [[UIButton alloc] init];
+    hideCCList = [UIButton buttonWithType:UIButtonTypeCustom];
+    hideCCList.frame = CGRectMake(290, initHeight+3+fieldSpacing, 25, 25);
+    hideCCList.layer.cornerRadius = hideCCList.frame.size.height/2;
+    hideCCList.layer.borderWidth = 1;
+    hideCCList.hidden = YES;
+    hideCCList.backgroundColor = [UIColor redColor];
+    hideCCList.layer.borderColor = [UIColor blackColor].CGColor;
+    [hideCCList setTitle:@"-" forState:UIControlStateNormal];
+    [hideCCList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [hideCCList addTarget:self action:@selector(hideCCContactList) forControlEvents:UIControlEventTouchDown];
+    [reSendingLayer addSubview:hideCCList];
+    
+    ccContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
+    ccContactPopUp.frame = CGRectMake(60, 130+fieldSpacing, ccContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
+    ccContactPopUp.hidden = YES;
+    [reSendingLayer addSubview:ccContactPopUp];
+    
 
 }
 
@@ -745,6 +777,7 @@
     hideSendList.hidden = NO;
     popSendList.hidden = YES;
     NSLog(@"showToContactList");
+    [self hideCCContactList];
 }
 
 - (void) hideToContactList{
@@ -753,6 +786,23 @@
     hideSendList.hidden = YES;
     popSendList.hidden = NO;
     NSLog(@"hideToContactList");
+}
+
+- (void) showCCContactList{
+    ccContactPopUp.hidden = NO;
+    ccContactPopUp.lastSelected = @"";
+    hideCCList.hidden = NO;
+    popCCList.hidden = YES;
+    NSLog(@"showCCContactList");
+    [self hideToContactList];
+}
+
+- (void) hideCCContactList{
+    ccContactPopUp.hidden = YES;
+    ccEntryField.entryView.text = [NSString stringWithFormat:@"%@%@", ccEntryField.entryView.text, ccContactPopUp.lastSelected];
+    hideCCList.hidden = YES;
+    popCCList.hidden = NO;
+    NSLog(@"hideCCContactList");
 }
 
 

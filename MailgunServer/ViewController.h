@@ -86,6 +86,10 @@
     UIButton *popSendList;
     UIButton *hideSendList;
     
+    MGContactPopUpList* ccContactPopUp;
+    UIButton *popCCList;
+    UIButton *hideCCList;
+    
     /* ---- Menu Layer ----- */
     UIView *menuLayer;
     
@@ -104,10 +108,15 @@
 @property (nonatomic, retain) UILabel* composeLabel;
 @property (nonatomic, retain) UIView* messageView;
 @property (nonatomic, retain) UIButton* MVBackButton;
-@property (nonatomic, retain) MGContactPopUpList* toContactPopUp;
 
+@property (nonatomic, retain) MGContactPopUpList* toContactPopUp;
 @property (nonatomic, retain) UIButton* popSendList;
 @property (nonatomic, retain) UIButton* hideSendList;
+
+@property (nonatomic, retain) MGContactPopUpList* ccContactPopUp;
+@property (nonatomic, retain) UIButton* popCCList;
+@property (nonatomic, retain) UIButton* hideCCList;
+
 
 @property (nonatomic, retain) NSMutableDictionary* contactEmails;
 
@@ -214,6 +223,9 @@
 
 - (void) showToContactList;
 - (void) hideToContactList;
+
+- (void) showCCContactList;
+- (void) hideCCContactList;
 
 @end
 
