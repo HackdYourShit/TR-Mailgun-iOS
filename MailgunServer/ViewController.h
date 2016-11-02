@@ -129,13 +129,13 @@
 @property (nonatomic, retain) MGNewEntryField* ccEntryField;
 @property (nonatomic, retain) MGNewEntryField* toEntryField;
 
-@property (nonatomic, retain) NSUserDefaults* userPreferences;
-@property (nonatomic, retain) MGHistoryTracker* histMessage;
-@property (nonatomic, retain) MGHistoryTracker* histSubject;
-@property (nonatomic, retain) MGHistoryTracker* histDate;
-@property (nonatomic, retain) MGHistoryTracker* histSender;
-@property (nonatomic, retain) MGHistoryTracker* histRecipient;
-@property (nonatomic, retain) MGHistoryTracker* histStatus;
+@property (atomic, retain) NSUserDefaults* userPreferences;
+@property (atomic, retain) MGHistoryTracker* histMessage;
+@property (atomic, retain) MGHistoryTracker* histSubject;
+@property (atomic, retain) MGHistoryTracker* histDate;
+@property (atomic, retain) MGHistoryTracker* histSender;
+@property (atomic, retain) MGHistoryTracker* histRecipient;
+@property (atomic, retain) MGHistoryTracker* histStatus;
 
 @property (nonatomic, retain) NSMutableArray *histArray;
 

@@ -7,6 +7,7 @@
     // https://developer.apple.com/library/ios/documentation/AudioVideo/Conceptual/CameraAndPhotoLib_TopicsForIOS/Articles/PickinganItemfromthePhotoLibrary.html
 
 // Double click to remove a contact from being added to the sending list
+    // Do a check with strcmp after checking the substrings between commas. If duplicate found then remove both and even number will cancel out. Hmm.
 // Also ordering would be a nice thing to fix. Seems like it might be a pain though.
 
 
