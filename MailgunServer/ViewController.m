@@ -9,11 +9,6 @@
 // Double click to remove a contact from being added to the sending list
 // Also ordering would be a nice thing to fix. Seems like it might be a pain though.
 
-// Auto-input for cc
-
-// Do something about auto fill sender box
-
-
 
 //   Refactor ViewController.m
         // Lots of duplicates for the Lbl stuff aka the preview shit
@@ -687,6 +682,7 @@
     fromEntryField = [[MGNewEntryField alloc] initWithHeight:30];
     fromEntryField.frame = CGRectMake(0, initHeight + 2*fieldSpacing, fromEntryField.frame.size.width, fromEntryField.frame.size.height);
     fromEntryField.entryLabel.text = @"FROM:";
+    fromEntryField.entryView.text = [NSString stringWithFormat:@"me@%@", mailgunURL];
     [reSendingLayer addSubview:fromEntryField];
 
     subjEntryField = [[MGNewEntryField alloc] initWithHeight:30];
