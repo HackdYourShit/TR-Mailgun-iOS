@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MGButtonWithCheckBox.h"
 
 @interface MGContactPopUpList : UIView
 {

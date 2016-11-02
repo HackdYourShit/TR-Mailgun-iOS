@@ -28,19 +28,19 @@
         UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:self.frame];
 
         for(NSString *key in [contactList allKeys]) {
-            UIButton *cell = [[UIButton alloc] initWithFrame:CGRectMake(0, spacing*count, self.frame.size.width, spacing)];
+            MGButtonWithCheckBox *cell = [[MGButtonWithCheckBox alloc] initWithFrame:CGRectMake(0, spacing*count, self.frame.size.width, spacing)];
             cell.layer.borderWidth = 1;
             cell.layer.borderColor = [UIColor blackColor].CGColor;
             cell.layer.cornerRadius = 2;
             [scroll addSubview:cell];
             
             UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(3, 2, self.frame.size.width-4, spacing/2)];
-            nameLabel.text = key;
+            nameLabel.text = [contactList objectForKey:key];
             nameLabel.font = [UIFont systemFontOfSize:12];
             [cell addSubview:nameLabel];
             
             UILabel *emailLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, spacing/2, self.frame.size.width-4, spacing/2)];
-            emailLabel.text = [contactList objectForKey:key];
+            emailLabel.text = key;
             emailLabel.font = [UIFont systemFontOfSize:12];
             [cell addSubview:emailLabel];
             
@@ -48,6 +48,7 @@
             
             cell.titleLabel.text = emailLabel.text;
             [cell addTarget:self action:@selector(addEmail:) forControlEvents:UIControlEventTouchUpInside];
+            cell.checkImage.hidden = YES;
             count++;
 
         }
@@ -76,9 +77,12 @@
 }
 
 - (void)addEmail:(id)sender{
-    UIButton* btn = (UIButton*)sender;
+    MGButtonWithCheckBox* btn = (MGButtonWithCheckBox*)sender;
     NSLog(@"addEmail: %@", btn.titleLabel.text);
     lastSelected = [NSString stringWithFormat:@"%@%@,", lastSelected, btn.titleLabel.text];
+    
+    // need to implement the rest of not adding the email on double tap
+    btn.checkImage.hidden = !btn.checkImage.hidden;
 }
 
 - (NSString *)getEmails{

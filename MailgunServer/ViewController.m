@@ -5,8 +5,14 @@
 // TO DO:
 //   Find a way to attach images, hopefully from Photos Library. Looks to be not too bad to do.
     // https://developer.apple.com/library/ios/documentation/AudioVideo/Conceptual/CameraAndPhotoLib_TopicsForIOS/Articles/PickinganItemfromthePhotoLibrary.html
-//   Add extra inputs for your name when sending / receiving?
-//   Bit of reformatting to look more like Mail app
+
+// Double click to remove a contact from being added to the sending list
+// Also ordering would be a nice thing to fix. Seems like it might be a pain though.
+
+// Auto-input for cc
+
+// Do something about auto fill sender box
+
 
 
 //   Refactor ViewController.m
@@ -14,13 +20,7 @@
         // No comments..
         // Ordering of functions is fucking awful.
 
-//   Add CC and multiple sending tracking status.
 //   Make capacity tuneable in app
-
-//  Redesign intro page
-
-//  Add in an address book type menu that lets you quickly fill in the to/cc/from fields
-        // Can i just connect to contacts?
 
 // Add support for deleted messages
     // Both a deleted messages page and the capability for deleting messages
@@ -59,23 +59,21 @@
     
     /* ---- GRABS YOUR CONTACTS EMAIL ADDRESSES ------*/
     CNContactStore *store = [[CNContactStore alloc] init];
-    //keys with fetching properties
     NSArray *keys = @[CNContactFamilyNameKey, CNContactGivenNameKey, CNContactPhoneNumbersKey, CNContactEmailAddressesKey,CNContactPostalAddressesKey, CNLabelWork, CNLabelDateAnniversary];
     NSString *containerId = store.defaultContainerIdentifier;
     NSPredicate *predicate = [CNContact predicateForContactsInContainerWithIdentifier:containerId];
     NSError *error;
     NSArray *cnContacts = [store unifiedContactsMatchingPredicate:predicate keysToFetch:keys error:&error];
-    //NSLog(@"cnContacts %lu",(unsigned long)cnContacts.count);
     if (error) {
-        NSLog(@"Error Grabbing Contacts");
+        NSLog(@"Error Grabbing Contacts. Not sure if this will crash...");
     } else {
         for (CNContact *contact in cnContacts) {
             if ([contact.emailAddresses count]){
-                //NSLog(@"%@ %@", contact.givenName, contact.familyName);
-                //NSLog(@"%@", contact.emailAddresses[0]);
-                NSString *contactName = [NSString stringWithFormat:@"%@ %@", contact.givenName, contact.familyName];
-                NSString *contactEmail = (NSString *)contact.emailAddresses[0].value;
-                [contactEmails setValue:contactEmail forKey:contactName];
+                for (int i = 0; i < [contact.emailAddresses count]; i++){
+                    NSString *contactName = [NSString stringWithFormat:@"%@ %@", contact.givenName, contact.familyName];
+                    NSString *contactEmail = (NSString *)contact.emailAddresses[i].value;
+                    [contactEmails setValue:contactName forKey:contactEmail];
+                }
             }
         }
     }

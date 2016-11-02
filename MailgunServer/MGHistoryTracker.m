@@ -25,6 +25,7 @@
 - (void) clearHistory{
     for (int i = 1; i<=capacity; i++){
         [self setObject:@" " forKey:[NSString stringWithFormat:@"%d",i]];
+        [self removeObjectForKey:[NSString stringWithFormat:@"%d",i]];
     }
 }
 
