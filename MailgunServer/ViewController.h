@@ -85,7 +85,6 @@
     MGContactPopUpList* toContactPopUp;
     UIButton *popSendList;
     UIButton *hideSendList;
-    
     MGContactPopUpList* ccContactPopUp;
     UIButton *popCCList;
     UIButton *hideCCList;

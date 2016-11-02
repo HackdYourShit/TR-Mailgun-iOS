@@ -91,6 +91,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2F9E8EA81DCA6E81000B21A4 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				2FB45F5A1D628EF8003B67C8 /* back35.png */,
+				2F9E8EA61DCA6835000B21A4 /* checkbox.png */,
+				2FEFFB361D61B689008D6106 /* lock.png */,
+				2FEFFB421D61C1FB008D6106 /* lock35.png */,
+				2F176C471DBC0113001BD6F9 /* Mailgun180white.png */,
+				2FB45F581D628C11003B67C8 /* settings35.png */,
+				2F176C431DBBFA59001BD6F9 /* TR_logo.png */,
+				2FEFFB371D61B689008D6106 /* unlock.png */,
+				2FEFFB431D61C1FB008D6106 /* unlock35.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		2F9E8EA91DCA6EAD000B21A4 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				2FEFFB251D61833D008D6106 /* Main.storyboard */,
+				2FEFFB2A1D61833D008D6106 /* LaunchScreen.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
 		2FEFFB101D61833B008D6106 = {
 			isa = PBXGroup;
 			children = (
@@ -130,19 +155,10 @@
 				2F58089F1D7F85D0005913E4 /* MGNewEntryField.m */,
 				2FEFFB221D61833D008D6106 /* ViewController.h */,
 				2FEFFB231D61833D008D6106 /* ViewController.m */,
-				2F176C471DBC0113001BD6F9 /* Mailgun180white.png */,
-				2F176C431DBBFA59001BD6F9 /* TR_logo.png */,
-				2FB45F5A1D628EF8003B67C8 /* back35.png */,
-				2F9E8EA61DCA6835000B21A4 /* checkbox.png */,
-				2FEFFB421D61C1FB008D6106 /* lock35.png */,
-				2FEFFB431D61C1FB008D6106 /* unlock35.png */,
-				2FB45F581D628C11003B67C8 /* settings35.png */,
-				2FEFFB361D61B689008D6106 /* lock.png */,
-				2FEFFB371D61B689008D6106 /* unlock.png */,
-				2FEFFB251D61833D008D6106 /* Main.storyboard */,
 				2FEFFB281D61833D008D6106 /* Assets.xcassets */,
-				2FEFFB2A1D61833D008D6106 /* LaunchScreen.storyboard */,
 				2FEFFB2D1D61833D008D6106 /* Info.plist */,
+				2F9E8EA81DCA6E81000B21A4 /* Images */,
+				2F9E8EA91DCA6EAD000B21A4 /* Storyboards */,
 				2FEFFB1C1D61833D008D6106 /* Supporting Files */,
 			);
 			path = MailgunServer;

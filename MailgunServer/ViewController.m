@@ -702,10 +702,12 @@
     messageEntryField.delegate = (id)self;
     [reSendingLayer addSubview:messageEntryField];
     
+    int circleSize = 30;
+    
     popSendList = [[UIButton alloc] init];
     popSendList = [UIButton buttonWithType:UIButtonTypeCustom];
     popSendList.backgroundColor = [UIColor greenColor];
-    popSendList.frame = CGRectMake(290, initHeight+3, 25, 25);
+    popSendList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2, circleSize, circleSize);
     popSendList.layer.cornerRadius = popSendList.frame.size.height/2;
     popSendList.layer.borderWidth = 1;
     popSendList.layer.borderColor = [UIColor blackColor].CGColor;
@@ -717,7 +719,7 @@
     
     hideSendList = [[UIButton alloc] init];
     hideSendList = [UIButton buttonWithType:UIButtonTypeCustom];
-    hideSendList.frame = CGRectMake(290, initHeight+3, 25, 25);
+    hideSendList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2, circleSize, circleSize);
     hideSendList.layer.cornerRadius = popSendList.frame.size.height/2;
     hideSendList.layer.borderWidth = 1;
     hideSendList.hidden = YES;
@@ -729,7 +731,7 @@
     [reSendingLayer addSubview:hideSendList];
     
     toContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
-    toContactPopUp.frame = CGRectMake(60, 130, toContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
+    toContactPopUp.frame = CGRectMake(50, 150, toContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
     toContactPopUp.hidden = YES;
     [reSendingLayer addSubview:toContactPopUp];
     
@@ -737,7 +739,7 @@
     popCCList = [[UIButton alloc] init];
     popCCList = [UIButton buttonWithType:UIButtonTypeCustom];
     popCCList.backgroundColor = [UIColor greenColor];
-    popCCList.frame = CGRectMake(290, initHeight+3+fieldSpacing, 25, 25);
+    popCCList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2+fieldSpacing, circleSize, circleSize);
     popCCList.layer.cornerRadius = popCCList.frame.size.height/2;
     popCCList.layer.borderWidth = 1;
     popCCList.layer.borderColor = [UIColor blackColor].CGColor;
@@ -749,7 +751,7 @@
     
     hideCCList = [[UIButton alloc] init];
     hideCCList = [UIButton buttonWithType:UIButtonTypeCustom];
-    hideCCList.frame = CGRectMake(290, initHeight+3+fieldSpacing, 25, 25);
+    hideCCList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2+fieldSpacing, circleSize, circleSize);
     hideCCList.layer.cornerRadius = hideCCList.frame.size.height/2;
     hideCCList.layer.borderWidth = 1;
     hideCCList.hidden = YES;
@@ -761,7 +763,7 @@
     [reSendingLayer addSubview:hideCCList];
     
     ccContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
-    ccContactPopUp.frame = CGRectMake(60, 130+fieldSpacing, ccContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
+    ccContactPopUp.frame = CGRectMake(50, 150+fieldSpacing, ccContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
     ccContactPopUp.hidden = YES;
     [reSendingLayer addSubview:ccContactPopUp];
     
@@ -930,6 +932,34 @@
         [alert2 addAction:ok];
         [self addToHistory:message withSuccess:YES];
         [self addSentEntry];
+        
+        toEntryField.entryView.text = @"";
+        ccEntryField.entryView.text = @"";
+        subjEntryField.entryView.text = @"";
+        messageEntryField.text = @"";
+        composeLabel.text = @"New Message";
+        
+        // For some reason I can't just direct access [toContactPopUp.scroll subview]....
+        //  Also should really move this into the class so that I can clear them all with one line of code.
+        for (UIScrollView* scroll in [toContactPopUp subviews]){
+            for (MGButtonWithCheckBox* cell in [scroll subviews]){
+                if ([cell isKindOfClass:[MGButtonWithCheckBox class]]){
+                    cell.checkImage.hidden = YES;
+                }
+            }
+        }
+        for (UIScrollView* scroll in [ccContactPopUp subviews]){
+            for (MGButtonWithCheckBox* cell in [scroll subviews]){
+                if ([cell isKindOfClass:[MGButtonWithCheckBox class]]){
+                    cell.checkImage.hidden = YES;
+                }
+            }
+        }
+        
+        
+        
+        
+        
     } failure:^(NSError *error) {
         NSLog(@"Error sending message. The error was: %@", [error userInfo]);
         [alert2 setMessage:@"Message Failed to Send."];

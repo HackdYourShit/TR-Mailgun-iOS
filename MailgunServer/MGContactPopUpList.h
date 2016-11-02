@@ -12,9 +12,11 @@
 @interface MGContactPopUpList : UIView
 {
     NSString *lastSelected;
+    UIScrollView *scroll;
 }
 
 @property(nonatomic, strong) NSString* lastSelected;
+@property(nonatomic, strong) UIScrollView* scroll;
 
 - (id) initWithDictionary:(NSDictionary*)contactList;
 - (UIImage *)imageWithColor:(UIColor *)color;

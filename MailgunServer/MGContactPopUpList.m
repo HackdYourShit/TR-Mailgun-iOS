@@ -9,7 +9,7 @@
 #import "MGContactPopUpList.h"
 
 @implementation MGContactPopUpList
-@synthesize lastSelected;
+@synthesize lastSelected, scroll;
 
 - (id) initWithDictionary:(NSDictionary *)contactList{
     self = [super init];
@@ -25,7 +25,7 @@
         self.layer.cornerRadius = 3;
         self.clipsToBounds = YES;
         
-        UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:self.frame];
+        scroll = [[UIScrollView alloc] initWithFrame:self.frame];
 
         for(NSString *key in [contactList allKeys]) {
             MGButtonWithCheckBox *cell = [[MGButtonWithCheckBox alloc] initWithFrame:CGRectMake(0, spacing*count, self.frame.size.width, spacing)];
