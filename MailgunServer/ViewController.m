@@ -772,7 +772,6 @@
 
 - (void) showToContactList{
     toContactPopUp.hidden = NO;
-    toContactPopUp.lastSelected = @"";
     hideSendList.hidden = NO;
     popSendList.hidden = YES;
     NSLog(@"showToContactList");
@@ -784,12 +783,12 @@
     toEntryField.entryView.text = [NSString stringWithFormat:@"%@%@", toEntryField.entryView.text, toContactPopUp.lastSelected];
     hideSendList.hidden = YES;
     popSendList.hidden = NO;
+    toContactPopUp.lastSelected = @"";
     NSLog(@"hideToContactList");
 }
 
 - (void) showCCContactList{
     ccContactPopUp.hidden = NO;
-    ccContactPopUp.lastSelected = @"";
     hideCCList.hidden = NO;
     popCCList.hidden = YES;
     NSLog(@"showCCContactList");
@@ -801,6 +800,7 @@
     ccEntryField.entryView.text = [NSString stringWithFormat:@"%@%@", ccEntryField.entryView.text, ccContactPopUp.lastSelected];
     hideCCList.hidden = YES;
     popCCList.hidden = NO;
+    ccContactPopUp.lastSelected = @"";
     NSLog(@"hideCCContactList");
 }
 
