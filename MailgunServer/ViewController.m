@@ -6,6 +6,9 @@
 //   Find a way to attach images, hopefully from Photos Library. Looks to be not too bad to do.
     // https://developer.apple.com/library/ios/documentation/AudioVideo/Conceptual/CameraAndPhotoLib_TopicsForIOS/Articles/PickinganItemfromthePhotoLibrary.html
 
+/// SO IT TURNS OUT THAT MAILGUN NO LONGER SUPPORTS RECEIVING EMAILS UNLESS IT'S FORWARDING TO A DOMAIN, SO I SIGNED UP FOR G-SUITE AND IM PROBABLY JUST GOING TO USE THAT. MIGHT TOUCH ON THIS OCCASIONALLY BUT I'M GOING TO CUT BACK A LOT.
+
+
 // Double click to remove a contact from being added to the sending list
     // Do a check with strcmp after checking the substrings between commas. If duplicate found then remove both and even number will cancel out. Hmm.
 // Also ordering would be a nice thing to fix. Seems like it might be a pain though.
