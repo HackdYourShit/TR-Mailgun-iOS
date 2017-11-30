@@ -101,8 +101,12 @@
     //UILabel *MVMessageLabel;
     UIButton *MVBackButton;
     
+    
+    double SCREEN_WIDTH, SCREEN_HEIGHT;
 
 }
+
+@property (nonatomic) double SCREEN_WIDTH, SCREEN_HEIGHT;
 
 @property (nonatomic, retain) UILabel* composeLabel;
 @property (nonatomic, retain) UIView* messageView;

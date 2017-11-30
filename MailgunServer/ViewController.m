@@ -35,18 +35,22 @@
 #define INIT_HEIGHT_BOX 110
 #define SPACING 60
 #define INIT_X 20
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 480  // this is wrong. 560?
+//#define SCREEN_WIDTH 320
+//#define SCREEN_HEIGHT 480  // this is wrong. 560?
 
 @interface ViewController ()
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel, contactEmails, toContactPopUp, hideSendList, popSendList, ccContactPopUp, hideCCList, popCCList;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel, contactEmails, toContactPopUp, hideSendList, popSendList, ccContactPopUp, hideCCList, popCCList, SCREEN_HEIGHT, SCREEN_WIDTH;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     activeField = [[UITextView alloc] init];
+    
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    SCREEN_HEIGHT = screenRect.size.height;
+    SCREEN_WIDTH = screenRect.size.width;
     
     userPreferences = [[NSUserDefaults alloc] initWithSuiteName:@"preferences"];
     //API_KEY = [userPreferences objectForKey:@"api_key"];
@@ -122,7 +126,7 @@
 - (void) loadBackgroundLayer{
     backgroundLayer = [[UIView alloc] init];
     backgroundLayer.frame = self.view.frame;
-    backgroundLayer.center = CGPointMake(backgroundLayer.center.x+320, backgroundLayer.center.y);
+    backgroundLayer.center = CGPointMake(backgroundLayer.center.x+SCREEN_WIDTH, backgroundLayer.center.y);
     backgroundLayer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:backgroundLayer];
     
@@ -214,7 +218,7 @@
     
     sendButton = [[UIButton alloc] init];
     sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    sendButton.frame = CGRectMake(60, 520, 200, 40);
+    sendButton.frame = CGRectMake((SCREEN_WIDTH-200)/2, 520, 200, 40);
     sendButton.backgroundColor = [UIColor redColor];
     sendButton.titleLabel.textColor = [UIColor whiteColor];
     [sendButton setTitle:@"UNLOCK TO SEND" forState:UIControlStateNormal];
@@ -252,12 +256,13 @@
     menuLabel.text = @"MENU";
     menuLabel.textAlignment = NSTextAlignmentCenter;
     menuLabel.font = [UIFont boldSystemFontOfSize:18];
+    menuLabel.center = CGPointMake(SCREEN_WIDTH/2, menuLabel.center.y);
     [menuLayer addSubview:menuLabel];
     
     /* ---- TURN THESE BUTTONS INTO A CLASS ---- */
     UIButton *goToSend = [[UIButton alloc] init];
     goToSend = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToSend.frame = CGRectMake(5, 90, 310, 50);
+    goToSend.frame = CGRectMake(5, 90, SCREEN_WIDTH-10, 50);
     [goToSend setTitle:@"Send a message" forState:UIControlStateNormal];
     goToSend.layer.borderColor = [UIColor blackColor].CGColor;
     goToSend.layer.borderWidth = 1;
@@ -287,7 +292,7 @@
     
     UIButton *goToHistory = [[UIButton alloc] init];
     goToHistory = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToHistory.frame = CGRectMake(5, 150, 310, 50);
+    goToHistory.frame = CGRectMake(5, 150, SCREEN_WIDTH-10, 50);
     [goToHistory setTitle:@"View Sent Messages" forState:UIControlStateNormal];
     goToHistory.layer.borderWidth = 1;
     goToHistory.layer.borderColor = [UIColor blackColor].CGColor;
@@ -316,7 +321,7 @@
     
     UIButton *goToTrash = [[UIButton alloc] init];
     goToTrash = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToTrash.frame = CGRectMake(5, 210, 310, 50);
+    goToTrash.frame = CGRectMake(5, 210, SCREEN_WIDTH-10, 50);
     [goToTrash setTitle:@"View Deleted Messages" forState:UIControlStateNormal];
     goToTrash.layer.borderWidth = 1;
     goToTrash.layer.borderColor = [UIColor blackColor].CGColor;
@@ -328,7 +333,7 @@
     
     UIButton *goToOptions = [[UIButton alloc] init];
     goToOptions = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToOptions.frame = CGRectMake(5, 270, 310, 50);
+    goToOptions.frame = CGRectMake(5, 270, SCREEN_WIDTH-10, 50);
     [goToOptions setTitle:@"Change API Key / Mailgun URL" forState:UIControlStateNormal];
     [goToOptions setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     goToOptions.layer.borderWidth = 1;
@@ -355,7 +360,7 @@
     
     UIButton *goToOldSend = [[UIButton alloc] init];
     goToOldSend = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToOldSend.frame = CGRectMake(5, 330, 310, 50);
+    goToOldSend.frame = CGRectMake(5, 330, SCREEN_WIDTH-10, 50);
     [goToOldSend setTitle:@"Deprecated Send Message Form" forState:UIControlStateNormal];
     [goToOldSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     goToOldSend.layer.borderWidth = 1;
@@ -372,7 +377,7 @@
     [menuLayer addSubview:menuMGLogo];
     
     UIImageView *menuTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
-    menuTRLogo.frame = CGRectMake(160, 420, 90, 90);
+    menuTRLogo.frame = CGRectMake(SCREEN_WIDTH/2, 420, 90, 90);
     //menuTRLogo.backgroundColor = [UIColor greenColor];
     [menuLayer addSubview:menuTRLogo];
     
@@ -391,7 +396,7 @@
 - (void) loadSettingsLayer{
     settingsLayer = [[UIView alloc] init];
     settingsLayer.frame = self.view.frame;
-    settingsLayer.center = CGPointMake(settingsLayer.center.x+320, settingsLayer.center.y);
+    settingsLayer.center = CGPointMake(settingsLayer.center.x+SCREEN_WIDTH, settingsLayer.center.y);
     settingsLayer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:settingsLayer];
     
@@ -477,7 +482,7 @@
     
     cancelChanges = [[UIButton alloc] init];
     cancelChanges = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelChanges.frame = CGRectMake(60, INIT_HEIGHT_BOX+2.75*SPACING, 200, 60);
+    cancelChanges.frame = CGRectMake((SCREEN_WIDTH-200)/2, INIT_HEIGHT_BOX+2.75*SPACING, 200, 60);
     cancelChanges.backgroundColor = [UIColor redColor];
     cancelChanges.titleLabel.textColor = [UIColor whiteColor];
     [cancelChanges setTitle:@"DISCARD CHANGES" forState:UIControlStateNormal];
@@ -524,7 +529,7 @@
     [urlBox.textView addSubview:urlLbl];
     
     NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+4.8*SPACING, 280, 45)];
+    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-280)/2, INIT_HEIGHT_LAB+4.8*SPACING, 280, 45)];
     creditsLabel.text = [[NSString stringWithFormat:@"Version %@.", versionText] uppercaseString];
     creditsLabel.textAlignment = NSTextAlignmentCenter;
     [settingsLayer addSubview:creditsLabel];
@@ -535,7 +540,7 @@
     [settingsLayer addSubview:settingsMGLogo];
     
     UIImageView *settingsTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
-    settingsTRLogo.frame = CGRectMake(160, 420, 90, 90);
+    settingsTRLogo.frame = CGRectMake(SCREEN_WIDTH/2, 420, 90, 90);
     [settingsLayer addSubview:settingsTRLogo];
     
     UILabel *customMGAppLabelSettings = [[UILabel alloc] initWithFrame:CGRectMake(0, 510, self.view.frame.size.width, 40)];
@@ -559,11 +564,11 @@
 
 - (void) loadHistoryLayer{
     historyLayer = [[UIView alloc] initWithFrame:self.view.frame];
-    historyLayer.frame = CGRectMake(0, 0, 320, 700);
-    historyLayer.center = CGPointMake(historyLayer.center.x+320, historyLayer.center.y);
+    historyLayer.frame = CGRectMake(0, 0, SCREEN_WIDTH, 700);
+    historyLayer.center = CGPointMake(historyLayer.center.x+SCREEN_WIDTH, historyLayer.center.y);
     historyLayer.backgroundColor = [UIColor whiteColor];
     
-    historyScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 90, 320, 480)];
+    historyScroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 90, SCREEN_WIDTH, SCREEN_HEIGHT)];
     historyScroll.layer.borderWidth = 1;
     historyScroll.layer.borderColor = [UIColor blackColor].CGColor;
     [historyLayer addSubview:historyScroll];
@@ -575,7 +580,7 @@
     for (int i = 1; i<=filledCapacity; i++){
         MGEmailPreviewCell *messageCell = [[MGEmailPreviewCell alloc] init];
         [messageCell awakeFromNib];
-        messageCell.center = CGPointMake(160, 35 + messageCell.frame.size.height*(i-1));
+        messageCell.center = CGPointMake(SCREEN_WIDTH/2, 35 + messageCell.frame.size.height*(i-1));
         [messageCell populateWithRecipient:[histRecipient objectForKey:[NSString stringWithFormat:@"%d",i]]
                                withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",i]]
                                withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",i]]
@@ -605,7 +610,7 @@
     }
     
     NSLog(@"filled: %d", filledCapacity);
-    historyScroll.contentSize = CGSizeMake(320, filledCapacity*70);
+    historyScroll.contentSize = CGSizeMake(SCREEN_WIDTH, filledCapacity*70);
     [historyScroll setScrollEnabled:YES];
     [self.view addSubview:historyLayer];
     
@@ -640,14 +645,14 @@
 - (void) loadNewSendingLayer{
     /* --- NEED TO EMBED ALL THIS IN A SCROLL VIEW AND SCROLL DOWN AS THE MESSAGE GETS LONGER --- */
     reSendingLayer = [[UIView alloc] initWithFrame:self.view.frame];
-    reSendingLayer.center = CGPointMake(reSendingLayer.center.x+320, reSendingLayer.center.y);
+    reSendingLayer.center = CGPointMake(reSendingLayer.center.x+SCREEN_WIDTH, reSendingLayer.center.y);
     reSendingLayer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:reSendingLayer];
     
     /* ----- ADD SEND / CANCEL / IMAGE ATTACH BUTTONS ----- */
     UIButton *reSendButton = [[UIButton alloc] init];
     reSendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    reSendButton.frame = CGRectMake(250, 40, 60, 40);
+    reSendButton.frame = CGRectMake(SCREEN_WIDTH-60-10, 40, 60, 40);
     reSendButton.backgroundColor = [UIColor clearColor];
     [reSendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [reSendButton setTitle:@"  Send" forState:UIControlStateNormal];
@@ -663,7 +668,7 @@
     [reCancelButton addTarget:self action:@selector(reShiftWindow) forControlEvents:UIControlEventTouchUpInside];
     [reSendingLayer addSubview:reCancelButton];
     
-    composeLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 40, 140, 40)];
+    composeLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-140)/2, 40, 140, 40)];
     composeLabel.text = @"New Message";
     composeLabel.textColor = [UIColor blackColor];
     composeLabel.textAlignment = NSTextAlignmentCenter;
@@ -699,8 +704,8 @@
     
     
     /* --- MESSAGE FIELD:  ----- */
-    //UITextView *messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, 320, 300)];
-    messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, 320, 300)];
+    //UITextView *messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, SCREEN_WIDTH, 300)];
+    messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, SCREEN_WIDTH, 300)];
     messageEntryField.font = [UIFont systemFontOfSize:12];
     messageEntryField.delegate = (id)self;
     [reSendingLayer addSubview:messageEntryField];
@@ -832,21 +837,21 @@
 
 - (void) shiftWindow{
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        menuLayer.center = CGPointMake(-160, menuLayer.center.y);
-        settingsLayer.center = CGPointMake(160, settingsLayer.center.y);
-        reSendingLayer.center = CGPointMake(160, reSendingLayer.center.y);
-        historyLayer.center = CGPointMake(160, historyLayer.center.y);
-        backgroundLayer.center = CGPointMake(160, backgroundLayer.center.y);
+        menuLayer.center = CGPointMake(-SCREEN_WIDTH/2, menuLayer.center.y);
+        settingsLayer.center = CGPointMake(SCREEN_WIDTH/2, settingsLayer.center.y);
+        reSendingLayer.center = CGPointMake(SCREEN_WIDTH/2, reSendingLayer.center.y);
+        historyLayer.center = CGPointMake(SCREEN_WIDTH/2, historyLayer.center.y);
+        backgroundLayer.center = CGPointMake(SCREEN_WIDTH/2, backgroundLayer.center.y);
     } completion:^(BOOL finished) {}];
 }
 
 - (void) reShiftWindow{
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        menuLayer.center = CGPointMake(160, menuLayer.center.y);
-        settingsLayer.center = CGPointMake(480, settingsLayer.center.y);
-        reSendingLayer.center = CGPointMake(480, reSendingLayer.center.y);
-        historyLayer.center = CGPointMake(480, historyLayer.center.y);
-        backgroundLayer.center = CGPointMake(480, backgroundLayer.center.y);
+        menuLayer.center = CGPointMake(SCREEN_WIDTH/2, menuLayer.center.y);
+        settingsLayer.center = CGPointMake(SCREEN_HEIGHT, settingsLayer.center.y);
+        reSendingLayer.center = CGPointMake(SCREEN_HEIGHT, reSendingLayer.center.y);
+        historyLayer.center = CGPointMake(SCREEN_HEIGHT, historyLayer.center.y);
+        backgroundLayer.center = CGPointMake(SCREEN_HEIGHT, backgroundLayer.center.y);
     } completion:^(BOOL finished) {}];
     
     [self.view endEditing:YES];
@@ -1201,7 +1206,7 @@
     historyScroll.contentSize = CGSizeMake(historyScroll.contentSize.width, historyScroll.contentSize.height + 70);
     MGEmailPreviewCell *messageCell = [[MGEmailPreviewCell alloc] init];
     [messageCell awakeFromNib];
-    messageCell.center = CGPointMake(160, 35);
+    messageCell.center = CGPointMake(SCREEN_WIDTH/2, 35);
     [messageCell populateWithRecipient:[histRecipient objectForKey:[NSString stringWithFormat:@"%d",1]]
                            withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",1]]
                            withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",1]]
