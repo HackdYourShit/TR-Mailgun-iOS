@@ -2,17 +2,10 @@
 //  ViewController.m
 //  MailgunServer
 
+
 // TO DO:
 //   Find a way to attach images, hopefully from Photos Library. Looks to be not too bad to do.
     // https://developer.apple.com/library/ios/documentation/AudioVideo/Conceptual/CameraAndPhotoLib_TopicsForIOS/Articles/PickinganItemfromthePhotoLibrary.html
-
-/// SO IT TURNS OUT THAT MAILGUN NO LONGER SUPPORTS RECEIVING EMAILS UNLESS IT'S FORWARDING TO A DOMAIN, SO I SIGNED UP FOR G-SUITE AND IM PROBABLY JUST GOING TO USE THAT. MIGHT TOUCH ON THIS OCCASIONALLY BUT I'M GOING TO CUT BACK A LOT.
-
-
-// Double click to remove a contact from being added to the sending list
-    // Do a check with strcmp after checking the substrings between commas. If duplicate found then remove both and even number will cancel out. Hmm.
-// Also ordering would be a nice thing to fix. Seems like it might be a pain though.
-
 
 //   Refactor ViewController.m
         // Lots of duplicates for the Lbl stuff aka the preview shit
@@ -21,22 +14,13 @@
 
 //   Make capacity tuneable in app
 
-// Add support for deleted messages
-    // Both a deleted messages page and the capability for deleting messages
-
-
-// TO COMMIT CHANGES through command line:
-    // Terminal -- CD to ./Desktop/Teddy/tinker/MailgunServer
-    // git init
-    // git commit -am 'description'
-
 #import "ViewController.h"
+
+// what are these even for...?
 #define INIT_HEIGHT_LAB 68
 #define INIT_HEIGHT_BOX 110
 #define SPACING 60
 #define INIT_X 20
-//#define SCREEN_WIDTH 320
-//#define SCREEN_HEIGHT 480  // this is wrong. 560?
 
 @interface ViewController ()
 @end
@@ -56,7 +40,6 @@
     //API_KEY = [userPreferences objectForKey:@"api_key"];
     //mailgunURL = [userPreferences objectForKey:@"mail_url"];
     API_KEY = [[MGPrivateAPIKeyHolder alloc] init].APIKey;
-    //API_KEY = [[NSString alloc] initWithFormat:@"key-e0a9097a1bb7c65df36f9df5cf00ab25"];
     mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
     
     contactEmails = [[NSMutableDictionary alloc] init];
@@ -87,6 +70,7 @@
     }
     
     
+    // This makes me vomit.
     histMessage = [[MGHistoryTracker alloc] initWithSuiteName:@"messageTracker2"];
     histRecipient = [[MGHistoryTracker alloc] initWithSuiteName:@"recipientTracker2"];
     histSubject = [[MGHistoryTracker alloc] initWithSuiteName:@"subjectTracker2"];
@@ -123,7 +107,382 @@
 
 }
 
-// Old send message form
+
+#pragma mark - ViewDidLoad Helper Functions
+- (void) loadSettingsLayer{
+    settingsLayer = [[UIView alloc] init];
+    settingsLayer.frame = self.view.frame;
+    settingsLayer.center = CGPointMake(settingsLayer.center.x+SCREEN_WIDTH, settingsLayer.center.y);
+    settingsLayer.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:settingsLayer];
+    
+    UILabel* settingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
+    settingsLabel.text = @" APP SETTINGS ";
+    settingsLabel.font = [UIFont boldSystemFontOfSize:18.0];
+    settingsLabel.textAlignment = NSTextAlignmentCenter;
+    settingsLabel.center = CGPointMake(self.view.center.x, settingsLabel.center.y);
+    [settingsLayer addSubview:settingsLabel];
+    
+    
+    backButton = [[UIButton alloc] init];
+    backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    //backButton.frame = CGRectMake(250, 35, 60, 40);
+    backButton.frame = CGRectMake(10, 35, 60, 40);
+    backButton.backgroundColor = [UIColor clearColor];
+    [backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [backButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+    [backButton setTitle:@"MENU" forState:UIControlStateNormal];
+    backButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    backButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+    [backButton addTarget:self action:@selector(closeSettings) forControlEvents:UIControlEventTouchUpInside];
+    [settingsLayer addSubview:backButton];
+    
+    
+    UILabel* apiLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+0*SPACING, 280, 30)];
+    apiLabel.text = @" PRIVATE API-KEY:    ";
+    apiLabel.font = [UIFont systemFontOfSize:12];
+    [settingsLayer addSubview:apiLabel];
+    
+    apiBox = [[BorderedTextField alloc] init];
+    apiBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 0*SPACING);
+    apiBox.textView.text = API_KEY;
+    apiBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    apiBox.textView.backgroundColor = [UIColor blackColor];
+    [settingsLayer addSubview:apiBox];
+    
+    
+    UIButton *showHideAPI = [[UIButton alloc] init];
+    showHideAPI = [UIButton buttonWithType:UIButtonTypeCustom];
+    showHideAPI.frame = CGRectMake(0, 0, 140, 30);
+    showHideAPI.center = CGPointMake(apiBox.center.x, apiBox.center.y + SPACING*3.0/4.0);
+    showHideAPI.backgroundColor = [UIColor colorWithRed:.65 green:.65 blue:.65 alpha:.9];
+    [showHideAPI setTitle:@"Show / Hide" forState:UIControlStateNormal];
+    [showHideAPI setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    showHideAPI.titleLabel.font = [UIFont systemFontOfSize:14];
+    showHideAPI.layer.cornerRadius = 5;
+    showHideAPI.layer.borderColor = [UIColor blackColor].CGColor;
+    showHideAPI.layer.borderWidth = 1;
+    [showHideAPI addTarget:self action:@selector(showHideAPIField) forControlEvents:UIControlEventTouchUpInside];
+    [showHideAPI setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:25.0/255 green:25.0/255 blue:25.0/255 alpha:0.3]] forState:UIControlStateHighlighted];
+    showHideAPI.clipsToBounds = YES;
+    [self addGradient:showHideAPI];
+    [settingsLayer addSubview:showHideAPI];
+    
+    
+    UILabel* urlLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+2*SPACING, 280, 30)];
+    urlLabel.text = @" DOMAIN URL:    ";
+    urlLabel.font = [UIFont systemFontOfSize:12];
+    [settingsLayer addSubview:urlLabel];
+    
+    urlBox = [[BorderedTextField alloc] init];
+    urlBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 2*SPACING);
+    urlBox.textView.text = mailgunURL;
+    urlBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [settingsLayer addSubview:urlBox];
+    
+    cancelChanges = [[UIButton alloc] init];
+    cancelChanges = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelChanges.frame = CGRectMake((SCREEN_WIDTH-200)/2, INIT_HEIGHT_BOX+2.75*SPACING, 200, 60);
+    cancelChanges.backgroundColor = [UIColor redColor];
+    cancelChanges.titleLabel.textColor = [UIColor whiteColor];
+    [cancelChanges setTitle:@"DISCARD CHANGES" forState:UIControlStateNormal];
+    [cancelChanges addTarget:self action:@selector(cancelSettingsChange) forControlEvents:UIControlEventTouchUpInside];
+    cancelChanges.layer.cornerRadius = 5;
+    cancelChanges.layer.borderColor = [UIColor blackColor].CGColor;
+    cancelChanges.layer.borderWidth = 1;
+    [cancelChanges setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
+    cancelChanges.clipsToBounds = YES;
+    [self addGradient:cancelChanges];
+    [settingsLayer addSubview:cancelChanges];
+    
+    
+    apiLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,apiBox.textView.frame.size.width - 10.0, 30)];
+    [apiLbl setText:@"EX: key-4a41a48d30aafce3ccda648i0c90206b"];
+    [apiLbl setBackgroundColor:[UIColor clearColor]];
+    [apiLbl setTextColor:[UIColor lightGrayColor]];
+    apiLbl.textAlignment = NSTextAlignmentCenter;
+    apiLbl.font = [UIFont systemFontOfSize:11.0];
+    apiBox.textView.delegate = (id)self;
+    apiLbl.hidden = YES;
+    [apiBox.textView addSubview:apiLbl];
+    
+    urlLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,urlBox.textView.frame.size.width - 10.0, 30)];
+    [urlLbl setText:@"EX: teddyrowan.com/"];
+    [urlLbl setBackgroundColor:[UIColor clearColor]];
+    [urlLbl setTextColor:[UIColor lightGrayColor]];
+    urlLbl.textAlignment = NSTextAlignmentCenter;
+    urlLbl.font = [UIFont systemFontOfSize:11.0];
+    urlBox.textView.delegate = (id)self;
+    urlLbl.hidden = YES;
+    [urlBox.textView addSubview:urlLbl];
+    
+    NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
+    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-280)/2, INIT_HEIGHT_LAB+4.8*SPACING, 280, 45)];
+    creditsLabel.text = [[NSString stringWithFormat:@"Version %@.", versionText] uppercaseString];
+    creditsLabel.textAlignment = NSTextAlignmentCenter;
+    [settingsLayer addSubview:creditsLabel];
+    
+    
+    UIImageView *settingsMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
+    settingsMGLogo.frame = CGRectMake(50, 420, 90, 90);
+    [settingsLayer addSubview:settingsMGLogo];
+    
+    UIImageView *settingsTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
+    settingsTRLogo.frame = CGRectMake(SCREEN_WIDTH/2, 420, 90, 90);
+    [settingsLayer addSubview:settingsTRLogo];
+    
+    UILabel *customMGAppLabelSettings = [[UILabel alloc] initWithFrame:CGRectMake(0, 510, self.view.frame.size.width, 40)];
+    customMGAppLabelSettings.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
+    customMGAppLabelSettings.font = [UIFont systemFontOfSize:12];
+    customMGAppLabelSettings.textColor = [UIColor blackColor];
+    customMGAppLabelSettings.textAlignment = NSTextAlignmentCenter;
+    [settingsLayer addSubview:customMGAppLabelSettings];
+}
+
+- (void) loadNewSendingLayer{
+    /* --- NEED TO EMBED ALL THIS IN A SCROLL VIEW AND SCROLL DOWN AS THE MESSAGE GETS LONGER --- */
+    reSendingLayer = [[UIView alloc] initWithFrame:self.view.frame];
+    reSendingLayer.center = CGPointMake(reSendingLayer.center.x+SCREEN_WIDTH, reSendingLayer.center.y);
+    reSendingLayer.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:reSendingLayer];
+    
+    /* ----- ADD SEND / CANCEL / IMAGE ATTACH BUTTONS ----- */
+    UIButton *reSendButton = [[UIButton alloc] init];
+    reSendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    reSendButton.frame = CGRectMake(SCREEN_WIDTH-60-10, 40, 60, 40);
+    reSendButton.backgroundColor = [UIColor clearColor];
+    [reSendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [reSendButton setTitle:@"  Send" forState:UIControlStateNormal];
+    [reSendButton addTarget:self action:@selector(sendMessageNew) forControlEvents:UIControlEventTouchUpInside];
+    [reSendingLayer addSubview:reSendButton];
+    
+    UIButton *reCancelButton = [[UIButton alloc] init];
+    reCancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    reCancelButton.frame = CGRectMake(10, 40, 60, 40);
+    reCancelButton.backgroundColor = [UIColor clearColor];
+    [reCancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [reCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [reCancelButton addTarget:self action:@selector(reShiftWindow) forControlEvents:UIControlEventTouchUpInside];
+    [reSendingLayer addSubview:reCancelButton];
+    
+    composeLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-140)/2, 40, 140, 40)];
+    composeLabel.text = @"New Message";
+    composeLabel.textColor = [UIColor blackColor];
+    composeLabel.textAlignment = NSTextAlignmentCenter;
+    [reSendingLayer addSubview:composeLabel];
+    
+    /* ----- ENTRY FIELDS ARE 32 PIX HIGH  ------ */
+    int initHeight = 90;
+    int fieldSpacing = 32;
+    
+    toEntryField = [[MGNewEntryField alloc] initWithHeight:30];
+    toEntryField.frame = CGRectMake(0, initHeight, toEntryField.frame.size.width, toEntryField.frame.size.height);
+    toEntryField.entryLabel.text = @"TO:";
+    [reSendingLayer addSubview:toEntryField];
+    
+    ccEntryField = [[MGNewEntryField alloc] initWithHeight:30];
+    ccEntryField.frame = CGRectMake(0, initHeight + 1*fieldSpacing, ccEntryField.frame.size.width, ccEntryField.frame.size.height);
+    ccEntryField.entryLabel.text = @"CC:";
+    [reSendingLayer addSubview:ccEntryField];
+    
+    fromEntryField = [[MGNewEntryField alloc] initWithHeight:30];
+    fromEntryField.frame = CGRectMake(0, initHeight + 2*fieldSpacing, fromEntryField.frame.size.width, fromEntryField.frame.size.height);
+    fromEntryField.entryLabel.text = @"FROM:";
+    fromEntryField.entryView.text = [NSString stringWithFormat:@"me@%@", mailgunURL];
+    [reSendingLayer addSubview:fromEntryField];
+    
+    subjEntryField = [[MGNewEntryField alloc] initWithHeight:30];
+    subjEntryField.frame = CGRectMake(0, initHeight + 3*fieldSpacing, subjEntryField.frame.size.width, subjEntryField.frame.size.height);
+    subjEntryField.entryLabel.text = @"SUBJECT:";
+    subjEntryField.entryView.autocorrectionType = UITextAutocorrectionTypeYes;
+    subjEntryField.entryView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+    [reSendingLayer addSubview:subjEntryField];
+    [subjEntryField.entryView addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    
+    /* --- MESSAGE FIELD:  ----- */
+    //UITextView *messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, SCREEN_WIDTH, 300)];
+    messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, SCREEN_WIDTH, 300)];
+    messageEntryField.font = [UIFont systemFontOfSize:12];
+    messageEntryField.delegate = (id)self;
+    [reSendingLayer addSubview:messageEntryField];
+    
+    int circleSize = 30;
+    
+    popSendList = [[UIButton alloc] init];
+    popSendList = [UIButton buttonWithType:UIButtonTypeCustom];
+    popSendList.backgroundColor = [UIColor greenColor];
+    popSendList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2, circleSize, circleSize);
+    popSendList.layer.cornerRadius = popSendList.frame.size.height/2;
+    popSendList.layer.borderWidth = 1;
+    popSendList.layer.borderColor = [UIColor blackColor].CGColor;
+    popSendList.hidden = NO;
+    [popSendList setTitle:@"+" forState:UIControlStateNormal];
+    [popSendList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [popSendList addTarget:self action:@selector(showToContactList) forControlEvents:UIControlEventTouchDown];
+    [reSendingLayer addSubview:popSendList];
+    
+    hideSendList = [[UIButton alloc] init];
+    hideSendList = [UIButton buttonWithType:UIButtonTypeCustom];
+    hideSendList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2, circleSize, circleSize);
+    hideSendList.layer.cornerRadius = popSendList.frame.size.height/2;
+    hideSendList.layer.borderWidth = 1;
+    hideSendList.hidden = YES;
+    hideSendList.backgroundColor = [UIColor redColor];
+    hideSendList.layer.borderColor = [UIColor blackColor].CGColor;
+    [hideSendList setTitle:@"-" forState:UIControlStateNormal];
+    [hideSendList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [hideSendList addTarget:self action:@selector(hideToContactList) forControlEvents:UIControlEventTouchDown];
+    [reSendingLayer addSubview:hideSendList];
+    
+    toContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
+    toContactPopUp.frame = CGRectMake(50, 150, toContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
+    toContactPopUp.hidden = YES;
+    [reSendingLayer addSubview:toContactPopUp];
+    
+    
+    popCCList = [[UIButton alloc] init];
+    popCCList = [UIButton buttonWithType:UIButtonTypeCustom];
+    popCCList.backgroundColor = [UIColor greenColor];
+    popCCList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2+fieldSpacing, circleSize, circleSize);
+    popCCList.layer.cornerRadius = popCCList.frame.size.height/2;
+    popCCList.layer.borderWidth = 1;
+    popCCList.layer.borderColor = [UIColor blackColor].CGColor;
+    popCCList.hidden = NO;
+    [popCCList setTitle:@"+" forState:UIControlStateNormal];
+    [popCCList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [popCCList addTarget:self action:@selector(showCCContactList) forControlEvents:UIControlEventTouchDown];
+    [reSendingLayer addSubview:popCCList];
+    
+    hideCCList = [[UIButton alloc] init];
+    hideCCList = [UIButton buttonWithType:UIButtonTypeCustom];
+    hideCCList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2+fieldSpacing, circleSize, circleSize);
+    hideCCList.layer.cornerRadius = hideCCList.frame.size.height/2;
+    hideCCList.layer.borderWidth = 1;
+    hideCCList.hidden = YES;
+    hideCCList.backgroundColor = [UIColor redColor];
+    hideCCList.layer.borderColor = [UIColor blackColor].CGColor;
+    [hideCCList setTitle:@"-" forState:UIControlStateNormal];
+    [hideCCList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [hideCCList addTarget:self action:@selector(hideCCContactList) forControlEvents:UIControlEventTouchDown];
+    [reSendingLayer addSubview:hideCCList];
+    
+    ccContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
+    ccContactPopUp.frame = CGRectMake(50, 150+fieldSpacing, ccContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
+    ccContactPopUp.hidden = YES;
+    [reSendingLayer addSubview:ccContactPopUp];
+    
+    
+}
+
+- (void) loadMenuLayer{
+    menuLayer = [[UIView alloc] initWithFrame:self.view.frame];
+    [self.view addSubview:menuLayer];
+    menuLayer.backgroundColor = [UIColor whiteColor];
+    
+    UILabel *menuLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 40, 220, 30)];
+    menuLabel.text = @"MENU";
+    menuLabel.textAlignment = NSTextAlignmentCenter;
+    menuLabel.font = [UIFont boldSystemFontOfSize:18];
+    menuLabel.center = CGPointMake(SCREEN_WIDTH/2, menuLabel.center.y);
+    [menuLayer addSubview:menuLabel];
+    
+    /* ---- TURN THESE BUTTONS INTO A CLASS ---- */
+    UIButton *goToSend = [[UIButton alloc] init];
+    goToSend = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToSend.frame = CGRectMake(5, 90, SCREEN_WIDTH-10, 50);
+    [goToSend setTitle:@"Send a message" forState:UIControlStateNormal];
+    goToSend.layer.borderColor = [UIColor blackColor].CGColor;
+    goToSend.layer.borderWidth = 1;
+    [goToSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    goToSend.layer.cornerRadius = 5;
+    goToSend.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
+    [goToSend addTarget:self action:@selector(goSendMessage) forControlEvents:UIControlEventTouchUpInside];
+    [goToSend setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
+    goToSend.clipsToBounds = YES;
+    [self addGradient:goToSend];
+    [menuLayer addSubview:goToSend];
+    
+    
+    
+    UIButton *goToHistory = [[UIButton alloc] init];
+    goToHistory = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToHistory.frame = CGRectMake(5, 150, SCREEN_WIDTH-10, 50);
+    [goToHistory setTitle:@"View Sent Messages" forState:UIControlStateNormal];
+    goToHistory.layer.borderWidth = 1;
+    goToHistory.layer.borderColor = [UIColor blackColor].CGColor;
+    [goToHistory setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    goToHistory.layer.cornerRadius = 5;
+    goToHistory.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
+    [goToHistory addTarget:self action:@selector(goHistory) forControlEvents:UIControlEventTouchUpInside];
+    [goToHistory setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
+    [self addGradient:goToHistory];
+    [menuLayer addSubview:goToHistory];
+    
+    
+    
+    UIButton *goToTrash = [[UIButton alloc] init];
+    goToTrash = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToTrash.frame = CGRectMake(5, 210, SCREEN_WIDTH-10, 50);
+    [goToTrash setTitle:@"View Deleted Messages" forState:UIControlStateNormal];
+    goToTrash.layer.borderWidth = 1;
+    goToTrash.layer.borderColor = [UIColor blackColor].CGColor;
+    [goToTrash setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    goToTrash.backgroundColor = [UIColor colorWithRed:.95 green:.40 blue:.40 alpha:.8];
+    goToTrash.layer.cornerRadius = 5;
+    [goToTrash setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
+    [self addGradient:goToTrash];
+    [menuLayer addSubview:goToTrash];
+    
+    UIButton *goToOptions = [[UIButton alloc] init];
+    goToOptions = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToOptions.frame = CGRectMake(5, 270, SCREEN_WIDTH-10, 50);
+    [goToOptions setTitle:@"Change API Key / Mailgun URL" forState:UIControlStateNormal];
+    [goToOptions setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    goToOptions.layer.borderWidth = 1;
+    goToOptions.layer.borderColor = [UIColor blackColor].CGColor;
+    goToOptions.layer.cornerRadius = 5;
+    goToOptions.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
+    [goToOptions addTarget:self action:@selector(goSettings) forControlEvents:UIControlEventTouchUpInside];
+    [goToOptions setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
+    [self addGradient:goToOptions];
+    [menuLayer addSubview:goToOptions];
+    
+    
+    
+    UIButton *goToOldSend = [[UIButton alloc] init];
+    goToOldSend = [UIButton buttonWithType:UIButtonTypeCustom];
+    goToOldSend.frame = CGRectMake(5, 330, SCREEN_WIDTH-10, 50);
+    [goToOldSend setTitle:@"Deprecated Send Message Form" forState:UIControlStateNormal];
+    [goToOldSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    goToOldSend.layer.borderWidth = 1;
+    goToOldSend.layer.borderColor = [UIColor blackColor].CGColor;
+    goToOldSend.layer.cornerRadius = 5;
+    goToOldSend.backgroundColor = [UIColor colorWithRed:.99 green:.99 blue:.95 alpha:.8];
+    [goToOldSend addTarget:self action:@selector(goOldSend) forControlEvents:UIControlEventTouchUpInside];
+    [goToOldSend setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
+    [menuLayer addSubview:goToOldSend];
+    
+    
+    // Add the logos at the bottom of the app. Change these to be placed dynamically.
+    UIImageView *menuMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
+    menuMGLogo.frame = CGRectMake(50, 420, 90, 90);
+    [menuLayer addSubview:menuMGLogo];
+    
+    UIImageView *menuTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
+    menuTRLogo.frame = CGRectMake(SCREEN_WIDTH/2, 420, 90, 90);
+    [menuLayer addSubview:menuTRLogo];
+    
+    UILabel *customMGAppLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 510, self.view.frame.size.width, 40)];
+    customMGAppLabel.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
+    customMGAppLabel.font = [UIFont systemFontOfSize:12];
+    customMGAppLabel.textColor = [UIColor blackColor];
+    customMGAppLabel.textAlignment = NSTextAlignmentCenter;
+    [menuLayer addSubview:customMGAppLabel];
+    
+} // loadMenuLayer()
+
+// Loading of the deprecated send message form. Need to either choose this one or rip this out.
 - (void) loadBackgroundLayer{
     backgroundLayer = [[UIView alloc] init];
     backgroundLayer.frame = self.view.frame;
@@ -247,322 +606,7 @@
     [backgroundLayer addSubview:oldBackButton];
 }
 
-
-- (void) loadMenuLayer{
-    menuLayer = [[UIView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:menuLayer];
-    menuLayer.backgroundColor = [UIColor whiteColor];
-    
-    UILabel *menuLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 40, 220, 30)];
-    menuLabel.text = @"MENU";
-    menuLabel.textAlignment = NSTextAlignmentCenter;
-    menuLabel.font = [UIFont boldSystemFontOfSize:18];
-    menuLabel.center = CGPointMake(SCREEN_WIDTH/2, menuLabel.center.y);
-    [menuLayer addSubview:menuLabel];
-    
-    /* ---- TURN THESE BUTTONS INTO A CLASS ---- */
-    UIButton *goToSend = [[UIButton alloc] init];
-    goToSend = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToSend.frame = CGRectMake(5, 90, SCREEN_WIDTH-10, 50);
-    [goToSend setTitle:@"Send a message" forState:UIControlStateNormal];
-    goToSend.layer.borderColor = [UIColor blackColor].CGColor;
-    goToSend.layer.borderWidth = 1;
-    [goToSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goToSend.layer.cornerRadius = 5;
-    goToSend.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
-    [goToSend addTarget:self action:@selector(goSendMessage) forControlEvents:UIControlEventTouchUpInside];
-    [goToSend setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
-    goToSend.clipsToBounds = YES;
-    [menuLayer addSubview:goToSend];
-    
-    
-    CAGradientLayer *sendGradient = [CAGradientLayer layer];
-    sendGradient.frame = goToSend.layer.bounds;
-    sendGradient.colors = [NSArray arrayWithObjects:
-                            (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
-                            (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
-                            nil];
-    sendGradient.locations = [NSArray arrayWithObjects:
-                               [NSNumber numberWithFloat:0.0f],
-                               [NSNumber numberWithFloat:1.0f],
-                               nil];
-    
-    sendGradient.cornerRadius = goToSend.layer.cornerRadius;
-    [goToSend.layer addSublayer:sendGradient];
-    
-    
-    UIButton *goToHistory = [[UIButton alloc] init];
-    goToHistory = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToHistory.frame = CGRectMake(5, 150, SCREEN_WIDTH-10, 50);
-    [goToHistory setTitle:@"View Sent Messages" forState:UIControlStateNormal];
-    goToHistory.layer.borderWidth = 1;
-    goToHistory.layer.borderColor = [UIColor blackColor].CGColor;
-    [goToHistory setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goToHistory.layer.cornerRadius = 5;
-    goToHistory.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
-    [goToHistory addTarget:self action:@selector(goHistory) forControlEvents:UIControlEventTouchUpInside];
-    [goToHistory setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
-    [menuLayer addSubview:goToHistory];
-    
-    CAGradientLayer *historyGradient = [CAGradientLayer layer];
-    historyGradient.frame = goToSend.layer.bounds;
-    historyGradient.colors = [NSArray arrayWithObjects:
-                            (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
-                            (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
-                            nil];
-    historyGradient.locations = [NSArray arrayWithObjects:
-                               [NSNumber numberWithFloat:0.0f],
-                               [NSNumber numberWithFloat:1.0f],
-                               nil];
-    historyGradient.cornerRadius = goToHistory.layer.cornerRadius;
-    [goToHistory.layer addSublayer:historyGradient];
-    
-    
-    
-    
-    UIButton *goToTrash = [[UIButton alloc] init];
-    goToTrash = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToTrash.frame = CGRectMake(5, 210, SCREEN_WIDTH-10, 50);
-    [goToTrash setTitle:@"View Deleted Messages" forState:UIControlStateNormal];
-    goToTrash.layer.borderWidth = 1;
-    goToTrash.layer.borderColor = [UIColor blackColor].CGColor;
-    [goToTrash setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goToTrash.backgroundColor = [UIColor colorWithRed:.95 green:.40 blue:.40 alpha:.8];
-    goToTrash.layer.cornerRadius = 5;
-    [goToTrash setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
-    [menuLayer addSubview:goToTrash];
-    
-    UIButton *goToOptions = [[UIButton alloc] init];
-    goToOptions = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToOptions.frame = CGRectMake(5, 270, SCREEN_WIDTH-10, 50);
-    [goToOptions setTitle:@"Change API Key / Mailgun URL" forState:UIControlStateNormal];
-    [goToOptions setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goToOptions.layer.borderWidth = 1;
-    goToOptions.layer.borderColor = [UIColor blackColor].CGColor;
-    goToOptions.layer.cornerRadius = 5;
-    goToOptions.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
-    [goToOptions addTarget:self action:@selector(goSettings) forControlEvents:UIControlEventTouchUpInside];
-    [goToOptions setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
-    [menuLayer addSubview:goToOptions];
-    
-    CAGradientLayer *optionsGradient = [CAGradientLayer layer];
-    optionsGradient.frame = goToOptions.layer.bounds;
-    optionsGradient.colors = [NSArray arrayWithObjects:
-                              (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
-                              (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
-                              nil];
-    optionsGradient.locations = [NSArray arrayWithObjects:
-                                 [NSNumber numberWithFloat:0.0f],
-                                 [NSNumber numberWithFloat:1.0f],
-                                 nil];
-    optionsGradient.cornerRadius = goToOptions.layer.cornerRadius;
-    [goToOptions.layer addSublayer:optionsGradient];
-    
-    
-    UIButton *goToOldSend = [[UIButton alloc] init];
-    goToOldSend = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToOldSend.frame = CGRectMake(5, 330, SCREEN_WIDTH-10, 50);
-    [goToOldSend setTitle:@"Deprecated Send Message Form" forState:UIControlStateNormal];
-    [goToOldSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goToOldSend.layer.borderWidth = 1;
-    goToOldSend.layer.borderColor = [UIColor blackColor].CGColor;
-    goToOldSend.layer.cornerRadius = 5;
-    goToOldSend.backgroundColor = [UIColor colorWithRed:.99 green:.99 blue:.95 alpha:.8];
-    [goToOldSend addTarget:self action:@selector(goOldSend) forControlEvents:UIControlEventTouchUpInside];
-    [goToOldSend setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
-    [menuLayer addSubview:goToOldSend];
-    
-    UIImageView *menuMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
-    menuMGLogo.frame = CGRectMake(50, 420, 90, 90);
-    //menuMGLogo.backgroundColor = [UIColor greenColor];
-    [menuLayer addSubview:menuMGLogo];
-    
-    UIImageView *menuTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
-    menuTRLogo.frame = CGRectMake(SCREEN_WIDTH/2, 420, 90, 90);
-    //menuTRLogo.backgroundColor = [UIColor greenColor];
-    [menuLayer addSubview:menuTRLogo];
-    
-    UILabel *customMGAppLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 510, self.view.frame.size.width, 40)];
-    customMGAppLabel.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
-    customMGAppLabel.font = [UIFont systemFontOfSize:12];
-    customMGAppLabel.textColor = [UIColor blackColor];
-    customMGAppLabel.textAlignment = NSTextAlignmentCenter;
-    [menuLayer addSubview:customMGAppLabel];
-    
-    
-    
-    
-}
-
-- (void) loadSettingsLayer{
-    settingsLayer = [[UIView alloc] init];
-    settingsLayer.frame = self.view.frame;
-    settingsLayer.center = CGPointMake(settingsLayer.center.x+SCREEN_WIDTH, settingsLayer.center.y);
-    settingsLayer.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:settingsLayer];
-    
-    UILabel* settingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
-    settingsLabel.text = @" APP SETTINGS ";
-    settingsLabel.font = [UIFont boldSystemFontOfSize:18.0];
-    settingsLabel.textAlignment = NSTextAlignmentCenter;
-    settingsLabel.center = CGPointMake(self.view.center.x, settingsLabel.center.y);
-    [settingsLayer addSubview:settingsLabel];
-    
-    //backButton = [[UIButton alloc] initWithFrame:CGRectMake(25, 35, 35, 35)];
-    //backButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"back35.png"]];
-    //[backButton addTarget:self action:@selector(closeSettings) forControlEvents:UIControlEventTouchUpInside];
-    //[settingsLayer addSubview:backButton];
-    
-    backButton = [[UIButton alloc] init];
-    backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    //backButton.frame = CGRectMake(250, 35, 60, 40);
-    backButton.frame = CGRectMake(10, 35, 60, 40);
-    backButton.backgroundColor = [UIColor clearColor];
-    [backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [backButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-    [backButton setTitle:@"MENU" forState:UIControlStateNormal];
-    backButton.titleLabel.font = [UIFont systemFontOfSize:14];
-    backButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-    [backButton addTarget:self action:@selector(closeSettings) forControlEvents:UIControlEventTouchUpInside];
-    [settingsLayer addSubview:backButton];
-    
-    
-    UILabel* apiLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+0*SPACING, 280, 30)];
-    apiLabel.text = @" PRIVATE API-KEY:    ";
-    apiLabel.font = [UIFont systemFontOfSize:12];
-    [settingsLayer addSubview:apiLabel];
-    
-    apiBox = [[BorderedTextField alloc] init];
-    apiBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 0*SPACING);
-    apiBox.textView.text = API_KEY;
-    apiBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    apiBox.textView.backgroundColor = [UIColor blackColor];
-    [settingsLayer addSubview:apiBox];
-
-    
-    UIButton *showHideAPI = [[UIButton alloc] init];
-    showHideAPI = [UIButton buttonWithType:UIButtonTypeCustom];
-    showHideAPI.frame = CGRectMake(0, 0, 140, 30);
-    showHideAPI.center = CGPointMake(apiBox.center.x, apiBox.center.y + SPACING*3.0/4.0);
-    showHideAPI.backgroundColor = [UIColor colorWithRed:.65 green:.65 blue:.65 alpha:.9];
-    [showHideAPI setTitle:@"Show / Hide" forState:UIControlStateNormal];
-    [showHideAPI setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    showHideAPI.titleLabel.font = [UIFont systemFontOfSize:14];
-    showHideAPI.layer.cornerRadius = 5;
-    showHideAPI.layer.borderColor = [UIColor blackColor].CGColor;
-    showHideAPI.layer.borderWidth = 1;
-    [showHideAPI addTarget:self action:@selector(showHideAPIField) forControlEvents:UIControlEventTouchUpInside];
-    [showHideAPI setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:25.0/255 green:25.0/255 blue:25.0/255 alpha:0.3]] forState:UIControlStateHighlighted];
-    showHideAPI.clipsToBounds = YES;
-    [settingsLayer addSubview:showHideAPI];
-    
-    CAGradientLayer *apiGradient = [CAGradientLayer layer];
-    apiGradient.frame = showHideAPI.layer.bounds;
-    apiGradient.colors = [NSArray arrayWithObjects:
-                              (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
-                              (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
-                              nil];
-    apiGradient.locations = [NSArray arrayWithObjects:
-                                 [NSNumber numberWithFloat:0.0f],
-                                 [NSNumber numberWithFloat:1.0f],
-                                 nil];
-    apiGradient.cornerRadius = showHideAPI.layer.cornerRadius;
-    [showHideAPI.layer addSublayer:apiGradient];
-    
-    
-    UILabel* urlLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+2*SPACING, 280, 30)];
-    urlLabel.text = @" DOMAIN URL:    ";
-    urlLabel.font = [UIFont systemFontOfSize:12];
-    [settingsLayer addSubview:urlLabel];
-    
-    urlBox = [[BorderedTextField alloc] init];
-    urlBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 2*SPACING);
-    urlBox.textView.text = mailgunURL;
-    urlBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    [settingsLayer addSubview:urlBox];
-    
-    cancelChanges = [[UIButton alloc] init];
-    cancelChanges = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelChanges.frame = CGRectMake((SCREEN_WIDTH-200)/2, INIT_HEIGHT_BOX+2.75*SPACING, 200, 60);
-    cancelChanges.backgroundColor = [UIColor redColor];
-    cancelChanges.titleLabel.textColor = [UIColor whiteColor];
-    [cancelChanges setTitle:@"DISCARD CHANGES" forState:UIControlStateNormal];
-    [cancelChanges addTarget:self action:@selector(cancelSettingsChange) forControlEvents:UIControlEventTouchUpInside];
-    cancelChanges.layer.cornerRadius = 5;
-    cancelChanges.layer.borderColor = [UIColor blackColor].CGColor;
-    cancelChanges.layer.borderWidth = 1;
-    [cancelChanges setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
-    cancelChanges.clipsToBounds = YES;
-    [settingsLayer addSubview:cancelChanges];
-    
-    CAGradientLayer *cancelGradient = [CAGradientLayer layer];
-    cancelGradient.frame = cancelChanges.layer.bounds;
-    cancelGradient.colors = [NSArray arrayWithObjects:
-                          (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
-                          (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
-                          nil];
-    cancelGradient.locations = [NSArray arrayWithObjects:
-                             [NSNumber numberWithFloat:0.0f],
-                             [NSNumber numberWithFloat:1.0f],
-                             nil];
-    cancelGradient.cornerRadius = cancelChanges.layer.cornerRadius;
-    [cancelChanges.layer addSublayer:cancelGradient];
-    
-    
-    apiLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,apiBox.textView.frame.size.width - 10.0, 30)];
-    [apiLbl setText:@"EX: key-4a41a48d30aafce3ccda648i0c90206b"];
-    [apiLbl setBackgroundColor:[UIColor clearColor]];
-    [apiLbl setTextColor:[UIColor lightGrayColor]];
-    apiLbl.textAlignment = NSTextAlignmentCenter;
-    apiLbl.font = [UIFont systemFontOfSize:11.0];
-    apiBox.textView.delegate = (id)self;
-    apiLbl.hidden = YES;
-    [apiBox.textView addSubview:apiLbl];
-    
-    urlLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,urlBox.textView.frame.size.width - 10.0, 30)];
-    [urlLbl setText:@"EX: teddyrowan.com/"];
-    [urlLbl setBackgroundColor:[UIColor clearColor]];
-    [urlLbl setTextColor:[UIColor lightGrayColor]];
-    urlLbl.textAlignment = NSTextAlignmentCenter;
-    urlLbl.font = [UIFont systemFontOfSize:11.0];
-    urlBox.textView.delegate = (id)self;
-    urlLbl.hidden = YES;
-    [urlBox.textView addSubview:urlLbl];
-    
-    NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-280)/2, INIT_HEIGHT_LAB+4.8*SPACING, 280, 45)];
-    creditsLabel.text = [[NSString stringWithFormat:@"Version %@.", versionText] uppercaseString];
-    creditsLabel.textAlignment = NSTextAlignmentCenter;
-    [settingsLayer addSubview:creditsLabel];
-    
-    
-    UIImageView *settingsMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
-    settingsMGLogo.frame = CGRectMake(50, 420, 90, 90);
-    [settingsLayer addSubview:settingsMGLogo];
-    
-    UIImageView *settingsTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
-    settingsTRLogo.frame = CGRectMake(SCREEN_WIDTH/2, 420, 90, 90);
-    [settingsLayer addSubview:settingsTRLogo];
-    
-    UILabel *customMGAppLabelSettings = [[UILabel alloc] initWithFrame:CGRectMake(0, 510, self.view.frame.size.width, 40)];
-    customMGAppLabelSettings.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
-    customMGAppLabelSettings.font = [UIFont systemFontOfSize:12];
-    customMGAppLabelSettings.textColor = [UIColor blackColor];
-    customMGAppLabelSettings.textAlignment = NSTextAlignmentCenter;
-    [settingsLayer addSubview:customMGAppLabelSettings];
-}
-
-- (void) showHideAPIField{
-    double LIGHT_GREY = 0.87;
-    if ([apiBox.textView.backgroundColor isEqual:[UIColor colorWithRed:LIGHT_GREY green:LIGHT_GREY blue:LIGHT_GREY alpha:1.0]]){
-        apiBox.textView.backgroundColor = [UIColor blackColor];
-        NSLog(@"change to black");
-    } else {
-        apiBox.textView.backgroundColor = [UIColor colorWithRed:LIGHT_GREY green:LIGHT_GREY blue:LIGHT_GREY alpha:1.0];
-        NSLog(@"change to grey");
-    }
-}
-
+// I need to fix sent message storage before i even look at this.
 - (void) loadHistoryLayer{
     historyLayer = [[UIView alloc] initWithFrame:self.view.frame];
     historyLayer.frame = CGRectMake(0, 0, SCREEN_WIDTH, 700);
@@ -587,26 +631,12 @@
                                withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",i]]
                                   withDate:[histDate objectForKey:[NSString stringWithFormat:@"%d",i]]
                                withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",i]]
-                                 withNumber:i];
+                                withNumber:i];
         [historyScroll addSubview:messageCell];
         
-        CAGradientLayer *messageGradient = [CAGradientLayer layer];
-        messageGradient.frame = messageCell.layer.bounds;
-        messageGradient.colors = [NSArray arrayWithObjects:
-                               (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
-                               (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
-                               nil];
-        messageGradient.locations = [NSArray arrayWithObjects:
-                                  [NSNumber numberWithFloat:0.0f],
-                                  [NSNumber numberWithFloat:1.0f],
-                                  nil];
-        
-        messageGradient.cornerRadius = messageCell.layer.cornerRadius;
-        [messageCell.layer addSublayer:messageGradient];
-        
+        [self addGradient:messageCell];
         messageCell.popoutButton.titleLabel.text = [NSString stringWithFormat:@"%d", i];
         
-        //[messageCell.popoutButton addTarget:self action:@selector(myTestWithAnInteger:) forControlEvents:UIControlEventTouchUpInside];
         [messageCell.popoutButton addTarget:self action:@selector(selectCell:) forControlEvents:UIControlEventTouchUpInside];
     }
     
@@ -623,14 +653,9 @@
     sentMessagesLabel.center = CGPointMake(self.view.center.x, sentMessagesLabel.center.y);
     [historyLayer addSubview:sentMessagesLabel];
     
-    //historyBackButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 35, 35, 35)];
-    //historyBackButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"back35.png"]];
-    //[historyBackButton addTarget:self action:@selector(closeHistory) forControlEvents:UIControlEventTouchUpInside];
-    //[historyLayer addSubview:historyBackButton];
     
     historyBackButton = [[UIButton alloc] init];
     historyBackButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    //historyBackButton.frame = CGRectMake(250, 35, 60, 40);
     historyBackButton.frame = CGRectMake(10, 35, 60, 40);
     historyBackButton.backgroundColor = [UIColor clearColor];
     [historyBackButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
@@ -643,222 +668,29 @@
     
 }
 
-- (void) loadNewSendingLayer{
-    /* --- NEED TO EMBED ALL THIS IN A SCROLL VIEW AND SCROLL DOWN AS THE MESSAGE GETS LONGER --- */
-    reSendingLayer = [[UIView alloc] initWithFrame:self.view.frame];
-    reSendingLayer.center = CGPointMake(reSendingLayer.center.x+SCREEN_WIDTH, reSendingLayer.center.y);
-    reSendingLayer.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:reSendingLayer];
-    
-    /* ----- ADD SEND / CANCEL / IMAGE ATTACH BUTTONS ----- */
-    UIButton *reSendButton = [[UIButton alloc] init];
-    reSendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    reSendButton.frame = CGRectMake(SCREEN_WIDTH-60-10, 40, 60, 40);
-    reSendButton.backgroundColor = [UIColor clearColor];
-    [reSendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [reSendButton setTitle:@"  Send" forState:UIControlStateNormal];
-    [reSendButton addTarget:self action:@selector(sendMessageNew) forControlEvents:UIControlEventTouchUpInside];
-    [reSendingLayer addSubview:reSendButton];
-    
-    UIButton *reCancelButton = [[UIButton alloc] init];
-    reCancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    reCancelButton.frame = CGRectMake(10, 40, 60, 40);
-    reCancelButton.backgroundColor = [UIColor clearColor];
-    [reCancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [reCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [reCancelButton addTarget:self action:@selector(reShiftWindow) forControlEvents:UIControlEventTouchUpInside];
-    [reSendingLayer addSubview:reCancelButton];
-    
-    composeLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-140)/2, 40, 140, 40)];
-    composeLabel.text = @"New Message";
-    composeLabel.textColor = [UIColor blackColor];
-    composeLabel.textAlignment = NSTextAlignmentCenter;
-    [reSendingLayer addSubview:composeLabel];
-    
-    /* ----- ENTRY FIELDS ARE 32 PIX HIGH  ------ */
-    int initHeight = 90;
-    int fieldSpacing = 32;
-    
-    toEntryField = [[MGNewEntryField alloc] initWithHeight:30];
-    toEntryField.frame = CGRectMake(0, initHeight, toEntryField.frame.size.width, toEntryField.frame.size.height);
-    toEntryField.entryLabel.text = @"TO:";
-    [reSendingLayer addSubview:toEntryField];
-    
-    ccEntryField = [[MGNewEntryField alloc] initWithHeight:30];
-    ccEntryField.frame = CGRectMake(0, initHeight + 1*fieldSpacing, ccEntryField.frame.size.width, ccEntryField.frame.size.height);
-    ccEntryField.entryLabel.text = @"CC:";
-    [reSendingLayer addSubview:ccEntryField];
-    
-    fromEntryField = [[MGNewEntryField alloc] initWithHeight:30];
-    fromEntryField.frame = CGRectMake(0, initHeight + 2*fieldSpacing, fromEntryField.frame.size.width, fromEntryField.frame.size.height);
-    fromEntryField.entryLabel.text = @"FROM:";
-    fromEntryField.entryView.text = [NSString stringWithFormat:@"me@%@", mailgunURL];
-    [reSendingLayer addSubview:fromEntryField];
 
-    subjEntryField = [[MGNewEntryField alloc] initWithHeight:30];
-    subjEntryField.frame = CGRectMake(0, initHeight + 3*fieldSpacing, subjEntryField.frame.size.width, subjEntryField.frame.size.height);
-    subjEntryField.entryLabel.text = @"SUBJECT:";
-    subjEntryField.entryView.autocorrectionType = UITextAutocorrectionTypeYes;
-    subjEntryField.entryView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
-    [reSendingLayer addSubview:subjEntryField];
-    [subjEntryField.entryView addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    
-    
-    /* --- MESSAGE FIELD:  ----- */
-    //UITextView *messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, SCREEN_WIDTH, 300)];
-    messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, SCREEN_WIDTH, 300)];
-    messageEntryField.font = [UIFont systemFontOfSize:12];
-    messageEntryField.delegate = (id)self;
-    [reSendingLayer addSubview:messageEntryField];
-    
-    int circleSize = 30;
-    
-    popSendList = [[UIButton alloc] init];
-    popSendList = [UIButton buttonWithType:UIButtonTypeCustom];
-    popSendList.backgroundColor = [UIColor greenColor];
-    popSendList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2, circleSize, circleSize);
-    popSendList.layer.cornerRadius = popSendList.frame.size.height/2;
-    popSendList.layer.borderWidth = 1;
-    popSendList.layer.borderColor = [UIColor blackColor].CGColor;
-    popSendList.hidden = NO;
-    [popSendList setTitle:@"+" forState:UIControlStateNormal];
-    [popSendList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [popSendList addTarget:self action:@selector(showToContactList) forControlEvents:UIControlEventTouchDown];
-    [reSendingLayer addSubview:popSendList];
-    
-    hideSendList = [[UIButton alloc] init];
-    hideSendList = [UIButton buttonWithType:UIButtonTypeCustom];
-    hideSendList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2, circleSize, circleSize);
-    hideSendList.layer.cornerRadius = popSendList.frame.size.height/2;
-    hideSendList.layer.borderWidth = 1;
-    hideSendList.hidden = YES;
-    hideSendList.backgroundColor = [UIColor redColor];
-    hideSendList.layer.borderColor = [UIColor blackColor].CGColor;
-    [hideSendList setTitle:@"-" forState:UIControlStateNormal];
-    [hideSendList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [hideSendList addTarget:self action:@selector(hideToContactList) forControlEvents:UIControlEventTouchDown];
-    [reSendingLayer addSubview:hideSendList];
-    
-    toContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
-    toContactPopUp.frame = CGRectMake(50, 150, toContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
-    toContactPopUp.hidden = YES;
-    [reSendingLayer addSubview:toContactPopUp];
-    
-    
-    popCCList = [[UIButton alloc] init];
-    popCCList = [UIButton buttonWithType:UIButtonTypeCustom];
-    popCCList.backgroundColor = [UIColor greenColor];
-    popCCList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2+fieldSpacing, circleSize, circleSize);
-    popCCList.layer.cornerRadius = popCCList.frame.size.height/2;
-    popCCList.layer.borderWidth = 1;
-    popCCList.layer.borderColor = [UIColor blackColor].CGColor;
-    popCCList.hidden = NO;
-    [popCCList setTitle:@"+" forState:UIControlStateNormal];
-    [popCCList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [popCCList addTarget:self action:@selector(showCCContactList) forControlEvents:UIControlEventTouchDown];
-    [reSendingLayer addSubview:popCCList];
-    
-    hideCCList = [[UIButton alloc] init];
-    hideCCList = [UIButton buttonWithType:UIButtonTypeCustom];
-    hideCCList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2+fieldSpacing, circleSize, circleSize);
-    hideCCList.layer.cornerRadius = hideCCList.frame.size.height/2;
-    hideCCList.layer.borderWidth = 1;
-    hideCCList.hidden = YES;
-    hideCCList.backgroundColor = [UIColor redColor];
-    hideCCList.layer.borderColor = [UIColor blackColor].CGColor;
-    [hideCCList setTitle:@"-" forState:UIControlStateNormal];
-    [hideCCList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [hideCCList addTarget:self action:@selector(hideCCContactList) forControlEvents:UIControlEventTouchDown];
-    [reSendingLayer addSubview:hideCCList];
-    
-    ccContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
-    ccContactPopUp.frame = CGRectMake(50, 150+fieldSpacing, ccContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
-    ccContactPopUp.hidden = YES;
-    [reSendingLayer addSubview:ccContactPopUp];
-    
 
+#pragma mark - Message Sending Methods
+// Lock / Unlock sending of messages. Designed to prevent accidental and double sending.
+- (void) switchLock{
+    if (locked){
+        lockView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"unlock35.png"]];
+        sendButton.backgroundColor = [UIColor greenColor];
+        [sendButton setTitle:@"SEND MESSAGE" forState:UIControlStateNormal];
+        [sendButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
+        
+        
+    } else {
+        lockView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lock35.png"]];
+        sendButton.backgroundColor = [UIColor redColor];
+        [sendButton setTitle:@"UNLOCK TO SEND" forState:UIControlStateNormal];
+        [sendButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
+        
+    }
+    locked = !locked;
 }
 
-- (void) showToContactList{
-    toContactPopUp.hidden = NO;
-    hideSendList.hidden = NO;
-    popSendList.hidden = YES;
-    NSLog(@"showToContactList");
-    [self hideCCContactList];
-}
-
-- (void) hideToContactList{
-    toContactPopUp.hidden = YES;
-    toEntryField.entryView.text = [NSString stringWithFormat:@"%@%@", toEntryField.entryView.text, toContactPopUp.lastSelected];
-    hideSendList.hidden = YES;
-    popSendList.hidden = NO;
-    toContactPopUp.lastSelected = @"";
-    NSLog(@"hideToContactList");
-}
-
-- (void) showCCContactList{
-    ccContactPopUp.hidden = NO;
-    hideCCList.hidden = NO;
-    popCCList.hidden = YES;
-    NSLog(@"showCCContactList");
-    [self hideToContactList];
-}
-
-- (void) hideCCContactList{
-    ccContactPopUp.hidden = YES;
-    ccEntryField.entryView.text = [NSString stringWithFormat:@"%@%@", ccEntryField.entryView.text, ccContactPopUp.lastSelected];
-    hideCCList.hidden = YES;
-    popCCList.hidden = NO;
-    ccContactPopUp.lastSelected = @"";
-    NSLog(@"hideCCContactList");
-}
-
-
-// Should really bump these together by having the view as an input to the function
-- (void) goSendMessage{
-    [self.view bringSubviewToFront:reSendingLayer];
-    [self shiftWindow];
-}
-
-- (void) goSettings{
-    [self.view bringSubviewToFront:settingsLayer];
-    [self shiftWindow];
-}
-
-- (void) goHistory{
-    [self loadHistoryLayer];
-    [self.view bringSubviewToFront:historyLayer];
-    [self shiftWindow];
-}
-
-- (void) goOldSend{
-    [self.view bringSubviewToFront:backgroundLayer];
-    [self shiftWindow];
-}
-
-- (void) shiftWindow{
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        menuLayer.center = CGPointMake(-SCREEN_WIDTH/2, menuLayer.center.y);
-        settingsLayer.center = CGPointMake(SCREEN_WIDTH/2, settingsLayer.center.y);
-        reSendingLayer.center = CGPointMake(SCREEN_WIDTH/2, reSendingLayer.center.y);
-        historyLayer.center = CGPointMake(SCREEN_WIDTH/2, historyLayer.center.y);
-        backgroundLayer.center = CGPointMake(SCREEN_WIDTH/2, backgroundLayer.center.y);
-    } completion:^(BOOL finished) {}];
-}
-
-- (void) reShiftWindow{
-    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-        menuLayer.center = CGPointMake(SCREEN_WIDTH/2, menuLayer.center.y);
-        settingsLayer.center = CGPointMake(SCREEN_HEIGHT, settingsLayer.center.y);
-        reSendingLayer.center = CGPointMake(SCREEN_HEIGHT, reSendingLayer.center.y);
-        historyLayer.center = CGPointMake(SCREEN_HEIGHT, historyLayer.center.y);
-        backgroundLayer.center = CGPointMake(SCREEN_HEIGHT, backgroundLayer.center.y);
-    } completion:^(BOOL finished) {}];
-    
-    [self.view endEditing:YES];
-}
-
-
+// Send a message through the original deprecated send message form
 - (void)sendMessage{
     if (!locked){
         [self switchLock];
@@ -903,6 +735,7 @@
         [self addSentEntry];
     }];
 }
+
 
 // From new sending form
 - (void)sendMessageNew{
@@ -965,10 +798,6 @@
             }
         }
         
-        
-        
-        
-        
     } failure:^(NSError *error) {
         NSLog(@"Error sending message. The error was: %@", [error userInfo]);
         [alert2 setMessage:@"Message Failed to Send."];
@@ -978,142 +807,61 @@
     }];
 }
 
-
-// Move the background layer back into place and make sure the subjLbl message is there if it should be
-- (void)textViewDidEndEditing:(UITextView *)theTextView{
-    if (![subjectBox.textView hasText]) {
-        subjLbl.hidden = NO;
-    }
+- (void) addSentEntry{
     
-    if (theTextView == messageBox.textView){
-        [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-            backgroundLayer.center = CGPointMake(backgroundLayer.center.x, backgroundLayer.center.y+210);
-        } completion:^(BOOL finished) {}];
+    for (MGEmailPreviewCell* cell in [historyScroll subviews]){
+        cell.center = CGPointMake(cell.center.x, cell.center.y + 70);
     }
-    
-    // New sending form
-    if (theTextView == messageEntryField){
-        [UIView animateWithDuration:.5 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-            reSendingLayer.center = CGPointMake(reSendingLayer.center.x, reSendingLayer.center.y+120);
-        } completion:^(BOOL finished) {}];
-    }
-}
-
-// Move the background layer if you're editting the message box so that you can see the whole box
-- (void)textViewDidBeginEditing:(UITextView *)theTextView{
-    if (theTextView == messageBox.textView){
-        [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-             backgroundLayer.center = CGPointMake(backgroundLayer.center.x, backgroundLayer.center.y-210);
-         } completion:^(BOOL finished) {}];
-    }
-    
-    
-    // New sending form
-    if (theTextView == messageEntryField){
-        [UIView animateWithDuration:.5 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-            reSendingLayer.center = CGPointMake(reSendingLayer.center.x, reSendingLayer.center.y-120);
-        } completion:^(BOOL finished) {}];
-    }
-    
+    historyScroll.contentSize = CGSizeMake(historyScroll.contentSize.width, historyScroll.contentSize.height + 70);
+    MGEmailPreviewCell *messageCell = [[MGEmailPreviewCell alloc] init];
+    [messageCell awakeFromNib];
+    messageCell.center = CGPointMake(SCREEN_WIDTH/2, 35);
+    [messageCell populateWithRecipient:[histRecipient objectForKey:[NSString stringWithFormat:@"%d",1]]
+                           withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",1]]
+                           withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",1]]
+                              withDate:[histDate objectForKey:[NSString stringWithFormat:@"%d",1]]
+                           withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",1]]
+                            withNumber:0];
+    [historyScroll addSubview:messageCell];
     
 }
 
-// Check on whether the subjLbl message should be there or not
-- (void) textViewDidChange:(UITextView *)textView{
-    if(![subjectBox.textView hasText]) {subjLbl.hidden = NO;}else{subjLbl.hidden = YES;}
-    if(![toBox.textView hasText]) {toLbl.hidden = NO;}else{toLbl.hidden = YES;}
-    if(![fromBox.textView hasText]) {fromLbl.hidden = NO;}else{fromLbl.hidden = YES;}
-    if(![apiBox.textView hasText]) {apiLbl.hidden = NO;}else{apiLbl.hidden = YES;}
-    if(![urlBox.textView hasText]) {urlLbl.hidden = NO;}else{urlLbl.hidden = YES;}
+#pragma mark - Methods for selecting recipient addresses from your contacts.
+- (void) showToContactList{
+    toContactPopUp.hidden = NO;
+    hideSendList.hidden = NO;
+    popSendList.hidden = YES;
+    NSLog(@"showToContactList");
+    [self hideCCContactList];
 }
 
-// For auto changing the label to the email message
-- (void) textFieldDidChange:(UITextField *)textField{
-    if ([subjEntryField.entryView isEqual:textField]){
-        if ([textField hasText]){
-            composeLabel.text = textField.text;
-        } else {
-            composeLabel.text = @"New Message";
-        }
-    }
+- (void) hideToContactList{
+    toContactPopUp.hidden = YES;
+    toEntryField.entryView.text = [NSString stringWithFormat:@"%@%@", toEntryField.entryView.text, toContactPopUp.lastSelected];
+    hideSendList.hidden = YES;
+    popSendList.hidden = NO;
+    toContactPopUp.lastSelected = @"";
+    NSLog(@"hideToContactList");
 }
 
-// Lock / Unlock sending of messages. Designed to prevent accidental and double sending.
-- (void) switchLock{
-    if (locked){
-        lockView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"unlock35.png"]];
-        sendButton.backgroundColor = [UIColor greenColor];
-        [sendButton setTitle:@"SEND MESSAGE" forState:UIControlStateNormal];
-        [sendButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
-
-        
-    } else {
-        lockView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lock35.png"]];
-        sendButton.backgroundColor = [UIColor redColor];
-        [sendButton setTitle:@"UNLOCK TO SEND" forState:UIControlStateNormal];
-        [sendButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
-
-    }
-    locked = !locked;
+- (void) showCCContactList{
+    ccContactPopUp.hidden = NO;
+    hideCCList.hidden = NO;
+    popCCList.hidden = YES;
+    NSLog(@"showCCContactList");
+    [self hideToContactList];
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void) hideCCContactList{
+    ccContactPopUp.hidden = YES;
+    ccEntryField.entryView.text = [NSString stringWithFormat:@"%@%@", ccEntryField.entryView.text, ccContactPopUp.lastSelected];
+    hideCCList.hidden = YES;
+    popCCList.hidden = NO;
+    ccContactPopUp.lastSelected = @"";
+    NSLog(@"hideCCContactList");
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    [self.view endEditing:YES];
-    if (backgroundLayer.frame.origin.x == 0){
-        backgroundLayer.frame = self.view.frame;
-    }
-}
-
-// Responsible for small flash when you click buttons
-- (UIImage *)imageWithColor:(UIColor *)color {
-    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGContextSetFillColorWithColor(context, [color CGColor]);
-    CGContextFillRect(context, rect);
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
-
-- (void) closeSettings{
-    [self reShiftWindow];
-    
-    API_KEY = apiBox.textView.text;
-    mailgunURL = urlBox.textView.text;
-    titleLabel.text = [mailgunURL uppercaseString];
-}
-
-- (void) cancelSettingsChange{
-    [self reShiftWindow];
-    
-    apiBox.textView.text = API_KEY;
-    urlBox.textView.text = mailgunURL;
-    
-    
-    if(![apiBox.textView hasText]) {
-        apiLbl.hidden = NO;
-    }else{
-        apiLbl.hidden = YES;
-    }
-    
-    if(![urlBox.textView hasText]) {
-        urlLbl.hidden = NO;
-    }else{
-        urlLbl.hidden = YES;
-    }
-}
-
-
+#pragma mark - Sent Message Storage Methods
 - (void)addToHistory:(MGMessage *)message withSuccess:(BOOL)success{
     if ([message.text isEqualToString:@""] || message.text == nil){
         [histMessage addEntry:@"- NO MESSAGE -"];
@@ -1159,10 +907,6 @@
     
 }
 
-- (void) closeHistory{
-    [self reShiftWindow];
-}
-
 
 - (void) setStorageLimit:(int)limit{
     for (MGHistoryTracker* track in histArray){
@@ -1182,9 +926,7 @@
         NSLog(@"Printing: %@", track.title);
         [track printTracker];
     }
-    
 }
-
 - (int) findLargestHistory{
     int largest = 0;
     
@@ -1199,26 +941,87 @@
     return largest;
 }
 
-- (void) addSentEntry{
-    
-    for (MGEmailPreviewCell* cell in [historyScroll subviews]){
-        cell.center = CGPointMake(cell.center.x, cell.center.y + 70);
-    }
-    historyScroll.contentSize = CGSizeMake(historyScroll.contentSize.width, historyScroll.contentSize.height + 70);
-    MGEmailPreviewCell *messageCell = [[MGEmailPreviewCell alloc] init];
-    [messageCell awakeFromNib];
-    messageCell.center = CGPointMake(SCREEN_WIDTH/2, 35);
-    [messageCell populateWithRecipient:[histRecipient objectForKey:[NSString stringWithFormat:@"%d",1]]
-                           withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",1]]
-                           withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",1]]
-                              withDate:[histDate objectForKey:[NSString stringWithFormat:@"%d",1]]
-                           withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",1]]
-                            withNumber:0];
-    [historyScroll addSubview:messageCell];
-    
+#pragma mark - Navigation Methods -- Main Menu
+// Should really bump these together by having the view as an input to the function
+- (void) goHistory{
+    [self loadHistoryLayer];
+    [self.view bringSubviewToFront:historyLayer];
+    [self shiftWindow];
+}
+
+- (void) goOldSend{
+    [self.view bringSubviewToFront:backgroundLayer];
+    [self shiftWindow];
+}
+
+- (void) goSendMessage{
+    [self.view bringSubviewToFront:reSendingLayer];
+    [self shiftWindow];
+}
+
+- (void) goSettings{
+    [self.view bringSubviewToFront:settingsLayer];
+    [self shiftWindow];
 }
 
 
+#pragma mark - Navigation Methods -- Screen exiting methods
+- (void) cancelSettingsChange{
+    [self reShiftWindow];
+    
+    apiBox.textView.text = API_KEY;
+    urlBox.textView.text = mailgunURL;
+    
+    
+    if(![apiBox.textView hasText]) {
+        apiLbl.hidden = NO;
+    }else{
+        apiLbl.hidden = YES;
+    }
+    
+    if(![urlBox.textView hasText]) {
+        urlLbl.hidden = NO;
+    }else{
+        urlLbl.hidden = YES;
+    }
+}
+
+- (void) closeHistory{
+    [self reShiftWindow];
+}
+
+- (void) closeSettings{
+    [self reShiftWindow];
+    
+    API_KEY = apiBox.textView.text;
+    mailgunURL = urlBox.textView.text;
+    titleLabel.text = [mailgunURL uppercaseString];
+}
+
+#pragma mark - Navigation Methods -- Animated the changing between views
+- (void) shiftWindow{
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+        menuLayer.center = CGPointMake(-SCREEN_WIDTH/2, menuLayer.center.y);
+        settingsLayer.center = CGPointMake(SCREEN_WIDTH/2, settingsLayer.center.y);
+        reSendingLayer.center = CGPointMake(SCREEN_WIDTH/2, reSendingLayer.center.y);
+        historyLayer.center = CGPointMake(SCREEN_WIDTH/2, historyLayer.center.y);
+        backgroundLayer.center = CGPointMake(SCREEN_WIDTH/2, backgroundLayer.center.y);
+    } completion:^(BOOL finished) {}];
+}
+
+- (void) reShiftWindow{
+    [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+        menuLayer.center = CGPointMake(SCREEN_WIDTH/2, menuLayer.center.y);
+        settingsLayer.center = CGPointMake(SCREEN_HEIGHT, settingsLayer.center.y);
+        reSendingLayer.center = CGPointMake(SCREEN_HEIGHT, reSendingLayer.center.y);
+        historyLayer.center = CGPointMake(SCREEN_HEIGHT, historyLayer.center.y);
+        backgroundLayer.center = CGPointMake(SCREEN_HEIGHT, backgroundLayer.center.y);
+    } completion:^(BOOL finished) {}];
+    
+    [self.view endEditing:YES];
+}
+
+#pragma mark - Sent Messages Screen Navigation
 - (void)selectCell:(id) sender{
     UIButton *btn = (UIButton*) sender;
     int index = [btn.titleLabel.text intValue];
@@ -1226,6 +1029,8 @@
     [self loadMessageLayerWithIndex:index];
 }
 
+
+// Load a message in sent messages
 - (void)loadMessageLayerWithIndex:(int)index{
     messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.view addSubview:messageView];
@@ -1247,7 +1052,7 @@
     dateLabel.text = @"SENT: ";
     dateLabel.font = [UIFont boldSystemFontOfSize:16];
     [messageScrollView addSubview:dateLabel];
-
+    
     UILabel *MVDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 40, 300, 30)];
     MVDateLabel.text = [histDate objectForKey:[NSString stringWithFormat:@"%d",index]];
     MVDateLabel.font = [UIFont systemFontOfSize:14];
@@ -1325,10 +1130,6 @@
     viewTitleLabel.textAlignment = NSTextAlignmentCenter;
     viewTitleLabel.center = CGPointMake(self.view.center.x, viewTitleLabel.center.y);
     [messageView addSubview:viewTitleLabel];
-    
-    
-    
-    
 }
 
 // This should just clear all of it.
@@ -1340,4 +1141,120 @@
     [messageView removeFromSuperview];
 }
 
+#pragma mark - Miscellaneous Methos
+- (void) showHideAPIField{
+    double LIGHT_GREY = 0.87;
+    if ([apiBox.textView.backgroundColor isEqual:[UIColor colorWithRed:LIGHT_GREY green:LIGHT_GREY blue:LIGHT_GREY alpha:1.0]]){
+        apiBox.textView.backgroundColor = [UIColor blackColor];
+        NSLog(@"change to black");
+    } else {
+        apiBox.textView.backgroundColor = [UIColor colorWithRed:LIGHT_GREY green:LIGHT_GREY blue:LIGHT_GREY alpha:1.0];
+        NSLog(@"change to grey");
+    }
+}
+
+// Dismiss the keyboard when you click out of a text field. I think this is only in the deprecated view?
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
+    if (backgroundLayer.frame.origin.x == 0){
+        backgroundLayer.frame = self.view.frame;
+    }
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - TextView / TextField Helper Methods
+// Move the background layer back into place and make sure the subjLbl message is there if it should be
+- (void)textViewDidEndEditing:(UITextView *)theTextView{
+    if (![subjectBox.textView hasText]) {
+        subjLbl.hidden = NO;
+    }
+    
+    if (theTextView == messageBox.textView){
+        [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+            backgroundLayer.center = CGPointMake(backgroundLayer.center.x, backgroundLayer.center.y+210);
+        } completion:^(BOOL finished) {}];
+    }
+    
+    // New sending form
+    if (theTextView == messageEntryField){
+        [UIView animateWithDuration:.5 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+            reSendingLayer.center = CGPointMake(reSendingLayer.center.x, reSendingLayer.center.y+120);
+        } completion:^(BOOL finished) {}];
+    }
+}
+
+// Move the background layer if you're editting the message box so that you can see the whole box
+- (void)textViewDidBeginEditing:(UITextView *)theTextView{
+    if (theTextView == messageBox.textView){
+        [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+            backgroundLayer.center = CGPointMake(backgroundLayer.center.x, backgroundLayer.center.y-210);
+        } completion:^(BOOL finished) {}];
+    }
+    
+    
+    // New sending form
+    if (theTextView == messageEntryField){
+        [UIView animateWithDuration:.5 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
+            reSendingLayer.center = CGPointMake(reSendingLayer.center.x, reSendingLayer.center.y-120);
+        } completion:^(BOOL finished) {}];
+    }
+    
+    
+}
+
+// Check on whether the subjLbl message should be there or not
+- (void) textViewDidChange:(UITextView *)textView{
+    if(![subjectBox.textView hasText]) {subjLbl.hidden = NO;}else{subjLbl.hidden = YES;}
+    if(![toBox.textView hasText]) {toLbl.hidden = NO;}else{toLbl.hidden = YES;}
+    if(![fromBox.textView hasText]) {fromLbl.hidden = NO;}else{fromLbl.hidden = YES;}
+    if(![apiBox.textView hasText]) {apiLbl.hidden = NO;}else{apiLbl.hidden = YES;}
+    if(![urlBox.textView hasText]) {urlLbl.hidden = NO;}else{urlLbl.hidden = YES;}
+}
+
+// For auto changing the label to the email message
+- (void) textFieldDidChange:(UITextField *)textField{
+    if ([subjEntryField.entryView isEqual:textField]){
+        if ([textField hasText]){
+            composeLabel.text = textField.text;
+        } else {
+            composeLabel.text = @"New Message";
+        }
+    }
+}
+
+#pragma mark - Shared UX Methods
+// Adds a gradient to any views or buttons.
+- (void) addGradient:(UIView *)obj{
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = obj.layer.bounds;
+    gradient.colors = [NSArray arrayWithObjects:
+                       (id)[UIColor colorWithWhite:1.0f alpha:0.1f].CGColor,
+                       (id)[UIColor colorWithWhite:0.4f alpha:0.5f].CGColor,
+                       nil];
+    gradient.locations = [NSArray arrayWithObjects:
+                          [NSNumber numberWithFloat:0.0f],
+                          [NSNumber numberWithFloat:1.0f],
+                          nil];
+    gradient.cornerRadius = obj.layer.cornerRadius;
+    [obj.layer addSublayer:gradient];
+}
+
+// Responsible for small flash when you click buttons
+- (UIImage *)imageWithColor:(UIColor *)color {
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
 @end

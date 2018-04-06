@@ -7,66 +7,46 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Mailgun.h"
+#import <Contacts/Contacts.h>
 #import "BorderedTextField.h"
+#import "Mailgun.h"
 #import "MGHistoryTracker.h"
 #import "MGEmailPreviewCell.h"
-
 #import "MGNewEntryField.h"
-#import <Contacts/Contacts.h>
 #import "MGContactPopUpList.h"
 #import "MGPrivateAPIKeyHolder.h"
 
 
+
 @interface ViewController : UIViewController
 {
-  //  int blah;
-    NSString *API_KEY;
-    NSString *mailgunURL;
-    UITextView *activeField;
+    double SCREEN_WIDTH, SCREEN_HEIGHT;
+    
+    NSString *API_KEY, *mailgunURL;
+    UITextView *activeField; // what is this? i think this is a remenant of old code. need to test though.
     
     NSUserDefaults *userPreferences;
-    MGHistoryTracker *histMessage;
-    MGHistoryTracker *histSubject;
-    MGHistoryTracker *histDate;
-    MGHistoryTracker *histSender;
-    MGHistoryTracker *histRecipient;
-    MGHistoryTracker *histStatus;
+    MGHistoryTracker *histMessage, *histSubject, *histDate, *histSender, *histRecipient, *histStatus;
     
     NSMutableArray *histArray;
-    
     NSMutableDictionary *contactEmails;
     
+    
     /* ----- Mail Sending View ----- */
-    UIView *backgroundLayer;
-    
-    BorderedTextField *toBox;
-    BorderedTextField *fromBox;
-    BorderedTextField *subjectBox;
-    BorderedTextField *messageBox;
-    
-    UILabel *toLbl; // from Placeholder
-    UILabel *fromLbl; // to Placeholder
-    UILabel *subjLbl; // subjectBox Placeholder
-    
+    UIView *backgroundLayer; // rename this bullshit
     UILabel *titleLabel;
+    UILabel *toLbl, *fromLbl, *subjLbl; // Placeholders for to, from, subject labels
     
-    UIButton *sendButton;
-    UIButton* lockView;
-    UIButton *historyButton;
+    BorderedTextField *toBox, *fromBox, *subjectBox, *messageBox;
+    UIButton *sendButton, *lockView, *historyButton;
     BOOL locked;
     
     
     /* ----- Settings View ----- */
     UIView *settingsLayer;
-    UIButton* settingsButton;
-    UIButton* backButton;
-    BorderedTextField *apiBox;
-    BorderedTextField *urlBox;
-    UIButton* cancelChanges;;
-    UILabel *apiLbl; // api Placeholder
-    UILabel *urlLbl; // url Placeholder
-    UILabel *creditsLabel;
+    UIButton* settingsButton, *backButton, *cancelchanges;
+    BorderedTextField *apiBox, *urlBox;
+    UILabel *apiLbl, *urlLbl, *creditsLabel; // Placeholders for api, url. Credits Label.
     
     
     /* ----- History View ----- */
@@ -75,20 +55,14 @@
     UIButton *historyBackButton;
     
     
-    /* ----- New Sending View ----- */ // Fields are needed to grab the text when you're sending a message
+    /* ----- New Sending View ----- */
     UIView *reSendingLayer;
     UITextView *messageEntryField;
-    MGNewEntryField *subjEntryField;
-    MGNewEntryField *fromEntryField;
-    MGNewEntryField *ccEntryField;
-    MGNewEntryField *toEntryField;
+    MGNewEntryField *subjEntryField, *fromEntryField, *ccEntryField, *toEntryField;
     UILabel *composeLabel;
-    MGContactPopUpList* toContactPopUp;
-    UIButton *popSendList;
-    UIButton *hideSendList;
-    MGContactPopUpList* ccContactPopUp;
-    UIButton *popCCList;
-    UIButton *hideCCList;
+    MGContactPopUpList* toContactPopUp, *ccContactPopUp;
+    UIButton *popSendList, *hideSendList, *popCCList, *hideCCList;
+    
     
     /* ---- Menu Layer ----- */
     UIView *menuLayer;
@@ -96,140 +70,90 @@
     
     /* ---- Message View Layer ---- */
     UIView *messageView;
-    //UILabel *MVSenderLabel;
-    //UILabel *MVRecipientLabel;
-    //UILabel *MVCCLabel;
-    //UILabel *MVMessageLabel;
     UIButton *MVBackButton;
     
     
-    double SCREEN_WIDTH, SCREEN_HEIGHT;
+    
 
 }
 
+@property (nonatomic) BOOL locked;
 @property (nonatomic) double SCREEN_WIDTH, SCREEN_HEIGHT;
 
-@property (nonatomic, retain) UILabel* composeLabel;
-@property (nonatomic, retain) UIView* messageView;
-@property (nonatomic, retain) UIButton* MVBackButton;
-
-@property (nonatomic, retain) MGContactPopUpList* toContactPopUp;
-@property (nonatomic, retain) UIButton* popSendList;
-@property (nonatomic, retain) UIButton* hideSendList;
-
-@property (nonatomic, retain) MGContactPopUpList* ccContactPopUp;
-@property (nonatomic, retain) UIButton* popCCList;
-@property (nonatomic, retain) UIButton* hideCCList;
-
-
-@property (nonatomic, retain) NSMutableDictionary* contactEmails;
-
-@property (nonatomic, retain) UIView* reSendingLayer;
-
-@property (nonatomic, retain) UIView* menuLayer;
-@property (nonatomic, retain) UITextView* messageEntryField;
-@property (nonatomic, retain) MGNewEntryField* subjEntryField;
-@property (nonatomic, retain) MGNewEntryField* fromEntryField;
-@property (nonatomic, retain) MGNewEntryField* ccEntryField;
-@property (nonatomic, retain) MGNewEntryField* toEntryField;
-
-@property (atomic, retain) NSUserDefaults* userPreferences;
-@property (atomic, retain) MGHistoryTracker* histMessage;
-@property (atomic, retain) MGHistoryTracker* histSubject;
-@property (atomic, retain) MGHistoryTracker* histDate;
-@property (atomic, retain) MGHistoryTracker* histSender;
-@property (atomic, retain) MGHistoryTracker* histRecipient;
-@property (atomic, retain) MGHistoryTracker* histStatus;
-
+@property (nonatomic, retain) BorderedTextField* messageBox, *toBox, *fromBox, *subjectBox, *apiBox, *urlBox;
+@property (nonatomic, retain) MGContactPopUpList* toContactPopUp, *ccContactPopUp;
+@property (atomic, retain) MGHistoryTracker* histMessage, *histSubject, *histDate, *histSender, *histRecipient, *histStatus;
+@property (nonatomic, retain) MGNewEntryField* subjEntryField, *fromEntryField, *ccEntryField, *toEntryField;
 @property (nonatomic, retain) NSMutableArray *histArray;
-
-@property (nonatomic, retain) BorderedTextField* apiBox;
-@property (nonatomic, retain) BorderedTextField* urlBox;
-
-@property (nonatomic, retain) UILabel* titleLabel;
-@property (nonatomic, retain) UILabel* subjLbl;
-@property (nonatomic, retain) UILabel* toLbl;
-@property (nonatomic, retain) UILabel* fromLbl;
-
-@property (nonatomic, retain) UILabel* urlLbl;
-@property (nonatomic, retain) UILabel* apiLbl;
-
-@property (nonatomic, retain) UILabel* creditsLabel;
-
-@property (nonatomic) BOOL locked;
-//@property (nonatomic) int blah;
-@property (nonatomic, retain) UIButton* lockView;
-@property (nonatomic, retain) UIButton* settingsButton;
-@property (nonatomic, retain) UIButton* backButton;
-@property (nonatomic, retain) UIButton* historyButton;
-@property (nonatomic, retain) UIButton* historyBackButton;
-
-
-@property (nonatomic, retain) UIView* settingsLayer;
-@property (nonatomic, retain) UIView* backgroundLayer;
+@property (nonatomic, retain) NSMutableDictionary* contactEmails;
+@property (atomic, retain)    NSUserDefaults* userPreferences;
+@property (nonatomic, retain) NSString* API_KEY, *mailgunURL;
 @property (nonatomic, retain) UIScrollView* historyScroll;
-@property (nonatomic, retain) UIView* historyLayer;
-@property (nonatomic, retain) UITextView* activeField;
-
-@property (nonatomic, retain) NSString* API_KEY;
-@property (nonatomic, retain) NSString* mailgunURL;
-
-
-@property (nonatomic, retain) BorderedTextField* messageBox;
-@property (nonatomic, retain) BorderedTextField* toBox;
-@property (nonatomic, retain) BorderedTextField* fromBox;
-@property (nonatomic, retain) BorderedTextField* subjectBox;
-
-@property (nonatomic, retain) UIButton* sendButton;
-@property (nonatomic, retain) UIButton* cancelChanges;
-
-- (void) sendMessage;
-//-(IBAction)editingEnded:(id)sender;
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+@property (nonatomic, retain) UITextView* activeField, *messageEntryField;
+@property (nonatomic, retain) UIButton* lockView, *settingsButton, *backButton, *historyButton, *historyBackButton, *sendButton, *cancelChanges, *popSendList, *hideSendList, *popCCList, *hideCCList, *MVBackButton;
+@property (nonatomic, retain) UILabel* titleLabel, *subjLbl, *toLbl, *fromLbl, *urlLbl, *apiLbl, *creditsLabel, *composeLabel;
+@property (nonatomic, retain) UIView* settingsLayer, *backgroundLayer, *historyLayer, *reSendingLayer, *menuLayer, *messageView;
 
 
-- (void) switchLock;
-- (UIImage *)imageWithColor:(UIColor *)color;
-//- (void) openSettings;
-//- (void) closeSettings;
-- (void) loadSettingsLayer;
-- (void) cancelSettingsChange;
+/// ViewDidLoad Helper Functions
+- (void) loadSettingsLayer; // load settings screen
+- (void) loadNewSendingLayer;
+- (void) loadMenuLayer;
+- (void) loadBackgroundLayer; // deprecated send message screen
+- (void) loadHistoryLayer;
 
 
+// Message Sending Methods
+- (void) switchLock; // Unlock sending in deprecated compose view
+- (void) sendMessage; // send a message from the old sending form
+- (void) sendMessageNew; // send a message from the new sending form
+- (void) addSentEntry; // add a new entry to sent messages history after you send a message
+
+// Methods for selecting recipient addresses from your contacts.
+- (void) showToContactList;
+- (void) hideToContactList;
+- (void) showCCContactList;
+- (void) hideCCContactList;
+
+
+// Sent Message Storage Methods
 - (void) addToHistory:(MGMessage *)message withSuccess:(BOOL)success;
 - (void) setStorageLimit:(int)limit;
 - (void) clearTrackers;
 - (void) printTrackers;
-
-//- (void) openHistory;
-- (void) closeHistory;
-- (void) loadHistoryLayer;
-- (void) addSentEntry;
 - (int) findLargestHistory;
 
-- (void) loadNewSendingLayer;
-- (void) loadMenuLayer;
-- (void) loadBackgroundLayer;
 
-- (void) goSettings;
+// Navigation Methods -- Main Menu
 - (void) goHistory;
-- (void) goSendMessage;
 - (void) goOldSend;
+- (void) goSendMessage;
+- (void) goSettings;
+
+// Navigation Methods -- Screen exiting methods
+- (void) cancelSettingsChange; // cancel out of changing settings
+- (void) closeHistory;
+- (void) closeSettings;
+
+// Navigation Methods -- Animate the changing between views
 - (void) shiftWindow;
 - (void) reShiftWindow;
 
-- (void) showHideAPIField;
-- (void) sendMessageNew;
 
-- (void)selectCell:(id) sender;
-- (void)loadMessageLayerWithIndex:(int)index;
-- (void)MVGoBack;
+// Sent Messages Screen Navigation
+- (void)selectCell:(id) sender; // Determine which Sent Message was selected
+- (void)loadMessageLayerWithIndex:(int)index; // Select a Sent Message to View
+- (void)MVGoBack; // Go from Individual Sent Message in History to Sent Messages Folder
 
-- (void) showToContactList;
-- (void) hideToContactList;
 
-- (void) showCCContactList;
-- (void) hideCCContactList;
+// Miscellaneous Methods
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event; // dismiss keyboard when done editting
+- (void) showHideAPIField; // cover or uncover API key display in settings screen
+
+
+// Shared UX Methods
+- (void) addGradient:(UIView *)obj;
+- (UIImage *)imageWithColor:(UIColor *)color;
 
 @end
 
