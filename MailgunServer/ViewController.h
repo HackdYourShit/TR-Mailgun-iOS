@@ -15,6 +15,7 @@
 #import "MGNewEntryField.h"
 #import <Contacts/Contacts.h>
 #import "MGContactPopUpList.h"
+#import "MGPrivateAPIKeyHolder.h"
 
 
 @interface ViewController : UIViewController

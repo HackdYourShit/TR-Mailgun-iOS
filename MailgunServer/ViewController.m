@@ -55,7 +55,8 @@
     userPreferences = [[NSUserDefaults alloc] initWithSuiteName:@"preferences"];
     //API_KEY = [userPreferences objectForKey:@"api_key"];
     //mailgunURL = [userPreferences objectForKey:@"mail_url"];
-    API_KEY = [[NSString alloc] initWithFormat:@"key-e0a9097a1bb7c65df36f9df5cf00ab25"];
+    API_KEY = [[MGPrivateAPIKeyHolder alloc] init].APIKey;
+    //API_KEY = [[NSString alloc] initWithFormat:@"key-e0a9097a1bb7c65df36f9df5cf00ab25"];
     mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
     
     contactEmails = [[NSMutableDictionary alloc] init];
@@ -144,7 +145,7 @@
     
     toBox = [[BorderedTextField alloc] init];
     toBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX + 0*SPACING);
-    toBox.textView.text = @"edward.rowan@alumni.ubc.ca";
+    toBox.textView.text = @"edward.rowan@alumni.ubc.ca"; // demo test email that i don't use anymore.
     toBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [backgroundLayer addSubview:toBox];
     

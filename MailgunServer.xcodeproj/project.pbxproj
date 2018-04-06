@@ -18,6 +18,7 @@
 		2FA75B2A1D6F4D470007EAFA /* MGEmailPopoutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA75B291D6F4D470007EAFA /* MGEmailPopoutView.m */; };
 		2FB45F591D628C11003B67C8 /* settings35.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB45F581D628C11003B67C8 /* settings35.png */; };
 		2FB45F5B1D628EF8003B67C8 /* back35.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FB45F5A1D628EF8003B67C8 /* back35.png */; };
+		2FC99956207819610056DCF6 /* MGPrivateAPIKeyHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FC99955207819610056DCF6 /* MGPrivateAPIKeyHolder.m */; };
 		2FEFFB1E1D61833D008D6106 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FEFFB1D1D61833D008D6106 /* main.m */; };
 		2FEFFB211D61833D008D6106 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FEFFB201D61833D008D6106 /* AppDelegate.m */; };
 		2FEFFB241D61833D008D6106 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FEFFB231D61833D008D6106 /* ViewController.m */; };
@@ -50,6 +51,8 @@
 		2FA75B291D6F4D470007EAFA /* MGEmailPopoutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGEmailPopoutView.m; sourceTree = "<group>"; };
 		2FB45F581D628C11003B67C8 /* settings35.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings35.png; sourceTree = "<group>"; };
 		2FB45F5A1D628EF8003B67C8 /* back35.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back35.png; sourceTree = "<group>"; };
+		2FC99954207819610056DCF6 /* MGPrivateAPIKeyHolder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MGPrivateAPIKeyHolder.h; sourceTree = "<group>"; };
+		2FC99955207819610056DCF6 /* MGPrivateAPIKeyHolder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MGPrivateAPIKeyHolder.m; sourceTree = "<group>"; };
 		2FEFFB191D61833D008D6106 /* MailgunServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailgunServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FEFFB1D1D61833D008D6106 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2FEFFB1F1D61833D008D6106 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -155,6 +158,8 @@
 				2F58089F1D7F85D0005913E4 /* MGNewEntryField.m */,
 				2FEFFB221D61833D008D6106 /* ViewController.h */,
 				2FEFFB231D61833D008D6106 /* ViewController.m */,
+				2FC99954207819610056DCF6 /* MGPrivateAPIKeyHolder.h */,
+				2FC99955207819610056DCF6 /* MGPrivateAPIKeyHolder.m */,
 				2FEFFB281D61833D008D6106 /* Assets.xcassets */,
 				2FEFFB2D1D61833D008D6106 /* Info.plist */,
 				2F9E8EA81DCA6E81000B21A4 /* Images */,
@@ -316,6 +321,7 @@
 				2F5808A01D7F85D0005913E4 /* MGNewEntryField.m in Sources */,
 				2FA75B2A1D6F4D470007EAFA /* MGEmailPopoutView.m in Sources */,
 				2F9E8EA51DCA6735000B21A4 /* MGButtonWithCheckBox.m in Sources */,
+				2FC99956207819610056DCF6 /* MGPrivateAPIKeyHolder.m in Sources */,
 				2F1148DE1D68225700D1C5E0 /* MGHistoryTracker.m in Sources */,
 				2FEFFB241D61833D008D6106 /* ViewController.m in Sources */,
 				2FEFFB211D61833D008D6106 /* AppDelegate.m in Sources */,
