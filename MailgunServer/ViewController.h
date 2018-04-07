@@ -17,6 +17,7 @@
 #import "MGPrivateAPIKeyHolder.h"
 
 #import "MGContactPopButton.h"
+#import "MGMainMenuNavigationButton.h"
 
 
 @interface ViewController : UIViewController
@@ -101,7 +102,7 @@
 /// ViewDidLoad Helper Functions
 - (void) loadSettingsLayer; // load settings screen
 - (void) loadNewSendingLayer;
-- (void) loadMenuLayer;
+- (void) loadMainMenuLayer;
 - (void) loadBackgroundLayer; // deprecated send message screen
 - (void) loadHistoryLayer;
 

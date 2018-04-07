@@ -103,7 +103,7 @@
     [self loadSettingsLayer];
     [self loadHistoryLayer];
     [self loadNewSendingLayer];
-    [self loadMenuLayer];
+    [self loadMainMenuLayer];
 
 }
 
@@ -336,10 +336,10 @@
     
 }
 
-- (void) loadMenuLayer{
+- (void) loadMainMenuLayer{
     menuLayer = [[UIView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:menuLayer];
     menuLayer.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:menuLayer];
     
     UILabel *menuLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 40, 220, 30)];
     menuLabel.text = @"MENU";
@@ -348,100 +348,44 @@
     menuLabel.center = CGPointMake(SCREEN_WIDTH/2, menuLabel.center.y);
     [menuLayer addSubview:menuLabel];
     
-    /* ---- TURN THESE BUTTONS INTO A CLASS ---- */
-    UIButton *goToSend = [[UIButton alloc] init];
-    goToSend = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToSend.frame = CGRectMake(5, 90, SCREEN_WIDTH-10, 50);
-    [goToSend setTitle:@"Send a message" forState:UIControlStateNormal];
-    goToSend.layer.borderColor = [UIColor blackColor].CGColor;
-    goToSend.layer.borderWidth = 1;
-    [goToSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goToSend.layer.cornerRadius = 5;
-    goToSend.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
-    [goToSend addTarget:self action:@selector(goSendMessage) forControlEvents:UIControlEventTouchUpInside];
-    [goToSend setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
-    goToSend.clipsToBounds = YES;
-    [self addGradient:goToSend];
-    [menuLayer addSubview:goToSend];
-    
-    
-    
-    UIButton *goToHistory = [[UIButton alloc] init];
-    goToHistory = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToHistory.frame = CGRectMake(5, 150, SCREEN_WIDTH-10, 50);
-    [goToHistory setTitle:@"View Sent Messages" forState:UIControlStateNormal];
-    goToHistory.layer.borderWidth = 1;
-    goToHistory.layer.borderColor = [UIColor blackColor].CGColor;
-    [goToHistory setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goToHistory.layer.cornerRadius = 5;
+    // Create the main menu buttons
+    MGMainMenuNavigationButton *goToSend = [[MGMainMenuNavigationButton alloc] initWithFrame:CGRectMake(5, 90, SCREEN_WIDTH-10, 50) withTitle:@"Send a message"];
+    MGMainMenuNavigationButton *goToHistory = [[MGMainMenuNavigationButton alloc] initWithFrame:CGRectMake(5, 150, SCREEN_WIDTH-10, 50) withTitle:@"View Sent Messages"];
+    MGMainMenuNavigationButton *goToTrash = [[MGMainMenuNavigationButton alloc] initWithFrame:CGRectMake(5, 210, SCREEN_WIDTH-10, 50) withTitle:@"View Deleted Messages"];
+    MGMainMenuNavigationButton *goToOptions = [[MGMainMenuNavigationButton alloc] initWithFrame:CGRectMake(5, 270, SCREEN_WIDTH-10, 50) withTitle:@"Change API Key / Mailgun URL"];
+    MGMainMenuNavigationButton *goToOldSend = [[MGMainMenuNavigationButton alloc] initWithFrame:CGRectMake(5, 330, SCREEN_WIDTH-10, 50) withTitle:@"Deprecated Send Message Form"];
+    goToSend.backgroundColor =    [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
     goToHistory.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
-    [goToHistory addTarget:self action:@selector(goHistory) forControlEvents:UIControlEventTouchUpInside];
-    [goToHistory setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
-    [self addGradient:goToHistory];
-    [menuLayer addSubview:goToHistory];
-    
-    
-    
-    UIButton *goToTrash = [[UIButton alloc] init];
-    goToTrash = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToTrash.frame = CGRectMake(5, 210, SCREEN_WIDTH-10, 50);
-    [goToTrash setTitle:@"View Deleted Messages" forState:UIControlStateNormal];
-    goToTrash.layer.borderWidth = 1;
-    goToTrash.layer.borderColor = [UIColor blackColor].CGColor;
-    [goToTrash setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goToTrash.backgroundColor = [UIColor colorWithRed:.95 green:.40 blue:.40 alpha:.8];
-    goToTrash.layer.cornerRadius = 5;
-    [goToTrash setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
-    [self addGradient:goToTrash];
-    [menuLayer addSubview:goToTrash];
-    
-    UIButton *goToOptions = [[UIButton alloc] init];
-    goToOptions = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToOptions.frame = CGRectMake(5, 270, SCREEN_WIDTH-10, 50);
-    [goToOptions setTitle:@"Change API Key / Mailgun URL" forState:UIControlStateNormal];
-    [goToOptions setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goToOptions.layer.borderWidth = 1;
-    goToOptions.layer.borderColor = [UIColor blackColor].CGColor;
-    goToOptions.layer.cornerRadius = 5;
     goToOptions.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
-    [goToOptions addTarget:self action:@selector(goSettings) forControlEvents:UIControlEventTouchUpInside];
-    [goToOptions setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
-    [self addGradient:goToOptions];
-    [menuLayer addSubview:goToOptions];
-    
-    
-    
-    UIButton *goToOldSend = [[UIButton alloc] init];
-    goToOldSend = [UIButton buttonWithType:UIButtonTypeCustom];
-    goToOldSend.frame = CGRectMake(5, 330, SCREEN_WIDTH-10, 50);
-    [goToOldSend setTitle:@"Deprecated Send Message Form" forState:UIControlStateNormal];
-    [goToOldSend setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goToOldSend.layer.borderWidth = 1;
-    goToOldSend.layer.borderColor = [UIColor blackColor].CGColor;
-    goToOldSend.layer.cornerRadius = 5;
+    goToTrash.backgroundColor =   [UIColor colorWithRed:.95 green:.40 blue:.40 alpha:.8];
     goToOldSend.backgroundColor = [UIColor colorWithRed:.99 green:.99 blue:.95 alpha:.8];
+    [goToSend addTarget:self action:@selector(goSendMessage) forControlEvents:UIControlEventTouchUpInside];
+    [goToHistory addTarget:self action:@selector(goHistory) forControlEvents:UIControlEventTouchUpInside];
+    [goToOptions addTarget:self action:@selector(goSettings) forControlEvents:UIControlEventTouchUpInside];
     [goToOldSend addTarget:self action:@selector(goOldSend) forControlEvents:UIControlEventTouchUpInside];
-    [goToOldSend setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.2]] forState:UIControlStateHighlighted];
+    [menuLayer addSubview:goToSend];
+    [menuLayer addSubview:goToHistory];
+    [menuLayer addSubview:goToTrash];
+    [menuLayer addSubview:goToOptions];
     [menuLayer addSubview:goToOldSend];
     
     
     // Add the logos at the bottom of the app. Change these to be placed dynamically.
     UIImageView *menuMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
-    menuMGLogo.frame = CGRectMake(50, 420, 90, 90);
+    menuMGLogo.frame = CGRectMake(SCREEN_WIDTH*3.0/16, SCREEN_HEIGHT-200, SCREEN_WIDTH/4, SCREEN_WIDTH/4);
     [menuLayer addSubview:menuMGLogo];
     
     UIImageView *menuTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
-    menuTRLogo.frame = CGRectMake(SCREEN_WIDTH/2, 420, 90, 90);
+    menuTRLogo.frame = CGRectMake(SCREEN_WIDTH*9.0/16, SCREEN_HEIGHT-200, SCREEN_WIDTH/4, SCREEN_WIDTH/4);
     [menuLayer addSubview:menuTRLogo];
     
-    UILabel *customMGAppLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 510, self.view.frame.size.width, 40)];
+    UILabel *customMGAppLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT-100, SCREEN_WIDTH, 40)];
     customMGAppLabel.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
     customMGAppLabel.font = [UIFont systemFontOfSize:12];
     customMGAppLabel.textColor = [UIColor blackColor];
     customMGAppLabel.textAlignment = NSTextAlignmentCenter;
     [menuLayer addSubview:customMGAppLabel];
-    
-} // loadMenuLayer()
+} // loadMainMenuLayer()
 
 // Loading of the deprecated send message form. Need to either choose this one or rip this out.
 - (void) loadBackgroundLayer{
