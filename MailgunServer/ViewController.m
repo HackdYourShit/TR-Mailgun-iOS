@@ -126,7 +126,6 @@
     
     backButton = [[UIButton alloc] init];
     backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    //backButton.frame = CGRectMake(250, 35, 60, 40);
     backButton.frame = CGRectMake(10, 35, 60, 40);
     backButton.backgroundColor = [UIColor clearColor];
     [backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
@@ -309,67 +308,29 @@
     
     int circleSize = 30;
     
-    popSendList = [[UIButton alloc] init];
-    popSendList = [UIButton buttonWithType:UIButtonTypeCustom];
-    popSendList.backgroundColor = [UIColor greenColor];
-    popSendList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2, circleSize, circleSize);
-    popSendList.layer.cornerRadius = popSendList.frame.size.height/2;
-    popSendList.layer.borderWidth = 1;
-    popSendList.layer.borderColor = [UIColor blackColor].CGColor;
-    popSendList.hidden = NO;
-    [popSendList setTitle:@"+" forState:UIControlStateNormal];
-    [popSendList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    /* ---- Circle buttons to bring up contacts list. ----- */
+    double cOriginX = self.view.frame.size.width - circleSize-2;
+    double cOriginY = initHeight+(fieldSpacing-circleSize)/2;
+    popSendList = [[MGContactPopButton alloc] initWithFrame:CGRectMake(cOriginX, cOriginY, circleSize, circleSize) andColor:[UIColor greenColor]];
+    hideSendList = [[MGContactPopButton alloc] initWithFrame:CGRectMake(cOriginX, cOriginY, circleSize, circleSize) andColor:[UIColor redColor]];
     [popSendList addTarget:self action:@selector(showToContactList) forControlEvents:UIControlEventTouchDown];
-    [reSendingLayer addSubview:popSendList];
-    
-    hideSendList = [[UIButton alloc] init];
-    hideSendList = [UIButton buttonWithType:UIButtonTypeCustom];
-    hideSendList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2, circleSize, circleSize);
-    hideSendList.layer.cornerRadius = popSendList.frame.size.height/2;
-    hideSendList.layer.borderWidth = 1;
-    hideSendList.hidden = YES;
-    hideSendList.backgroundColor = [UIColor redColor];
-    hideSendList.layer.borderColor = [UIColor blackColor].CGColor;
-    [hideSendList setTitle:@"-" forState:UIControlStateNormal];
-    [hideSendList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [hideSendList addTarget:self action:@selector(hideToContactList) forControlEvents:UIControlEventTouchDown];
+    [reSendingLayer addSubview:popSendList];
     [reSendingLayer addSubview:hideSendList];
     
-    toContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
-    toContactPopUp.frame = CGRectMake(50, 150, toContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
-    toContactPopUp.hidden = YES;
-    [reSendingLayer addSubview:toContactPopUp];
-    
-    
-    popCCList = [[UIButton alloc] init];
-    popCCList = [UIButton buttonWithType:UIButtonTypeCustom];
-    popCCList.backgroundColor = [UIColor greenColor];
-    popCCList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2+fieldSpacing, circleSize, circleSize);
-    popCCList.layer.cornerRadius = popCCList.frame.size.height/2;
-    popCCList.layer.borderWidth = 1;
-    popCCList.layer.borderColor = [UIColor blackColor].CGColor;
-    popCCList.hidden = NO;
-    [popCCList setTitle:@"+" forState:UIControlStateNormal];
-    [popCCList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    popCCList = [[MGContactPopButton alloc] initWithFrame:CGRectMake(cOriginX, cOriginY+fieldSpacing, circleSize, circleSize) andColor:[UIColor greenColor]];
+    hideCCList = [[MGContactPopButton alloc] initWithFrame:CGRectMake(cOriginX, cOriginY+fieldSpacing, circleSize, circleSize) andColor:[UIColor redColor]];
     [popCCList addTarget:self action:@selector(showCCContactList) forControlEvents:UIControlEventTouchDown];
-    [reSendingLayer addSubview:popCCList];
-    
-    hideCCList = [[UIButton alloc] init];
-    hideCCList = [UIButton buttonWithType:UIButtonTypeCustom];
-    hideCCList.frame = CGRectMake(self.view.frame.size.width-circleSize-2, initHeight+(fieldSpacing-circleSize)/2+fieldSpacing, circleSize, circleSize);
-    hideCCList.layer.cornerRadius = hideCCList.frame.size.height/2;
-    hideCCList.layer.borderWidth = 1;
-    hideCCList.hidden = YES;
-    hideCCList.backgroundColor = [UIColor redColor];
-    hideCCList.layer.borderColor = [UIColor blackColor].CGColor;
-    [hideCCList setTitle:@"-" forState:UIControlStateNormal];
-    [hideCCList setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [hideCCList addTarget:self action:@selector(hideCCContactList) forControlEvents:UIControlEventTouchDown];
+    [reSendingLayer addSubview:popCCList];
     [reSendingLayer addSubview:hideCCList];
     
+    // Pop-ups with your contact list
+    toContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
     ccContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
+    toContactPopUp.frame = CGRectMake(50, 150, toContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
     ccContactPopUp.frame = CGRectMake(50, 150+fieldSpacing, ccContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
-    ccContactPopUp.hidden = YES;
+    [reSendingLayer addSubview:toContactPopUp];
     [reSendingLayer addSubview:ccContactPopUp];
     
     

@@ -24,6 +24,7 @@
         self.layer.borderWidth = 3;
         self.layer.cornerRadius = 3;
         self.clipsToBounds = YES;
+        self.hidden = YES;
         
         scroll = [[UIScrollView alloc] initWithFrame:self.frame];
 

@@ -16,6 +16,7 @@
 #import "MGContactPopUpList.h"
 #import "MGPrivateAPIKeyHolder.h"
 
+#import "MGContactPopButton.h"
 
 
 @interface ViewController : UIViewController
@@ -61,7 +62,7 @@
     MGNewEntryField *subjEntryField, *fromEntryField, *ccEntryField, *toEntryField;
     UILabel *composeLabel;
     MGContactPopUpList* toContactPopUp, *ccContactPopUp;
-    UIButton *popSendList, *hideSendList, *popCCList, *hideCCList;
+    MGContactPopButton *popSendList, *hideSendList, *popCCList, *hideCCList;
     
     
     /* ---- Menu Layer ----- */
@@ -81,6 +82,7 @@
 @property (nonatomic) double SCREEN_WIDTH, SCREEN_HEIGHT;
 
 @property (nonatomic, retain) BorderedTextField* messageBox, *toBox, *fromBox, *subjectBox, *apiBox, *urlBox;
+@property (nonatomic, strong) MGContactPopButton *popSendList, *hideSendList, *popCCList, *hideCCList;
 @property (nonatomic, retain) MGContactPopUpList* toContactPopUp, *ccContactPopUp;
 @property (atomic, retain) MGHistoryTracker* histMessage, *histSubject, *histDate, *histSender, *histRecipient, *histStatus;
 @property (nonatomic, retain) MGNewEntryField* subjEntryField, *fromEntryField, *ccEntryField, *toEntryField;
@@ -90,9 +92,10 @@
 @property (nonatomic, retain) NSString* API_KEY, *mailgunURL;
 @property (nonatomic, retain) UIScrollView* historyScroll;
 @property (nonatomic, retain) UITextView* activeField, *messageEntryField;
-@property (nonatomic, retain) UIButton* lockView, *settingsButton, *backButton, *historyButton, *historyBackButton, *sendButton, *cancelChanges, *popSendList, *hideSendList, *popCCList, *hideCCList, *MVBackButton;
+@property (nonatomic, retain) UIButton* lockView, *settingsButton, *backButton, *historyButton, *historyBackButton, *sendButton, *cancelChanges, *MVBackButton;
 @property (nonatomic, retain) UILabel* titleLabel, *subjLbl, *toLbl, *fromLbl, *urlLbl, *apiLbl, *creditsLabel, *composeLabel;
 @property (nonatomic, retain) UIView* settingsLayer, *backgroundLayer, *historyLayer, *reSendingLayer, *menuLayer, *messageView;
+
 
 
 /// ViewDidLoad Helper Functions
