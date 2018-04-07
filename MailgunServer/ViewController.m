@@ -26,7 +26,7 @@
 @end
 
 @implementation ViewController
-@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, reSendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel, contactEmails, toContactPopUp, hideSendList, popSendList, ccContactPopUp, hideCCList, popCCList, SCREEN_HEIGHT, SCREEN_WIDTH;
+@synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, n2_SendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel, contactEmails, toContactPopUp, hideSendList, popSendList, ccContactPopUp, hideCCList, popCCList, SCREEN_HEIGHT, SCREEN_WIDTH;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,33 +41,6 @@
     //mailgunURL = [userPreferences objectForKey:@"mail_url"];
     API_KEY = [[MGPrivateAPIKeyHolder alloc] init].APIKey;
     mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
-    
-    contactEmails = [[NSMutableDictionary alloc] init];
-    
-    /* ---- GRABS YOUR CONTACTS EMAIL ADDRESSES ------*/
-    CNContactStore *store = [[CNContactStore alloc] init];
-    NSArray *keys = @[CNContactFamilyNameKey, CNContactGivenNameKey, CNContactPhoneNumbersKey, CNContactEmailAddressesKey,CNContactPostalAddressesKey, CNLabelWork, CNLabelDateAnniversary];
-    NSString *containerId = store.defaultContainerIdentifier;
-    NSPredicate *predicate = [CNContact predicateForContactsInContainerWithIdentifier:containerId];
-    NSError *error;
-    NSArray *cnContacts = [store unifiedContactsMatchingPredicate:predicate keysToFetch:keys error:&error];
-    if (error) {
-        NSLog(@"Error Grabbing Contacts. Not sure if this will crash...");
-    } else {
-        for (CNContact *contact in cnContacts) {
-            if ([contact.emailAddresses count]){
-                for (int i = 0; i < [contact.emailAddresses count]; i++){
-                    NSString *contactName = [NSString stringWithFormat:@"%@ %@", contact.givenName, contact.familyName];
-                    NSString *contactEmail = (NSString *)contact.emailAddresses[i].value;
-                    [contactEmails setValue:contactName forKey:contactEmail];
-                }
-            }
-        }
-    }
-    
-    for(NSString *key in [contactEmails allKeys]) {
-        NSLog(@"%@: %@",key, [contactEmails objectForKey:key]);
-    }
     
     
     // This makes me vomit.
@@ -91,24 +64,50 @@
     [histArray addObject:histDate];
     [histArray addObject:histStatus];
     
-    
-    
     [self setStorageLimit:25];
     //[self printTrackers];
     //[self clearTrackers];
     //[self clearTrackers];
     [self printTrackers];
 
+    // viewDidLoad Helper Methods
     [self loadBackgroundLayer];
     [self loadSettingsLayer];
     [self loadHistoryLayer];
-    [self loadNewSendingLayer];
+    [self loadN2_SendingLayer];
     [self loadMainMenuLayer];
-
-}
+} // viewDidLoad()
 
 
 #pragma mark - ViewDidLoad Helper Functions
+- (void) loadContactsList{
+    contactEmails = [[NSMutableDictionary alloc] init];
+    /* ---- GRABS YOUR CONTACTS EMAIL ADDRESSES ------*/
+    CNContactStore *store = [[CNContactStore alloc] init];
+    NSArray *keys = @[CNContactFamilyNameKey, CNContactGivenNameKey, CNContactPhoneNumbersKey, CNContactEmailAddressesKey,CNContactPostalAddressesKey, CNLabelWork, CNLabelDateAnniversary];
+    NSString *containerId = store.defaultContainerIdentifier;
+    NSPredicate *predicate = [CNContact predicateForContactsInContainerWithIdentifier:containerId];
+    NSError *error;
+    NSArray *cnContacts = [store unifiedContactsMatchingPredicate:predicate keysToFetch:keys error:&error];
+    if (error) {
+        NSLog(@"Error Grabbing Contacts. Not sure if this will crash...");
+    } else {
+        for (CNContact *contact in cnContacts) {
+            if ([contact.emailAddresses count]){
+                for (int i = 0; i < [contact.emailAddresses count]; i++){
+                    NSString *contactName = [NSString stringWithFormat:@"%@ %@", contact.givenName, contact.familyName];
+                    NSString *contactEmail = (NSString *)contact.emailAddresses[i].value;
+                    [contactEmails setValue:contactName forKey:contactEmail];
+                }
+            }
+        }
+    }
+    
+    //for(NSString *key in [contactEmails allKeys]) {
+    //    NSLog(@"%@: %@",key, [contactEmails objectForKey:key]);
+    //}
+}
+
 - (void) loadSettingsLayer{
     settingsLayer = [[UIView alloc] init];
     settingsLayer.frame = self.view.frame;
@@ -238,65 +237,54 @@
     [settingsLayer addSubview:customMGAppLabelSettings];
 }
 
-- (void) loadNewSendingLayer{
+- (void) loadN2_SendingLayer{ // Minor cleaning
     /* --- NEED TO EMBED ALL THIS IN A SCROLL VIEW AND SCROLL DOWN AS THE MESSAGE GETS LONGER --- */
-    reSendingLayer = [[UIView alloc] initWithFrame:self.view.frame];
-    reSendingLayer.center = CGPointMake(reSendingLayer.center.x+SCREEN_WIDTH, reSendingLayer.center.y);
-    reSendingLayer.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:reSendingLayer];
+    n2_SendingLayer = [[UIView alloc] initWithFrame:self.view.frame];
+    n2_SendingLayer.center = CGPointMake(n2_SendingLayer.center.x+SCREEN_WIDTH, n2_SendingLayer.center.y);
+    n2_SendingLayer.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:n2_SendingLayer];
     
     /* ----- ADD SEND / CANCEL / IMAGE ATTACH BUTTONS ----- */
-    UIButton *reSendButton = [[UIButton alloc] init];
-    reSendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    reSendButton.frame = CGRectMake(SCREEN_WIDTH-60-10, 40, 60, 40);
-    reSendButton.backgroundColor = [UIColor clearColor];
-    [reSendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [reSendButton setTitle:@"  Send" forState:UIControlStateNormal];
-    [reSendButton addTarget:self action:@selector(sendMessageNew) forControlEvents:UIControlEventTouchUpInside];
-    [reSendingLayer addSubview:reSendButton];
+    UIButton *n2_SendButton = [[UIButton alloc] init];
+    n2_SendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    n2_SendButton.frame = CGRectMake(SCREEN_WIDTH-60-10, 40, 60, 40);
+    n2_SendButton.backgroundColor = [UIColor clearColor];
+    [n2_SendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [n2_SendButton setTitle:@"  Send" forState:UIControlStateNormal];
+    [n2_SendButton addTarget:self action:@selector(n2_SendMessage) forControlEvents:UIControlEventTouchUpInside];
+    [n2_SendingLayer addSubview:n2_SendButton];
     
-    UIButton *reCancelButton = [[UIButton alloc] init];
-    reCancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    reCancelButton.frame = CGRectMake(10, 40, 60, 40);
-    reCancelButton.backgroundColor = [UIColor clearColor];
-    [reCancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [reCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [reCancelButton addTarget:self action:@selector(reShiftWindow) forControlEvents:UIControlEventTouchUpInside];
-    [reSendingLayer addSubview:reCancelButton];
+    UIButton *n2_CancelButton = [[UIButton alloc] init];
+    n2_CancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    n2_CancelButton.frame = CGRectMake(10, 40, 60, 40);
+    n2_CancelButton.backgroundColor = [UIColor clearColor];
+    [n2_CancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [n2_CancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [n2_CancelButton addTarget:self action:@selector(reShiftWindow) forControlEvents:UIControlEventTouchUpInside];
+    [n2_SendingLayer addSubview:n2_CancelButton];
     
     composeLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-140)/2, 40, 140, 40)];
     composeLabel.text = @"New Message";
     composeLabel.textColor = [UIColor blackColor];
     composeLabel.textAlignment = NSTextAlignmentCenter;
-    [reSendingLayer addSubview:composeLabel];
+    [n2_SendingLayer addSubview:composeLabel];
     
     /* ----- ENTRY FIELDS ARE 32 PIX HIGH  ------ */
     int initHeight = 90;
     int fieldSpacing = 32;
     
-    toEntryField = [[MGNewEntryField alloc] initWithHeight:30];
-    toEntryField.frame = CGRectMake(0, initHeight, toEntryField.frame.size.width, toEntryField.frame.size.height);
-    toEntryField.entryLabel.text = @"TO:";
-    [reSendingLayer addSubview:toEntryField];
-    
-    ccEntryField = [[MGNewEntryField alloc] initWithHeight:30];
-    ccEntryField.frame = CGRectMake(0, initHeight + 1*fieldSpacing, ccEntryField.frame.size.width, ccEntryField.frame.size.height);
-    ccEntryField.entryLabel.text = @"CC:";
-    [reSendingLayer addSubview:ccEntryField];
-    
-    fromEntryField = [[MGNewEntryField alloc] initWithHeight:30];
-    fromEntryField.frame = CGRectMake(0, initHeight + 2*fieldSpacing, fromEntryField.frame.size.width, fromEntryField.frame.size.height);
-    fromEntryField.entryLabel.text = @"FROM:";
+    toEntryField = [[MGNewEntryField alloc] initWithFrame:CGRectMake(0, initHeight, SCREEN_WIDTH-40, 30) andTitle:@"TO:"];
+    ccEntryField = [[MGNewEntryField alloc] initWithFrame:CGRectMake(0, initHeight + 1*fieldSpacing, SCREEN_WIDTH-40, 30) andTitle:@"CC:"];
+    fromEntryField = [[MGNewEntryField alloc] initWithFrame:CGRectMake(0, initHeight+2*fieldSpacing, SCREEN_WIDTH-40, 30) andTitle:@"FROM:"];
+    subjEntryField = [[MGNewEntryField alloc] initWithFrame:CGRectMake(0, initHeight+3*fieldSpacing, SCREEN_WIDTH-40, 30) andTitle:@"SUBJECT:"];
     fromEntryField.entryView.text = [NSString stringWithFormat:@"me@%@", mailgunURL];
-    [reSendingLayer addSubview:fromEntryField];
-    
-    subjEntryField = [[MGNewEntryField alloc] initWithHeight:30];
-    subjEntryField.frame = CGRectMake(0, initHeight + 3*fieldSpacing, subjEntryField.frame.size.width, subjEntryField.frame.size.height);
-    subjEntryField.entryLabel.text = @"SUBJECT:";
     subjEntryField.entryView.autocorrectionType = UITextAutocorrectionTypeYes;
     subjEntryField.entryView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
-    [reSendingLayer addSubview:subjEntryField];
     [subjEntryField.entryView addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [n2_SendingLayer addSubview:toEntryField];
+    [n2_SendingLayer addSubview:ccEntryField];
+    [n2_SendingLayer addSubview:fromEntryField];
+    [n2_SendingLayer addSubview:subjEntryField];
     
     
     /* --- MESSAGE FIELD:  ----- */
@@ -304,7 +292,7 @@
     messageEntryField = [[UITextView alloc] initWithFrame:CGRectMake(0, initHeight + 4*fieldSpacing, SCREEN_WIDTH, 300)];
     messageEntryField.font = [UIFont systemFontOfSize:12];
     messageEntryField.delegate = (id)self;
-    [reSendingLayer addSubview:messageEntryField];
+    [n2_SendingLayer addSubview:messageEntryField];
     
     int circleSize = 30;
     
@@ -315,28 +303,28 @@
     hideSendList = [[MGContactPopButton alloc] initWithFrame:CGRectMake(cOriginX, cOriginY, circleSize, circleSize) andColor:[UIColor redColor]];
     [popSendList addTarget:self action:@selector(showToContactList) forControlEvents:UIControlEventTouchDown];
     [hideSendList addTarget:self action:@selector(hideToContactList) forControlEvents:UIControlEventTouchDown];
-    [reSendingLayer addSubview:popSendList];
-    [reSendingLayer addSubview:hideSendList];
+    [n2_SendingLayer addSubview:popSendList];
+    [n2_SendingLayer addSubview:hideSendList];
     
     popCCList = [[MGContactPopButton alloc] initWithFrame:CGRectMake(cOriginX, cOriginY+fieldSpacing, circleSize, circleSize) andColor:[UIColor greenColor]];
     hideCCList = [[MGContactPopButton alloc] initWithFrame:CGRectMake(cOriginX, cOriginY+fieldSpacing, circleSize, circleSize) andColor:[UIColor redColor]];
     [popCCList addTarget:self action:@selector(showCCContactList) forControlEvents:UIControlEventTouchDown];
     [hideCCList addTarget:self action:@selector(hideCCContactList) forControlEvents:UIControlEventTouchDown];
-    [reSendingLayer addSubview:popCCList];
-    [reSendingLayer addSubview:hideCCList];
+    [n2_SendingLayer addSubview:popCCList];
+    [n2_SendingLayer addSubview:hideCCList];
     
     // Pop-ups with your contact list
     toContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
     ccContactPopUp = [[MGContactPopUpList alloc] initWithDictionary:contactEmails];
     toContactPopUp.frame = CGRectMake(50, 150, toContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
     ccContactPopUp.frame = CGRectMake(50, 150+fieldSpacing, ccContactPopUp.frame.size.width, toContactPopUp.frame.size.height);
-    [reSendingLayer addSubview:toContactPopUp];
-    [reSendingLayer addSubview:ccContactPopUp];
+    [n2_SendingLayer addSubview:toContactPopUp];
+    [n2_SendingLayer addSubview:ccContactPopUp];
     
     
 }
 
-- (void) loadMainMenuLayer{
+- (void) loadMainMenuLayer{ //Cleaned
     menuLayer = [[UIView alloc] initWithFrame:self.view.frame];
     menuLayer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:menuLayer];
@@ -487,7 +475,7 @@
     sendButton.backgroundColor = [UIColor redColor];
     sendButton.titleLabel.textColor = [UIColor whiteColor];
     [sendButton setTitle:@"UNLOCK TO SEND" forState:UIControlStateNormal];
-    [sendButton addTarget:self action:@selector(sendMessage) forControlEvents:UIControlEventTouchUpInside];
+    [sendButton addTarget:self action:@selector(deprecatedSendMessage) forControlEvents:UIControlEventTouchUpInside];
     sendButton.layer.cornerRadius = 2;
     [sendButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
     [backgroundLayer addSubview:sendButton];
@@ -583,20 +571,17 @@
         sendButton.backgroundColor = [UIColor greenColor];
         [sendButton setTitle:@"SEND MESSAGE" forState:UIControlStateNormal];
         [sendButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:180.0/255.0 green:254.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
-        
-        
     } else {
         lockView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lock35.png"]];
         sendButton.backgroundColor = [UIColor redColor];
         [sendButton setTitle:@"UNLOCK TO SEND" forState:UIControlStateNormal];
         [sendButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
-        
     }
     locked = !locked;
 }
 
 // Send a message through the original deprecated send message form
-- (void)sendMessage{
+- (void)deprecatedSendMessage{
     if (!locked){
         [self switchLock];
     } else {
@@ -643,7 +628,7 @@
 
 
 // From new sending form
-- (void)sendMessageNew{
+- (void)n2_SendMessage{
     NSLog(@"got to here");
     
     Mailgun *mailgun = [Mailgun clientWithDomain:mailgunURL apiKey:API_KEY];
@@ -860,7 +845,7 @@
 }
 
 - (void) goSendMessage{
-    [self.view bringSubviewToFront:reSendingLayer];
+    [self.view bringSubviewToFront:n2_SendingLayer];
     [self shiftWindow];
 }
 
@@ -908,7 +893,7 @@
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
         menuLayer.center = CGPointMake(-SCREEN_WIDTH/2, menuLayer.center.y);
         settingsLayer.center = CGPointMake(SCREEN_WIDTH/2, settingsLayer.center.y);
-        reSendingLayer.center = CGPointMake(SCREEN_WIDTH/2, reSendingLayer.center.y);
+        n2_SendingLayer.center = CGPointMake(SCREEN_WIDTH/2, n2_SendingLayer.center.y);
         historyLayer.center = CGPointMake(SCREEN_WIDTH/2, historyLayer.center.y);
         backgroundLayer.center = CGPointMake(SCREEN_WIDTH/2, backgroundLayer.center.y);
     } completion:^(BOOL finished) {}];
@@ -918,7 +903,7 @@
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
         menuLayer.center = CGPointMake(SCREEN_WIDTH/2, menuLayer.center.y);
         settingsLayer.center = CGPointMake(SCREEN_HEIGHT, settingsLayer.center.y);
-        reSendingLayer.center = CGPointMake(SCREEN_HEIGHT, reSendingLayer.center.y);
+        n2_SendingLayer.center = CGPointMake(SCREEN_HEIGHT, n2_SendingLayer.center.y);
         historyLayer.center = CGPointMake(SCREEN_HEIGHT, historyLayer.center.y);
         backgroundLayer.center = CGPointMake(SCREEN_HEIGHT, backgroundLayer.center.y);
     } completion:^(BOOL finished) {}];
@@ -1087,7 +1072,7 @@
     // New sending form
     if (theTextView == messageEntryField){
         [UIView animateWithDuration:.5 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-            reSendingLayer.center = CGPointMake(reSendingLayer.center.x, reSendingLayer.center.y+120);
+            n2_SendingLayer.center = CGPointMake(n2_SendingLayer.center.x, n2_SendingLayer.center.y+120);
         } completion:^(BOOL finished) {}];
     }
 }
@@ -1104,7 +1089,7 @@
     // New sending form
     if (theTextView == messageEntryField){
         [UIView animateWithDuration:.5 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
-            reSendingLayer.center = CGPointMake(reSendingLayer.center.x, reSendingLayer.center.y-120);
+            n2_SendingLayer.center = CGPointMake(n2_SendingLayer.center.x, n2_SendingLayer.center.y-120);
         } completion:^(BOOL finished) {}];
     }
     

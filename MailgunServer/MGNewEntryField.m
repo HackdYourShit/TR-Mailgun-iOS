@@ -11,10 +11,10 @@
 @implementation MGNewEntryField
 @synthesize entryView, entryLabel, borderView;
 
-- (id) initWithHeight:(int)height {
+- (id) initWithFrame:(CGRect)frame andTitle:(NSString *)title{
     self = [super init];
     if (self) {
-        self.frame = CGRectMake(0, 0, 280, height);
+        self.frame = frame;
         
         entryView = [[UITextField alloc] initWithFrame:CGRectMake(75, 0, self.frame.size.width-75, self.frame.size.height)];
         entryView.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -25,6 +25,7 @@
         entryLabel.font = [UIFont boldSystemFontOfSize:12];
         entryLabel.textAlignment = NSTextAlignmentLeft;
         entryLabel.textColor = [UIColor darkGrayColor];
+        entryLabel.text = title;
         
         borderView = [[UIView alloc] initWithFrame:CGRectMake(-5, -2, 400, self.frame.size.height + 4)];
         borderView.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -39,32 +40,4 @@
     return self;
 
 }
-
-
-
-/*
-UITextField *toField = [[UITextField alloc] initWithFrame:CGRectMake(50, 120, self.view.frame.size.width-50, 30)];
-toField.autocorrectionType = UITextAutocorrectionTypeNo;
-toField.font = [UIFont systemFontOfSize:13];
-
-UILabel *toLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 120, 31, 30)];
-toLabel.text = @"TO:";
-toLabel.font = [UIFont boldSystemFontOfSize:12];
-toLabel.textAlignment = NSTextAlignmentLeft;
-toLabel.backgroundColor = [UIColor whiteColor];
-
-UIView *toBorderView = [[UIView alloc] initWithFrame:CGRectMake(-5, 118, 400, 34)];
-toBorderView.layer.borderWidth = 1;
-toBorderView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-toBorderView.backgroundColor = [UIColor clearColor];
-
-[reSendingLayer addSubview:toLabel];
-[reSendingLayer addSubview:toBorderView];
-[reSendingLayer addSubview:toField];
-*/
-
-
-
-
-
 @end

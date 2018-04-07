@@ -58,7 +58,7 @@
     
     
     /* ----- New Sending View ----- */
-    UIView *reSendingLayer;
+    UIView *n2_SendingLayer;
     UITextView *messageEntryField;
     MGNewEntryField *subjEntryField, *fromEntryField, *ccEntryField, *toEntryField;
     UILabel *composeLabel;
@@ -95,13 +95,14 @@
 @property (nonatomic, retain) UITextView* activeField, *messageEntryField;
 @property (nonatomic, retain) UIButton* lockView, *settingsButton, *backButton, *historyButton, *historyBackButton, *sendButton, *cancelChanges, *MVBackButton;
 @property (nonatomic, retain) UILabel* titleLabel, *subjLbl, *toLbl, *fromLbl, *urlLbl, *apiLbl, *creditsLabel, *composeLabel;
-@property (nonatomic, retain) UIView* settingsLayer, *backgroundLayer, *historyLayer, *reSendingLayer, *menuLayer, *messageView;
+@property (nonatomic, retain) UIView* settingsLayer, *backgroundLayer, *historyLayer, *n2_SendingLayer, *menuLayer, *messageView;
 
 
 
 /// ViewDidLoad Helper Functions
+- (void) loadContactsList;
 - (void) loadSettingsLayer; // load settings screen
-- (void) loadNewSendingLayer;
+- (void) loadN2_SendingLayer;
 - (void) loadMainMenuLayer;
 - (void) loadBackgroundLayer; // deprecated send message screen
 - (void) loadHistoryLayer;
@@ -109,8 +110,8 @@
 
 // Message Sending Methods
 - (void) switchLock; // Unlock sending in deprecated compose view
-- (void) sendMessage; // send a message from the old sending form
-- (void) sendMessageNew; // send a message from the new sending form
+- (void) deprecatedSendMessage; // send a message from the old sending form
+- (void) n2_SendMessage; // send a message from the new sending form
 - (void) addSentEntry; // add a new entry to sent messages history after you send a message
 
 // Methods for selecting recipient addresses from your contacts.

@@ -19,6 +19,6 @@
 @property (nonatomic, retain) UILabel *entryLabel;
 @property (nonatomic, retain) UITextField *entryView;
 
-- (id) initWithHeight:(int)height;
+- (id) initWithFrame:(CGRect)frame andTitle:(NSString*)title;
 
 @end
