@@ -28,7 +28,7 @@
 @implementation ViewController
 @synthesize toBox, fromBox, subjectBox, messageBox, sendButton, backgroundLayer, activeField, API_KEY, mailgunURL, lockView, locked, subjLbl, settingsButton, settingsLayer, backButton, toLbl, fromLbl, apiBox, urlBox, titleLabel, cancelChanges, urlLbl, apiLbl, creditsLabel, userPreferences, histDate, histSender, histMessage, histSubject, histRecipient, historyLayer, historyButton, historyBackButton, historyScroll, histStatus, histArray, n2_SendingLayer, menuLayer, messageEntryField, toEntryField, fromEntryField, subjEntryField, ccEntryField, messageView, MVBackButton, composeLabel, contactEmails, toContactPopUp, hideSendList, popSendList, ccContactPopUp, hideCCList, popCCList, SCREEN_HEIGHT, SCREEN_WIDTH;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad { //cleaned
     [super viewDidLoad];
     activeField = [[UITextView alloc] init];
     
@@ -347,10 +347,10 @@
     goToOptions.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.99 alpha:.8];
     goToTrash.backgroundColor =   [UIColor colorWithRed:.95 green:.40 blue:.40 alpha:.8];
     goToOldSend.backgroundColor = [UIColor colorWithRed:.99 green:.99 blue:.95 alpha:.8];
-    [goToSend addTarget:self action:@selector(goSendMessage) forControlEvents:UIControlEventTouchUpInside];
-    [goToHistory addTarget:self action:@selector(goHistory) forControlEvents:UIControlEventTouchUpInside];
-    [goToOptions addTarget:self action:@selector(goSettings) forControlEvents:UIControlEventTouchUpInside];
-    [goToOldSend addTarget:self action:@selector(goOldSend) forControlEvents:UIControlEventTouchUpInside];
+    [goToSend addTarget:self action:@selector(shiftWindow:) forControlEvents:UIControlEventTouchUpInside];
+    [goToHistory addTarget:self action:@selector(shiftWindow:) forControlEvents:UIControlEventTouchUpInside];
+    [goToOptions addTarget:self action:@selector(shiftWindow:) forControlEvents:UIControlEventTouchUpInside];
+    [goToOldSend addTarget:self action:@selector(shiftWindow:) forControlEvents:UIControlEventTouchUpInside];
     [menuLayer addSubview:goToSend];
     [menuLayer addSubview:goToHistory];
     [menuLayer addSubview:goToTrash];
@@ -495,7 +495,7 @@
     [oldBackButton setTitle:@"MENU" forState:UIControlStateNormal];
     oldBackButton.titleLabel.font = [UIFont systemFontOfSize:14];
     oldBackButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-    [oldBackButton addTarget:self action:@selector(closeHistory) forControlEvents:UIControlEventTouchUpInside];
+    [oldBackButton addTarget:self action:@selector(reShiftWindow) forControlEvents:UIControlEventTouchUpInside];
     [backgroundLayer addSubview:oldBackButton];
 }
 
@@ -556,7 +556,7 @@
     [historyBackButton setTitle:@"MENU" forState:UIControlStateNormal];
     historyBackButton.titleLabel.font = [UIFont systemFontOfSize:14];
     historyBackButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-    [historyBackButton addTarget:self action:@selector(closeHistory) forControlEvents:UIControlEventTouchUpInside];
+    [historyBackButton addTarget:self action:@selector(reShiftWindow) forControlEvents:UIControlEventTouchUpInside];
     [historyLayer addSubview:historyBackButton];
     
 }
@@ -831,30 +831,6 @@
     return largest;
 }
 
-#pragma mark - Navigation Methods -- Main Menu
-// Should really bump these together by having the view as an input to the function
-- (void) goHistory{
-    [self loadHistoryLayer];
-    [self.view bringSubviewToFront:historyLayer];
-    [self shiftWindow];
-}
-
-- (void) goOldSend{
-    [self.view bringSubviewToFront:backgroundLayer];
-    [self shiftWindow];
-}
-
-- (void) goSendMessage{
-    [self.view bringSubviewToFront:n2_SendingLayer];
-    [self shiftWindow];
-}
-
-- (void) goSettings{
-    [self.view bringSubviewToFront:settingsLayer];
-    [self shiftWindow];
-}
-
-
 #pragma mark - Navigation Methods -- Screen exiting methods
 - (void) cancelSettingsChange{
     [self reShiftWindow];
@@ -876,10 +852,6 @@
     }
 }
 
-- (void) closeHistory{
-    [self reShiftWindow];
-}
-
 - (void) closeSettings{
     [self reShiftWindow];
     
@@ -889,7 +861,22 @@
 }
 
 #pragma mark - Navigation Methods -- Animated the changing between views
-- (void) shiftWindow{
+// Animate the change between the main menu and whatever screen we want.
+- (void) shiftWindow:(id)sender{
+    UIButton *btn = (UIButton*)sender;
+    
+    // Determine who the sender is and move that layer to the front.
+    if ([btn.titleLabel.text isEqualToString:@"Send a message"]){
+        [self.view bringSubviewToFront:n2_SendingLayer];
+    } else if ([btn.titleLabel.text isEqualToString:@"View Sent Messages"]){
+        [self loadHistoryLayer];
+        [self.view bringSubviewToFront:historyLayer];
+    } else if ([btn.titleLabel.text isEqualToString:@"Change API Key / Mailgun URL"]){
+        [self.view bringSubviewToFront:settingsLayer];
+    } else if ([btn.titleLabel.text isEqualToString:@"Deprecated Send Message Form"]){
+        [self.view bringSubviewToFront:backgroundLayer];
+    }
+    
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
         menuLayer.center = CGPointMake(-SCREEN_WIDTH/2, menuLayer.center.y);
         settingsLayer.center = CGPointMake(SCREEN_WIDTH/2, settingsLayer.center.y);
@@ -899,6 +886,7 @@
     } completion:^(BOOL finished) {}];
 }
 
+// Animate the transition back from any view to the main menu
 - (void) reShiftWindow{
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction  animations:^{
         menuLayer.center = CGPointMake(SCREEN_WIDTH/2, menuLayer.center.y);
@@ -929,15 +917,8 @@
     UIScrollView *messageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 60, self.view.frame.size.width, 600)];
     [messageView addSubview:messageScrollView];
     
-    /*
-     [messageCell populateWithRecipient:[histRecipient objectForKey:[NSString stringWithFormat:@"%d",i]]
-     withSubject:[histSubject objectForKey:[NSString stringWithFormat:@"%d",i]]
-     withMessage:[histMessage objectForKey:[NSString stringWithFormat:@"%d",i]]
-     withDate:[histDate objectForKey:[NSString stringWithFormat:@"%d",i]]
-     withSuccess:[histStatus objectForKey:[NSString stringWithFormat:@"%d",i]]
-     withNumber:i];
-     */
-    
+    // This all needs to move to a custom class but will leave it for now because I want to redo all of it anyway
+    // It actually was the idea behind MGEmailPopoutView but I never got around to building it.
     UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 150, 20)];
     dateLabel.text = @"SENT: ";
     dateLabel.font = [UIFont boldSystemFontOfSize:16];
@@ -947,7 +928,6 @@
     MVDateLabel.text = [histDate objectForKey:[NSString stringWithFormat:@"%d",index]];
     MVDateLabel.font = [UIFont systemFontOfSize:14];
     [messageScrollView addSubview:MVDateLabel];
-    
     
     UILabel *toLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 80, 150, 20)];
     toLabel.text = @"TO: ";

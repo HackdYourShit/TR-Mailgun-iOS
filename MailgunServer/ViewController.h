@@ -129,19 +129,12 @@
 - (int) findLargestHistory;
 
 
-// Navigation Methods -- Main Menu
-- (void) goHistory;
-- (void) goOldSend;
-- (void) goSendMessage;
-- (void) goSettings;
-
 // Navigation Methods -- Screen exiting methods
 - (void) cancelSettingsChange; // cancel out of changing settings
-- (void) closeHistory;
 - (void) closeSettings;
 
 // Navigation Methods -- Animate the changing between views
-- (void) shiftWindow;
+- (void) shiftWindow:(id)sender;
 - (void) reShiftWindow;
 
 
