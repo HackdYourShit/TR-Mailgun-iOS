@@ -18,6 +18,7 @@
 
 #import "MGContactPopButton.h"
 #import "MGMainMenuNavigationButton.h"
+#import "MGMessageView.h"
 
 
 @interface ViewController : UIViewController

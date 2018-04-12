@@ -14,6 +14,8 @@
 
 //   Make capacity tuneable in app
 
+// Make a opening menu screen for API and domain input
+
 #import "ViewController.h"
 
 // what are these even for...?
@@ -909,6 +911,7 @@
 
 
 // Load a message in sent messages
+// This method needs to be fixed so badly. Everything is there as MV____ but MV was for messageView which isn't even what things are called anymore
 - (void)loadMessageLayerWithIndex:(int)index{
     messageView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.view addSubview:messageView];
