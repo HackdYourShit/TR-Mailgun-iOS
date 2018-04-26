@@ -16,6 +16,9 @@
 
 // Make a opening menu screen for API and domain input
 
+// Make sure to finish MGMessageView -- throw stuff in from like MGEmailPopoutView or something
+// Right now I want to build an intro screen
+
 #import "ViewController.h"
 
 // what are these even for...?
@@ -23,6 +26,8 @@
 #define INIT_HEIGHT_BOX 110
 #define SPACING 60
 #define INIT_X 20
+
+#define DEV_BUILD 0
 
 @interface ViewController ()
 @end
@@ -38,11 +43,24 @@
     SCREEN_HEIGHT = screenRect.size.height;
     SCREEN_WIDTH = screenRect.size.width;
     
+    // Throw this into a [self loadUserPreferences];
     userPreferences = [[NSUserDefaults alloc] initWithSuiteName:@"preferences"];
-    //API_KEY = [userPreferences objectForKey:@"api_key"];
-    //mailgunURL = [userPreferences objectForKey:@"mail_url"];
-    API_KEY = [[MGPrivateAPIKeyHolder alloc] init].APIKey;
-    mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
+    if (DEV_BUILD){
+        API_KEY = [[MGPrivateAPIKeyHolder alloc] init].APIKey;
+        mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
+    } else {
+        if ([userPreferences objectForKey:@"mail_url"] == nil) {
+            // [self popURLPrompt];
+        } else {
+            mailgunURL = [userPreferences objectForKey:@"mail_url"];
+        }
+        
+        if ([userPreferences objectForKey:@"api_key"] == nil) {
+            // [self popAPIPrompt];
+        } else {
+            API_KEY = [userPreferences objectForKey:@"api_key"];
+        }
+    }
     
     
     // This makes me vomit.
