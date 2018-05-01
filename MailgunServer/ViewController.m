@@ -43,25 +43,6 @@
     SCREEN_HEIGHT = screenRect.size.height;
     SCREEN_WIDTH = screenRect.size.width;
     
-    // Throw this into a [self loadUserPreferences];
-    userPreferences = [[NSUserDefaults alloc] initWithSuiteName:@"preferences"];
-    if (DEV_BUILD){
-        API_KEY = [[MGPrivateAPIKeyHolder alloc] init].APIKey;
-        mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
-    } else {
-        if ([userPreferences objectForKey:@"mail_url"] == nil) {
-            // [self popURLPrompt];
-        } else {
-            mailgunURL = [userPreferences objectForKey:@"mail_url"];
-        }
-        
-        if ([userPreferences objectForKey:@"api_key"] == nil) {
-            // [self popAPIPrompt];
-        } else {
-            API_KEY = [userPreferences objectForKey:@"api_key"];
-        }
-    }
-    
     
     // This makes me vomit.
     histMessage = [[MGHistoryTracker alloc] initWithSuiteName:@"messageTracker2"];
@@ -92,12 +73,57 @@
 
     // viewDidLoad Helper Methods
     [self loadBackgroundLayer];
-    [self loadSettingsLayer];
     [self loadHistoryLayer];
     [self loadN2_SendingLayer];
     [self loadMainMenuLayer];
 } // viewDidLoad()
 
+// Need to load the mailgun URL and API_Key after the view has loaded so that I can pop a alertcontroller for input if it's not there
+- (void) viewDidAppear:(BOOL)animated{
+    userPreferences = [[NSUserDefaults alloc] initWithSuiteName:@"preferences"];
+    if (DEV_BUILD){
+        API_KEY = [[MGPrivateAPIKeyHolder alloc] init].APIKey;
+        mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
+        [self loadSettingsLayer];
+    } else {
+    
+        UIAlertController * loginController = [UIAlertController alertControllerWithTitle: @"Initialize Mailgun"
+                                                                                  message: @"Input your domain address and API Key"
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+        [loginController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"yourdomain.com";
+            textField.textColor = [UIColor blueColor];
+            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            textField.borderStyle = UITextBorderStyleRoundedRect;
+            textField.textAlignment = NSTextAlignmentCenter;
+            textField.autocorrectionType = UITextAutocorrectionTypeNo;
+            textField.text = [userPreferences objectForKey:@"mail_url"];
+    
+        }];
+        [loginController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"API Key";
+            textField.textColor = [UIColor blueColor];
+            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            textField.borderStyle = UITextBorderStyleRoundedRect;
+            textField.autocorrectionType = UITextAutocorrectionTypeNo;
+            textField.textAlignment = NSTextAlignmentCenter;
+            textField.text = [userPreferences objectForKey:@"api_key"];
+            textField.secureTextEntry = YES;
+        }];
+        [loginController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSArray * textfields = loginController.textFields;
+            UITextField * urlField = textfields[0];
+            UITextField * keyField = textfields[1];
+            mailgunURL = urlField.text;
+            API_KEY = keyField.text;
+            [userPreferences setObject:API_KEY forKey:@"api_key"];
+            [userPreferences setObject:mailgunURL forKey:@"mail_url"];
+            [userPreferences synchronize];
+            [self loadSettingsLayer]; // load after to grab key / url
+        }]];
+        [self presentViewController:loginController animated:YES completion:nil];
+    }
+}
 
 #pragma mark - ViewDidLoad Helper Functions
 - (void) loadContactsList{
@@ -877,6 +903,9 @@
     
     API_KEY = apiBox.textView.text;
     mailgunURL = urlBox.textView.text;
+    [userPreferences setObject:API_KEY forKey:@"api_key"];
+    [userPreferences setObject:mailgunURL forKey:@"mail_url"];
+    [userPreferences synchronize];
     titleLabel.text = [mailgunURL uppercaseString];
 }
 
