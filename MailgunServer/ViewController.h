@@ -101,6 +101,7 @@
 
 
 /// ViewDidLoad Helper Functions
+- (void) loadAllLayers; // I want viewDidAppear to happen before everything else loads so that there aren't missing fields
 - (void) loadContactsList;
 - (void) loadSettingsLayer; // load settings screen
 - (void) loadN2_SendingLayer;

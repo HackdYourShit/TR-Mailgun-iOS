@@ -71,10 +71,6 @@
     //[self clearTrackers];
     [self printTrackers];
 
-    // viewDidLoad Helper Methods
-    [self loadBackgroundLayer];
-    [self loadHistoryLayer];
-    [self loadN2_SendingLayer];
     [self loadMainMenuLayer];
 } // viewDidLoad()
 
@@ -84,7 +80,7 @@
     if (DEV_BUILD){
         API_KEY = [[MGPrivateAPIKeyHolder alloc] init].APIKey;
         mailgunURL = [[NSString alloc] initWithFormat:@"teddyrowan.com" ];
-        [self loadSettingsLayer];
+        [self loadAllLayers];
     } else {
     
         UIAlertController * loginController = [UIAlertController alertControllerWithTitle: @"Initialize Mailgun"
@@ -119,13 +115,20 @@
             [userPreferences setObject:API_KEY forKey:@"api_key"];
             [userPreferences setObject:mailgunURL forKey:@"mail_url"];
             [userPreferences synchronize];
-            [self loadSettingsLayer]; // load after to grab key / url
+            [self loadAllLayers];
         }]];
         [self presentViewController:loginController animated:YES completion:nil];
     }
 }
 
 #pragma mark - ViewDidLoad Helper Functions
+- (void) loadAllLayers{
+    [self loadSettingsLayer];
+    [self loadBackgroundLayer];
+    [self loadHistoryLayer];
+    [self loadN2_SendingLayer];
+}
+
 - (void) loadContactsList{
     contactEmails = [[NSMutableDictionary alloc] init];
     /* ---- GRABS YOUR CONTACTS EMAIL ADDRESSES ------*/
