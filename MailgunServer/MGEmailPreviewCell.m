@@ -15,26 +15,28 @@
     [super awakeFromNib];
     // Initialization code
     
-    recipientLabel  = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, 290, 20)];
-    subjectLabel    = [[UILabel alloc] initWithFrame:CGRectMake(15, 22, 290, 15)];
-    messageLabel    = [[UILabel alloc] initWithFrame:CGRectMake(25, 28, 270, 30)];
-    dateLabel       = [[UILabel alloc] initWithFrame:CGRectMake(15, 50, 180, 15)];
-    successLabel    = [[UILabel alloc] initWithFrame:CGRectMake(255, 50, 50, 15)];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
     
-    fullMessage = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 450)];
+    recipientLabel  = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, screenRect.size.width-30, 20)];
+    subjectLabel    = [[UILabel alloc] initWithFrame:CGRectMake(15, 22, screenRect.size.width-30, 15)];
+    messageLabel    = [[UILabel alloc] initWithFrame:CGRectMake(25, 28, screenRect.size.width-50, 30)];
+    dateLabel       = [[UILabel alloc] initWithFrame:CGRectMake(15, 50, 180, 15)];
+    successLabel    = [[UILabel alloc] initWithFrame:CGRectMake(screenRect.size.width-70, 50, 50, 15)];
+    
+    fullMessage = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, screenRect.size.width-20, 450)];
     fullMessage.hidden = YES;
     [self addSubview:fullMessage];
     
     popoutButton = [[MGEmailPopoutView alloc] init];
     popoutButton = [MGEmailPopoutView buttonWithType:UIButtonTypeCustom];
-    popoutButton.frame = CGRectMake(0, 0, 320, 70);
+    popoutButton.frame = CGRectMake(0, 0, screenRect.size.width, 70);
     [popoutButton setBackgroundColor:[UIColor clearColor]];
     
     // making this into a global function now that will populate one specific premade layer
     //[popoutButton addTarget:self action:@selector(popMessage) forControlEvents:UIControlEventTouchUpInside];
 
     
-    self.frame = CGRectMake(0, 0, 320, 70);
+    self.frame = CGRectMake(0, 0, screenRect.size.width, 70);
     self.backgroundColor = [UIColor whiteColor];
     self.layer.borderColor = [UIColor blackColor].CGColor;
     self.layer.borderWidth = 1;

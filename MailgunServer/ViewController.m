@@ -83,8 +83,8 @@
         [self loadAllLayers];
     } else {
     
-        UIAlertController * loginController = [UIAlertController alertControllerWithTitle: @"Initialize Mailgun"
-                                                                                  message: @"Input your domain address and API Key"
+        UIAlertController * loginController = [UIAlertController alertControllerWithTitle: @"Mailgun TR"
+                                                                                  message: @"Input your domain address and API Key."
                                                                            preferredStyle:UIAlertControllerStyleAlert];
         [loginController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
             textField.placeholder = @"yourdomain.com";
@@ -106,7 +106,7 @@
             textField.text = [userPreferences objectForKey:@"api_key"];
             textField.secureTextEntry = YES;
         }];
-        [loginController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [loginController addAction:[UIAlertAction actionWithTitle:@"Proceed" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             NSArray * textfields = loginController.textFields;
             UITextField * urlField = textfields[0];
             UITextField * keyField = textfields[1];
@@ -127,6 +127,7 @@
     [self loadBackgroundLayer];
     [self loadHistoryLayer];
     [self loadN2_SendingLayer];
+    [self.view bringSubviewToFront:menuLayer];
 }
 
 - (void) loadContactsList{
