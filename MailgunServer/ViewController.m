@@ -14,10 +14,7 @@
 
 //   Make capacity tuneable in app
 
-// Make a opening menu screen for API and domain input
-
 // Make sure to finish MGMessageView -- throw stuff in from like MGEmailPopoutView or something
-// Right now I want to build an intro screen
 
 #import "ViewController.h"
 
@@ -264,27 +261,33 @@
     urlLbl.hidden = YES;
     [urlBox.textView addSubview:urlLbl];
     
+    
+    
+    
+    
+    
+    // Add the logo view
+     UIImageView *menuMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
+     menuMGLogo.frame = CGRectMake(SCREEN_WIDTH*3.0/16, SCREEN_HEIGHT-200, SCREEN_WIDTH/4, SCREEN_WIDTH/4);
+     [settingsLayer addSubview:menuMGLogo];
+     
+     UIImageView *menuTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
+     menuTRLogo.frame = CGRectMake(SCREEN_WIDTH*9.0/16, SCREEN_HEIGHT-200, SCREEN_WIDTH/4, SCREEN_WIDTH/4);
+     [settingsLayer addSubview:menuTRLogo];
+     
+     UILabel *customMGAppLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT-100, SCREEN_WIDTH, 40)];
+     customMGAppLabel.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
+     customMGAppLabel.font = [UIFont systemFontOfSize:12];
+     customMGAppLabel.textColor = [UIColor blackColor];
+     customMGAppLabel.textAlignment = NSTextAlignmentCenter;
+     [settingsLayer addSubview:customMGAppLabel];
+    
     NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-280)/2, INIT_HEIGHT_LAB+4.8*SPACING, 280, 45)];
+    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-280)/2, SCREEN_HEIGHT - 80, 280, 45)];
     creditsLabel.text = [[NSString stringWithFormat:@"Version %@.", versionText] uppercaseString];
+    creditsLabel.font = [UIFont systemFontOfSize:12];
     creditsLabel.textAlignment = NSTextAlignmentCenter;
     [settingsLayer addSubview:creditsLabel];
-    
-    
-    UIImageView *settingsMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
-    settingsMGLogo.frame = CGRectMake(50, 420, 90, 90);
-    [settingsLayer addSubview:settingsMGLogo];
-    
-    UIImageView *settingsTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
-    settingsTRLogo.frame = CGRectMake(SCREEN_WIDTH/2, 420, 90, 90);
-    [settingsLayer addSubview:settingsTRLogo];
-    
-    UILabel *customMGAppLabelSettings = [[UILabel alloc] initWithFrame:CGRectMake(0, 510, self.view.frame.size.width, 40)];
-    customMGAppLabelSettings.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
-    customMGAppLabelSettings.font = [UIFont systemFontOfSize:12];
-    customMGAppLabelSettings.textColor = [UIColor blackColor];
-    customMGAppLabelSettings.textAlignment = NSTextAlignmentCenter;
-    [settingsLayer addSubview:customMGAppLabelSettings];
 }
 
 - (void) loadN2_SendingLayer{ // Minor cleaning
@@ -423,6 +426,13 @@
     customMGAppLabel.textColor = [UIColor blackColor];
     customMGAppLabel.textAlignment = NSTextAlignmentCenter;
     [menuLayer addSubview:customMGAppLabel];
+    
+    NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
+    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-280)/2, SCREEN_HEIGHT - 80, 280, 45)];
+    creditsLabel.text = [[NSString stringWithFormat:@"Version %@.", versionText] uppercaseString];
+    creditsLabel.font = [UIFont systemFontOfSize:12];
+    creditsLabel.textAlignment = NSTextAlignmentCenter;
+    [menuLayer addSubview:creditsLabel];
 } // loadMainMenuLayer()
 
 // Loading of the deprecated send message form. Need to either choose this one or rip this out.
