@@ -154,6 +154,7 @@
 // Shared UX Methods
 - (void) addGradient:(UIView *)obj;
 - (UIImage *)imageWithColor:(UIColor *)color;
+- (void) addLogosToMenu:(UIView*)theView;
 
 @end
 

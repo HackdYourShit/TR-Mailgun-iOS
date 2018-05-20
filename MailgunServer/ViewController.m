@@ -264,30 +264,8 @@
     
     
     
-    
-    
-    // Add the logo view
-     UIImageView *menuMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
-     menuMGLogo.frame = CGRectMake(SCREEN_WIDTH*3.0/16, SCREEN_HEIGHT-200, SCREEN_WIDTH/4, SCREEN_WIDTH/4);
-     [settingsLayer addSubview:menuMGLogo];
-     
-     UIImageView *menuTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
-     menuTRLogo.frame = CGRectMake(SCREEN_WIDTH*9.0/16, SCREEN_HEIGHT-200, SCREEN_WIDTH/4, SCREEN_WIDTH/4);
-     [settingsLayer addSubview:menuTRLogo];
-     
-     UILabel *customMGAppLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT-100, SCREEN_WIDTH, 40)];
-     customMGAppLabel.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
-     customMGAppLabel.font = [UIFont systemFontOfSize:12];
-     customMGAppLabel.textColor = [UIColor blackColor];
-     customMGAppLabel.textAlignment = NSTextAlignmentCenter;
-     [settingsLayer addSubview:customMGAppLabel];
-    
-    NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-280)/2, SCREEN_HEIGHT - 80, 280, 45)];
-    creditsLabel.text = [[NSString stringWithFormat:@"Version %@.", versionText] uppercaseString];
-    creditsLabel.font = [UIFont systemFontOfSize:12];
-    creditsLabel.textAlignment = NSTextAlignmentCenter;
-    [settingsLayer addSubview:creditsLabel];
+    // create the logos at the bottom of the view
+    [self addLogosToMenu:settingsLayer];
 }
 
 - (void) loadN2_SendingLayer{ // Minor cleaning
@@ -410,29 +388,9 @@
     [menuLayer addSubview:goToOptions];
     [menuLayer addSubview:goToOldSend];
     
+    // add the logos to the view
+    [self addLogosToMenu:menuLayer];
     
-    // Add the logos at the bottom of the app. Change these to be placed dynamically.
-    UIImageView *menuMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
-    menuMGLogo.frame = CGRectMake(SCREEN_WIDTH*3.0/16, SCREEN_HEIGHT-200, SCREEN_WIDTH/4, SCREEN_WIDTH/4);
-    [menuLayer addSubview:menuMGLogo];
-    
-    UIImageView *menuTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
-    menuTRLogo.frame = CGRectMake(SCREEN_WIDTH*9.0/16, SCREEN_HEIGHT-200, SCREEN_WIDTH/4, SCREEN_WIDTH/4);
-    [menuLayer addSubview:menuTRLogo];
-    
-    UILabel *customMGAppLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT-100, SCREEN_WIDTH, 40)];
-    customMGAppLabel.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
-    customMGAppLabel.font = [UIFont systemFontOfSize:12];
-    customMGAppLabel.textColor = [UIColor blackColor];
-    customMGAppLabel.textAlignment = NSTextAlignmentCenter;
-    [menuLayer addSubview:customMGAppLabel];
-    
-    NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-280)/2, SCREEN_HEIGHT - 80, 280, 45)];
-    creditsLabel.text = [[NSString stringWithFormat:@"Version %@.", versionText] uppercaseString];
-    creditsLabel.font = [UIFont systemFontOfSize:12];
-    creditsLabel.textAlignment = NSTextAlignmentCenter;
-    [menuLayer addSubview:creditsLabel];
 } // loadMainMenuLayer()
 
 // Loading of the deprecated send message form. Need to either choose this one or rip this out.
@@ -1191,4 +1149,29 @@
     
     return image;
 }
+
+- (void) addLogosToMenu:(UIView *)theView{
+    UIImageView *menuMGLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Mailgun180white.png"]];
+    menuMGLogo.frame = CGRectMake(SCREEN_WIDTH*3.0/16, SCREEN_HEIGHT-200, SCREEN_WIDTH/4, SCREEN_WIDTH/4);
+    [theView addSubview:menuMGLogo];
+    
+    UIImageView *menuTRLogo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TR_logo.png"]];
+    menuTRLogo.frame = CGRectMake(SCREEN_WIDTH*9.0/16, SCREEN_HEIGHT-200, SCREEN_WIDTH/4, SCREEN_WIDTH/4);
+    [theView addSubview:menuTRLogo];
+    
+    UILabel *customMGAppLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT-100, SCREEN_WIDTH, 40)];
+    customMGAppLabel.text = @"CUSTOM MAILGUN APP BY TEDDYROWAN.COM";
+    customMGAppLabel.font = [UIFont systemFontOfSize:12];
+    customMGAppLabel.textColor = [UIColor blackColor];
+    customMGAppLabel.textAlignment = NSTextAlignmentCenter;
+    [theView addSubview:customMGAppLabel];
+    
+    NSString *versionText = [NSString stringWithFormat:@"%@.%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
+    creditsLabel = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-280)/2, SCREEN_HEIGHT - 80, 280, 45)];
+    creditsLabel.text = [[NSString stringWithFormat:@"Version %@.", versionText] uppercaseString];
+    creditsLabel.font = [UIFont systemFontOfSize:12];
+    creditsLabel.textAlignment = NSTextAlignmentCenter;
+    [theView addSubview:creditsLabel];
+}
+
 @end
