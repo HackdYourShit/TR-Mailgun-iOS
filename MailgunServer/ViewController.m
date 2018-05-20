@@ -162,13 +162,13 @@
     settingsLayer.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:settingsLayer];
     
+    // title label
     UILabel* settingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 25, 200, 60)];
     settingsLabel.text = @" APP SETTINGS ";
     settingsLabel.font = [UIFont boldSystemFontOfSize:18.0];
     settingsLabel.textAlignment = NSTextAlignmentCenter;
     settingsLabel.center = CGPointMake(self.view.center.x, settingsLabel.center.y);
     [settingsLayer addSubview:settingsLabel];
-    
     
     backButton = [[UIButton alloc] init];
     backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -183,6 +183,8 @@
     [settingsLayer addSubview:backButton];
     
     
+    
+    // API INPUT
     UILabel* apiLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+0*SPACING, 280, 30)];
     apiLabel.text = @" PRIVATE API-KEY:    ";
     apiLabel.font = [UIFont systemFontOfSize:12];
@@ -225,22 +227,24 @@
     urlBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [settingsLayer addSubview:urlBox];
     
-    cancelChanges = [[UIButton alloc] init];
-    cancelChanges = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelChanges.frame = CGRectMake((SCREEN_WIDTH-200)/2, INIT_HEIGHT_BOX+2.75*SPACING, 200, 60);
-    cancelChanges.backgroundColor = [UIColor redColor];
-    cancelChanges.titleLabel.textColor = [UIColor whiteColor];
-    [cancelChanges setTitle:@"DISCARD CHANGES" forState:UIControlStateNormal];
-    [cancelChanges addTarget:self action:@selector(cancelSettingsChange) forControlEvents:UIControlEventTouchUpInside];
-    cancelChanges.layer.cornerRadius = 5;
-    cancelChanges.layer.borderColor = [UIColor blackColor].CGColor;
-    cancelChanges.layer.borderWidth = 1;
-    [cancelChanges setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
-    cancelChanges.clipsToBounds = YES;
-    [self addGradient:cancelChanges];
-    [settingsLayer addSubview:cancelChanges];
+    
+    UILabel* addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, INIT_HEIGHT_LAB+3.5*SPACING, 300, 30)];
+    addressLabel.text = @" DEFAULT SENDING ADDRESS: ... @yourdomain.com ";
+    addressLabel.font = [UIFont systemFontOfSize:12];
+    [settingsLayer addSubview:addressLabel];
+    
+    BorderedTextField* addressBox = [[BorderedTextField alloc] init];
+    addressBox.center = CGPointMake(self.view.center.x, INIT_HEIGHT_BOX +3.5*SPACING);
+    addressBox.textView.text = mailgunURL;
+    addressBox.textView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    addressBox.textView.text = @"me";
+    [settingsLayer addSubview:addressBox];
     
     
+    
+    
+    
+    // Placeholders for when empty.
     apiLbl = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,apiBox.textView.frame.size.width - 10.0, 30)];
     [apiLbl setText:@"EX: key-4a41a48d30aafce3ccda648i0c90206b"];
     [apiLbl setBackgroundColor:[UIColor clearColor]];
@@ -262,7 +266,20 @@
     [urlBox.textView addSubview:urlLbl];
     
     
-    
+    cancelChanges = [[UIButton alloc] init];
+    cancelChanges = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelChanges.frame = CGRectMake((SCREEN_WIDTH-200)/2, SCREEN_HEIGHT-285, 200, 60);
+    cancelChanges.backgroundColor = [UIColor redColor];
+    cancelChanges.titleLabel.textColor = [UIColor whiteColor];
+    [cancelChanges setTitle:@"DISCARD CHANGES" forState:UIControlStateNormal];
+    [cancelChanges addTarget:self action:@selector(cancelSettingsChange) forControlEvents:UIControlEventTouchUpInside];
+    cancelChanges.layer.cornerRadius = 5;
+    cancelChanges.layer.borderColor = [UIColor blackColor].CGColor;
+    cancelChanges.layer.borderWidth = 1;
+    [cancelChanges setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:254.0/255.0 green:180.0/255.0 blue:180.0/255.0 alpha:0.8]] forState:UIControlStateHighlighted];
+    cancelChanges.clipsToBounds = YES;
+    [self addGradient:cancelChanges];
+    [settingsLayer addSubview:cancelChanges];
     
     // create the logos at the bottom of the view
     [self addLogosToMenu:settingsLayer];
